@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login | MYSTEM UniMAP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --c-bg:        #020b14;
+      --c-panel:     #071e35;
+      --c-border:    #0d3a5e;
+      --c-accent:    #00c8ff;
+      --c-text:      #d4eaf7;
+      --c-muted:     #5a8ca8;
+      --font-head:   'Orbitron', sans-serif;
+      --font-body:   'Exo 2', sans-serif;
+      --glow-blue:   0 0 18px #00c8ff88;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--c-bg);
+      color: var(--c-text);
+      font-family: var(--font-body);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(circle at 50% 0%, #00c8ff15 0%, transparent 50%),
+        linear-gradient(var(--c-border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--c-border) 1px, transparent 1px);
+      background-size: 100% 100%, 40px 40px, 40px 40px;
+    }
+    .login-container {
+      background: var(--c-panel);
+      border: 1px solid var(--c-border);
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .logo-emblem {
+      width: 60px; height: 60px; border-radius: 14px;
+      background: linear-gradient(135deg, var(--c-accent), #00ff9f);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-head); font-size: 20px; font-weight: 900;
+      color: var(--c-bg); box-shadow: var(--glow-blue);
+      margin: 0 auto 24px;
+    }
+    h1 { font-family: var(--font-head); font-size: 24px; margin-bottom: 8px; }
+    p { color: var(--c-muted); font-size: 14px; margin-bottom: 30px; }
+    
+    .input-group { margin-bottom: 20px; text-align: left; }
+    label { display: block; font-size: 12px; color: var(--c-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.1em; }
+    input {
+      width: 100%; padding: 14px; border-radius: 10px;
+      background: var(--c-bg); border: 1px solid var(--c-border);
+      color: var(--c-text); font-family: var(--font-body);
+      outline: none; transition: 0.3s;
+    }
+    input:focus { border-color: var(--c-accent); box-shadow: var(--glow-blue); }
+    
+    .btn {
+      width: 100%; padding: 14px; border-radius: 10px;
+      background: var(--c-accent); color: var(--c-bg);
+      font-family: var(--font-head); font-weight: 700; text-transform: uppercase;
+      border: none; cursor: pointer; transition: 0.3s;
+      box-shadow: var(--glow-blue); margin-top: 10px;
+    }
+    .btn:hover { box-shadow: 0 0 30px #00c8ffcc; transform: translateY(-2px); }
+    .back-link { display: block; margin-top: 24px; font-size: 13px; color: var(--c-muted); text-decoration: none; transition: 0.2s; }
+    .back-link:hover { color: var(--c-accent); }
+    .error-msg { color: #ff4d4d; font-size: 12px; margin-top: 10px; display: none; }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="logo-emblem">M²</div>
+    <h1>System Access</h1>
+    <p>Authorized Executive Committee Only</p>
+
+    <form id="loginForm">
+      <div class="input-group">
+        <label>Admin ID</label>
+        <input type="text" id="username" placeholder="e.g. uniMystem2026" required />
+      </div>
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" id="password" placeholder="••••••••" required />
+      </div>
+      <button type="submit" class="btn">Authenticate</button>
+      <div id="errorMsg" class="error-msg">Invalid Credentials. Access Denied.</div>
+    </form>
+
+    <a href="index.html" class="back-link">← Return to Main Site</a>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const user = document.getElementById('username').value;
+      const pass = document.getElementById('password').value;
+
+      // The new credentials you requested!
+      if (user === 'uniMystem2026' && pass === 'Mystem@2026') {
+        window.location.href = 'dashboard.html'; 
+      } else {
+        document.getElementById('errorMsg').style.display = 'block';
+      }
+    });
+  </script>
+
+</body>
+</html>
