@@ -1434,5 +1434,25 @@
     });
   });
 </script>
+/* Dynamic Content Loader (Reads from Admin Dashboard) */
+  window.addEventListener('DOMContentLoaded', () => {
+    // Check if the admin saved a new badge
+    const savedBadge = localStorage.getItem('mystem_badge');
+    if(savedBadge) {
+      document.querySelector('.hero-badge').innerHTML = `<span class="dot"></span> ${savedBadge}`;
+    }
+
+    // Check if the admin saved a new headline
+    const savedHeadline = localStorage.getItem('mystem_headline');
+    if(savedHeadline) {
+      document.querySelector('.hero-title').innerHTML = `<span class="line-accent">${savedHeadline}</span><br/><span class="line-green" style="font-size:.38em; letter-spacing:.08em;">UNIVERSITI MALAYSIA PERLIS</span>`;
+    }
+
+    // Check if the admin saved a new description
+    const savedDesc = localStorage.getItem('mystem_desc');
+    if(savedDesc) {
+      document.querySelector('.hero-sub').innerText = savedDesc;
+    }
+  });
 </body>
 </html>
