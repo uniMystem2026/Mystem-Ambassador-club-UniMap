@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | MYSTEM UniMAP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --c-bg:        #020b14;
+      --c-surface:   #041526;
+      --c-panel:     #071e35;
+      --c-border:    #0d3a5e;
+      --c-accent:    #00c8ff;
+      --c-accent2:   #00ff9f;
+      --c-text:      #d4eaf7;
+      --c-muted:     #5a8ca8;
+      --font-head:   'Orbitron', sans-serif;
+      --font-body:   'Exo 2', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--c-bg); color: var(--c-text); font-family: var(--font-body); display: flex; min-height: 100vh; }
+    
+    /* Sidebar */
+    .sidebar { width: 250px; background: var(--c-surface); border-right: 1px solid var(--c-border); padding: 24px; display: flex; flex-direction: column; }
+    .brand { font-family: var(--font-head); font-weight: 900; font-size: 18px; color: var(--c-white); margin-bottom: 40px; display: flex; align-items: center; gap: 10px;}
+    .nav-link { display: block; padding: 12px 16px; color: var(--c-muted); text-decoration: none; border-radius: 8px; margin-bottom: 8px; font-weight: 600; transition: 0.2s; cursor: pointer; }
+    .nav-link:hover, .nav-link.active { background: #00c8ff15; color: var(--c-accent); }
+    .logout { margin-top: auto; color: #ff4d4d; border: 1px solid #ff4d4d33; }
+    .logout:hover { background: #ff4d4d15; color: #ff4d4d; }
+    
+    /* Main Content */
+    .main-content { flex: 1; padding: 40px; overflow-y: auto; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 1px solid var(--c-border); padding-bottom: 20px; }
+    h1 { font-family: var(--font-head); font-size: 28px; }
+    
+    /* Panels */
+    .view-panel { display: none; } 
+    .view-panel.active { display: block; animation: fadeIn 0.4s ease; } 
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Editor Panel & Forms */
+    .editor-panel { background: var(--c-panel); border: 1px solid var(--c-border); border-radius: 16px; padding: 30px; max-width: 800px; margin-bottom: 20px; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; font-size: 12px; color: var(--c-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
+    input, textarea, select { width: 100%; padding: 14px; background: var(--c-bg); border: 1px solid var(--c-border); border-radius: 8px; color: var(--c-text); font-family: var(--font-body); outline: none; transition: 0.3s; }
+    input:focus, textarea:focus, select:focus { border-color: var(--c-accent); box-shadow: 0 0 15px #00c8ff33; }
+    
+    .btn { padding: 14px 28px; background: var(--c-accent); color: var(--c-bg); font-family: var(--font-head); font-weight: 700; text-transform: uppercase; border-radius: 8px; border: none; cursor: pointer; transition: 0.3s; box-shadow: 0 0 15px #00c8ff88; display: inline-block; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 0 25px #00c8ffcc; }
+    .success-msg { display: none; margin-top: 15px; color: var(--c-accent2); font-weight: 600; font-size: 14px; }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="brand">M² ADMIN</div>
+    <a class="nav-link active" data-target="view-home">Home Highlight</a>
+    <a class="nav-link" data-target="view-events">Manage Events</a>
+    <a class="nav-link" data-target="view-projects">Manage Projects</a>
+    <a class="nav-link" data-target="view-committee">Committee List</a>
+    <a href="index.html" class="nav-link logout">← Logout</a>
+  </div>
+
+  <!-- MAIN CONTENT AREA -->
+  <div class="main-content">
+    <div class="header">
+      <h1 id="page-title">Edit Main Page Highlight</h1>
+      <div>Welcome, Executive Admin</div>
+    </div>
+
+    <!-- PANEL 1: HOME HIGHLIGHT -->
+    <div id="view-home" class="view-panel active">
+      <div class="editor-panel">
+        <form id="highlightForm">
+          <div class="form-group">
+            <label>Highlight Badge (Text above title)</label>
+            <input type="text" id="badgeText" placeholder="e.g. Latest Announcement" value="Official STEM Ambassador Club · UniMAP">
+          </div>
+          <div class="form-group">
+            <label>Main Headline</label>
+            <input type="text" id="headlineText" placeholder="Main Title" value="MYSTEM Ambassador Club">
+          </div>
+          <div class="form-group">
+            <label>Sub-Description</label>
+            <textarea id="subText" rows="4">Empowering the next generation of STEM leaders through innovation, automation, Industry 4.0 literacy, and community-driven outreach across Malaysia and beyond.</textarea>
+          </div>
+          <button type="submit" class="btn">Update Front Page</button>
+          <div id="msg-home" class="success-msg">✅ Main page updated successfully!</div>
+        </form>
+      </div>
+    </div>
+
+    <!-- PANEL 2: MANAGE EVENTS -->
+    <div id="view-events" class="view-panel">
+      <div class="editor-panel">
+        <h3>Add New Event</h3><br>
+        <form id="eventForm">
+          <div class="form-group">
+            <label>Event Title</label>
+            <input type="text" id="evTitle" placeholder="e.g. Robotics Workshop" required>
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+            <div class="form-group">
+              <label>Day (e.g. 15)</label>
+              <input type="text" id="evDay" required>
+            </div>
+            <div class="form-group">
+              <label>Month & Year (e.g. Jun 2026)</label>
+              <input type="text" id="evMonth" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Event Type</label>
+            <input type="text" id="evType" placeholder="e.g. Workshop, Talk, Competition" required>
+          </div>
+          <div class="form-group">
+            <label>Location</label>
+            <input type="text" id="evLoc" placeholder="e.g. 📍 DKU, UniMAP" required>
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select id="evStatus">
+              <option value="upcoming">Upcoming</option>
+              <option value="open">Open</option>
+              <option value="past">Completed</option>
+            </select>
+          </div>
+          <button type="submit" class="btn">Push Event to Live Site</button>
+          <div id="msg-event" class="success-msg">✅ Event added to main page!</div>
+        </form>
+      </div>
+    </div>
+
+    <!-- PANEL 3: MANAGE PROJECTS -->
+    <div id="view-projects" class="view-panel">
+      <div class="editor-panel">
+        <h3>Add New Project Showcase</h3><br>
+        <form id="projectForm">
+          <div class="form-group">
+            <label>Project Name</label>
+            <input type="text" id="projTitle" required>
+          </div>
+          <div class="form-group">
+            <label>Project Description</label>
+            <textarea id="projDesc" rows="3" required></textarea>
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px;">
+            <div class="form-group">
+              <label>Year</label>
+              <input type="text" id="projYear" required>
+            </div>
+            <div class="form-group">
+              <label>Badge Text</label>
+              <input type="text" id="projBadge" placeholder="e.g. Live, Award, National" required>
+            </div>
+            <div class="form-group">
+              <label>Icon / Emoji</label>
+              <input type="text" id="projIcon" placeholder="e.g. 🤖 or 🌾" required>
+            </div>
+          </div>
+          <button type="submit" class="btn">Add Project</button>
+          <div id="msg-project" class="success-msg">✅ Project added to portfolio!</div>
+        </form>
+      </div>
+    </div>
+
+    <!-- PANEL 4: COMMITTEE LIST -->
+    <div id="view-committee" class="view-panel">
+      <div class="editor-panel">
+        <h3>Add Committee Member</h3><br>
+        <form id="committeeForm">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="comName" required>
+          </div>
+          <div class="form-group">
+            <label>Role</label>
+            <input type="text" id="comRole" placeholder="e.g. President, Multimedia Exco" required>
+          </div>
+          <div class="form-group">
+            <label>Avatar Icon / Emoji</label>
+            <input type="text" id="comIcon" placeholder="e.g. 👑, 💻, 🎯" required>
+          </div>
+          <button type="submit" class="btn">Add to Committee List</button>
+          <div id="msg-com" class="success-msg">✅ Member added!</div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    /* --- TAB SWITCHING LOGIC --- */
+    const navLinks = document.querySelectorAll('.nav-link:not(.logout)');
+    const panels = document.querySelectorAll('.view-panel');
+    const pageTitle = document.getElementById('page-title');
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        navLinks.forEach(l => l.classList.remove('active'));
+        panels.forEach(p => p.classList.remove('active'));
+        this.classList.add('active');
+        document.getElementById(this.getAttribute('data-target')).classList.add('active');
+        pageTitle.innerText = this.innerText;
+      });
+    });
+
+    /* --- SAVE DATA HELPER FUNCTION --- */
+    function saveToArray(storageKey, newItem, msgId) {
+      // Get existing items or create empty array
+      let items = JSON.parse(localStorage.getItem(storageKey)) || [];
+      // Add the new item to the top of the list
+      items.unshift(newItem); 
+      // Save back to local storage
+      localStorage.setItem(storageKey, JSON.stringify(items));
+      
+      // Show success message
+      const msg = document.getElementById(msgId);
+      msg.style.display = 'block';
+      setTimeout(() => msg.style.display = 'none', 3000);
+    }
+
+    /* --- FORM SUBMITS --- */
+    
+    // 1. Home Highlight
+    document.getElementById('highlightForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      localStorage.setItem('mystem_badge', document.getElementById('badgeText').value);
+      localStorage.setItem('mystem_headline', document.getElementById('headlineText').value);
+      localStorage.setItem('mystem_desc', document.getElementById('subText').value);
+      
+      const msg = document.getElementById('msg-home');
+      msg.style.display = 'block';
+      setTimeout(() => msg.style.display = 'none', 3000);
+    });
+
+    // 2. Add Event
+    document.getElementById('eventForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const newEvent = {
+        title: document.getElementById('evTitle').value,
+        day: document.getElementById('evDay').value,
+        month: document.getElementById('evMonth').value,
+        type: document.getElementById('evType').value,
+        loc: document.getElementById('evLoc').value,
+        status: document.getElementById('evStatus').value
+      };
+      saveToArray('mystem_events', newEvent, 'msg-event');
+      this.reset(); // clear form
+    });
+
+    // 3. Add Project
+    document.getElementById('projectForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const newProj = {
+        title: document.getElementById('projTitle').value,
+        desc: document.getElementById('projDesc').value,
+        year: document.getElementById('projYear').value,
+        badge: document.getElementById('projBadge').value,
+        icon: document.getElementById('projIcon').value
+      };
+      saveToArray('mystem_projects', newProj, 'msg-project');
+      this.reset();
+    });
+
+    // 4. Add Committee
+    document.getElementById('committeeForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const newMember = {
+        name: document.getElementById('comName').value,
+        role: document.getElementById('comRole').value,
+        icon: document.getElementById('comIcon').value
+      };
+      saveToArray('mystem_committee', newMember, 'msg-com');
+      this.reset();
+    });
+
+  </script>
+</body>
+</html>

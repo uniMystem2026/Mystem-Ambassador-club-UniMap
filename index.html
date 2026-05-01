@@ -1313,6 +1313,79 @@
       a.style.color = a.getAttribute('href') === '#' + current ? 'var(--c-accent)' : '';
     });
   });
+
+  /* =======================================================
+     DYNAMIC CONTENT LOADER (Reads from Admin Dashboard)
+     ======================================================= */
+  window.addEventListener('DOMContentLoaded', () => {
+    
+    // 1. Load Highlight
+    const savedBadge = localStorage.getItem('mystem_badge');
+    if(savedBadge) document.querySelector('.hero-badge').innerHTML = `<span class="dot"></span> ${savedBadge}`;
+    
+    const savedHeadline = localStorage.getItem('mystem_headline');
+    if(savedHeadline) document.querySelector('.hero-title').innerHTML = `<span class="line-accent">${savedHeadline}</span><br/><span class="line-green" style="font-size:.38em; letter-spacing:.08em;">UNIVERSITI MALAYSIA PERLIS</span>`;
+    
+    const savedDesc = localStorage.getItem('mystem_desc');
+    if(savedDesc) document.querySelector('.hero-sub').innerText = savedDesc;
+
+    // 2. Load Custom Events
+    const events = JSON.parse(localStorage.getItem('mystem_events'));
+    if(events && events.length > 0) {
+      const eventContainer = document.querySelector('.events-list');
+      events.forEach(ev => {
+        let html = `
+          <div class="event-item reveal visible" style="border-color: var(--c-accent); box-shadow: var(--glow-blue);">
+            <div class="event-date"><div class="event-day">${ev.day}</div><div class="event-month">${ev.month}</div></div>
+            <div class="event-info">
+              <div class="event-type">${ev.type}</div>
+              <div class="event-title">${ev.title}</div>
+              <div class="event-loc">${ev.loc}</div>
+            </div>
+            <span class="event-status status-${ev.status}">${ev.status}</span>
+          </div>`;
+        eventContainer.insertAdjacentHTML('afterbegin', html); // Adds to top of list
+      });
+    }
+
+    // 3. Load Custom Projects
+    const projects = JSON.parse(localStorage.getItem('mystem_projects'));
+    if(projects && projects.length > 0) {
+      const projectContainer = document.querySelector('.projects-grid');
+      projects.forEach(proj => {
+        let html = `
+          <div class="proj-card reveal visible" style="border-color: var(--c-accent2);">
+            <div class="proj-banner" style="background:linear-gradient(135deg,#041526,#0a3d62);">${proj.icon}</div>
+            <div class="proj-body">
+              <div class="proj-meta">
+                <span class="proj-badge">${proj.badge}</span>
+                <span class="proj-year">${proj.year}</span>
+              </div>
+              <h3 class="proj-title">${proj.title}</h3>
+              <p class="proj-desc">${proj.desc}</p>
+            </div>
+          </div>`;
+        projectContainer.insertAdjacentHTML('afterbegin', html);
+      });
+    }
+
+    // 4. Load Custom Committee Members
+    const committee = JSON.parse(localStorage.getItem('mystem_committee'));
+    if(committee && committee.length > 0) {
+      const teamContainer = document.querySelector('.team-grid');
+      committee.forEach(member => {
+        let html = `
+          <div class="team-card reveal visible" style="border-color: var(--c-gold);">
+            <div class="team-avatar" style="background:linear-gradient(135deg,#ffd16622,#ffd16644);">${member.icon}</div>
+            <div class="team-name">${member.name}</div>
+            <div class="team-role">${member.role}</div>
+            <div class="team-dept">Newly Added</div>
+          </div>`;
+        teamContainer.insertAdjacentHTML('afterbegin', html);
+      });
+    }
+
+  });
 </script>
 </body>
 </html>
