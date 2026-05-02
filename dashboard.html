@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard | MYSTEM UniMAP</title>
   
-  <!-- FAVICON LINKED TO YOUR WHATSAPP IMAGE -->
   <link rel="icon" type="image/png" href="WhatsApp_Image_2024-12-02_at_15.29.32-removebg-preview.png" />
-
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -61,14 +59,7 @@
     .action-btn { color: #ff4d4d; background: #ff4d4d15; border: 1px solid #ff4d4d44; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 11px; font-family: var(--font-head); transition: 0.2s; text-transform: uppercase; letter-spacing: .05em;}
     .action-btn:hover { background: #ff4d4d; color: var(--c-white); }
     
-    /* NEW: Admin circular member photo style */
-    .admin-com-photo {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 1px solid var(--c-accent);
-    }
+    .admin-com-photo { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid var(--c-accent); }
   </style>
 </head>
 <body>
@@ -80,7 +71,7 @@
     <a class="nav-link" data-target="view-events">Manage Events</a>
     <a class="nav-link" data-target="view-projects">Manage Projects</a>
     <a class="nav-link" data-target="view-committee">Committee List</a>
-    <a class="nav-link" data-target="view-stories">Community Stories</a> <!-- RESTORED -->
+    <a class="nav-link" data-target="view-stories">Community Stories</a>
     <a href="index.html" class="nav-link logout">← Back to Site</a>
   </div>
 
@@ -94,7 +85,7 @@
     <!-- PANEL 1: HOME HIGHLIGHT -->
     <div id="view-home" class="view-panel active">
       <div class="editor-panel">
-        <p style="color:var(--c-muted); margin-bottom:20px;">Edit the main landing page text here. If left completely blank, the site will use its default design.</p>
+        <p style="color:var(--c-muted); margin-bottom:20px;">Edit the main landing page text here.</p>
         <form id="highlightForm">
           <div class="form-group">
             <label>Highlight Badge (Text above title)</label>
@@ -118,44 +109,21 @@
     <div id="view-events" class="view-panel">
       <div class="editor-panel">
         <h3 style="color: var(--c-accent2);">📋 Current Live Events</h3>
-        <p style="color: var(--c-muted); font-size: 13px; margin-top: 8px;">These are the events currently showing on your main website. Click Delete to remove them.</p>
-        <table id="table-events">
-          <!-- Populated by Javascript -->
-        </table>
+        <table id="table-events"></table>
       </div>
-
       <div class="editor-panel">
         <h3>+ Add New Event</h3><br>
         <form id="eventForm">
-          <div class="form-group">
-            <label>Event Title</label>
-            <input type="text" id="evTitle" placeholder="e.g. Robotics Workshop" required>
-          </div>
+          <div class="form-group"><label>Event Title</label><input type="text" id="evTitle" required></div>
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
-            <div class="form-group">
-              <label>Day (e.g. 15)</label>
-              <input type="text" id="evDay" required>
-            </div>
-            <div class="form-group">
-              <label>Month & Year (e.g. Jun 2026)</label>
-              <input type="text" id="evMonth" required>
-            </div>
+            <div class="form-group"><label>Day (e.g. 15)</label><input type="text" id="evDay" required></div>
+            <div class="form-group"><label>Month & Year (e.g. Jun 2026)</label><input type="text" id="evMonth" required></div>
           </div>
-          <div class="form-group">
-            <label>Event Type</label>
-            <input type="text" id="evType" placeholder="e.g. Workshop, Talk, Competition" required>
-          </div>
-          <div class="form-group">
-            <label>Location</label>
-            <input type="text" id="evLoc" placeholder="e.g. 📍 DKU, UniMAP" required>
-          </div>
+          <div class="form-group"><label>Event Type</label><input type="text" id="evType" required></div>
+          <div class="form-group"><label>Location</label><input type="text" id="evLoc" required></div>
           <div class="form-group">
             <label>Status</label>
-            <select id="evStatus">
-              <option value="upcoming">Upcoming</option>
-              <option value="open">Open</option>
-              <option value="past">Completed</option>
-            </select>
+            <select id="evStatus"><option value="upcoming">Upcoming</option><option value="open">Open</option><option value="past">Completed</option></select>
           </div>
           <button type="submit" class="btn">Push Event to Live Site</button>
           <div id="msg-event" class="success-msg">✅ Event added to main page!</div>
@@ -167,36 +135,17 @@
     <div id="view-projects" class="view-panel">
       <div class="editor-panel">
         <h3 style="color: var(--c-accent2);">📋 Current Live Projects</h3>
-        <p style="color: var(--c-muted); font-size: 13px; margin-top: 8px;">These are the projects currently showing on your portfolio. Click Delete to remove them.</p>
-        <table id="table-projects">
-          <!-- Populated by Javascript -->
-        </table>
+        <table id="table-projects"></table>
       </div>
-
       <div class="editor-panel">
         <h3>+ Add New Project Showcase</h3><br>
         <form id="projectForm">
-          <div class="form-group">
-            <label>Project Name</label>
-            <input type="text" id="projTitle" required>
-          </div>
-          <div class="form-group">
-            <label>Project Description</label>
-            <textarea id="projDesc" rows="3" required></textarea>
-          </div>
+          <div class="form-group"><label>Project Name</label><input type="text" id="projTitle" required></div>
+          <div class="form-group"><label>Project Description</label><textarea id="projDesc" rows="3" required></textarea></div>
           <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px;">
-            <div class="form-group">
-              <label>Year</label>
-              <input type="text" id="projYear" required>
-            </div>
-            <div class="form-group">
-              <label>Badge Text</label>
-              <input type="text" id="projBadge" placeholder="e.g. Live, Award, National" required>
-            </div>
-            <div class="form-group">
-              <label>Icon / Emoji</label>
-              <input type="text" id="projIcon" placeholder="e.g. 🤖 or 🌾" required>
-            </div>
+            <div class="form-group"><label>Year</label><input type="text" id="projYear" required></div>
+            <div class="form-group"><label>Badge Text</label><input type="text" id="projBadge" required></div>
+            <div class="form-group"><label>Icon / Emoji</label><input type="text" id="projIcon" required></div>
           </div>
           <button type="submit" class="btn">Add Project</button>
           <div id="msg-project" class="success-msg">✅ Project added to portfolio!</div>
@@ -204,16 +153,12 @@
       </div>
     </div>
 
-    <!-- PANEL 4: COMMITTEE LIST (With Picture Upload) -->
+    <!-- PANEL 4: COMMITTEE LIST -->
     <div id="view-committee" class="view-panel">
       <div class="editor-panel">
         <h3 style="color: var(--c-accent2);">📋 Current Committee Members</h3>
-        <p style="color: var(--c-muted); font-size: 13px; margin-top: 8px;">These are the active committee members showing on the main site. Click Delete to remove them.</p>
-        <table id="table-committee">
-          <!-- Populated by Javascript -->
-        </table>
+        <table id="table-committee"></table>
       </div>
-
       <div class="editor-panel">
         <h3>+ Add Committee Member</h3><br>
         <form id="committeeForm">
@@ -221,50 +166,33 @@
             <label>Full Name</label>
             <input type="text" id="comName" required>
           </div>
-          
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; align-items: center;">
             <div class="form-group">
               <label>Role</label>
-              <input type="text" id="comRole" placeholder="e.g. President, Multimedia Exco" required>
+              <input type="text" id="comRole" placeholder="e.g. President" required>
             </div>
-            
             <div class="form-group">
               <label>Upload Member Photo</label>
               <input type="file" id="comPhoto" accept="image/*" class="form-input" style="padding: 10px; background: transparent; border: 1px dashed var(--c-border); cursor: pointer;" required />
             </div>
           </div>
-
           <h4 style="margin: 10px 0 15px; color: var(--c-white); font-family: var(--font-head); font-size: 14px;">Social Links (Optional)</h4>
-          
           <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px;">
-            <div class="form-group">
-              <label>Instagram Link</label>
-              <input type="text" id="comIg" placeholder="e.g. https://instagram.com/username">
-            </div>
-            <div class="form-group">
-              <label>LinkedIn Link</label>
-              <input type="text" id="comLi" placeholder="e.g. https://linkedin.com/in/username">
-            </div>
-            <div class="form-group">
-              <label>WhatsApp Number</label>
-              <input type="text" id="comWa" placeholder="e.g. 0123456789">
-            </div>
+            <div class="form-group"><label>Instagram Link</label><input type="text" id="comIg"></div>
+            <div class="form-group"><label>LinkedIn Link</label><input type="text" id="comLi"></div>
+            <div class="form-group"><label>WhatsApp Number</label><input type="text" id="comWa"></div>
           </div>
-
           <button type="submit" class="btn">Add to Committee List</button>
           <div id="msg-com" class="success-msg">✅ Member added with photo!</div>
         </form>
       </div>
     </div>
 
-    <!-- PANEL 5: COMMUNITY STORIES (RESTORED) -->
+    <!-- PANEL 5: COMMUNITY STORIES -->
     <div id="view-stories" class="view-panel">
       <div class="editor-panel">
         <h3 style="color: var(--c-accent2);">📋 Moderation: Community Stories</h3>
-        <p style="color: var(--c-muted); font-size: 13px; margin-top: 8px;">Review stories submitted by users from the main site. Click Delete to remove inappropriate or test posts.</p>
-        <table id="table-stories">
-          <!-- Populated by Javascript -->
-        </table>
+        <table id="table-stories"></table>
       </div>
     </div>
 
@@ -279,19 +207,10 @@
     navLinks.forEach(link => {
       link.addEventListener('click', function(e) {
         e.preventDefault();
-        
-        // Remove active class from all links and panels
         navLinks.forEach(l => l.classList.remove('active'));
         panels.forEach(p => p.classList.remove('active'));
-        
-        // Add active class to clicked link
         this.classList.add('active');
-        
-        // Get target panel ID and make it active
-        const targetId = this.getAttribute('data-target');
-        document.getElementById(targetId).classList.add('active');
-        
-        // Change header title
+        document.getElementById(this.getAttribute('data-target')).classList.add('active');
         pageTitle.innerText = this.innerText;
       });
     });
@@ -309,12 +228,10 @@
 
     /* --- RENDER ADMIN LISTS --- */
     function renderAdminTables() {
-      // 1. Events Table
       const events = JSON.parse(localStorage.getItem('mystem_events')) || [];
       const evTable = document.getElementById('table-events');
-      if(events.length === 0) {
-        evTable.innerHTML = '<tr><td style="text-align:center; padding: 20px; color:var(--c-muted);">No events added yet. Your main website is empty.</td></tr>';
-      } else {
+      if(events.length === 0) evTable.innerHTML = '<tr><td>No events added yet.</td></tr>';
+      else {
         let html = '<tr><th>Title</th><th>Date</th><th>Type</th><th>Action</th></tr>';
         events.forEach((ev, idx) => {
           html += `<tr><td>${ev.title}</td><td>${ev.day} ${ev.month}</td><td>${ev.type}</td>
@@ -323,12 +240,10 @@
         evTable.innerHTML = html;
       }
 
-      // 2. Projects Table
       const projects = JSON.parse(localStorage.getItem('mystem_projects')) || [];
       const projTable = document.getElementById('table-projects');
-      if(projects.length === 0) {
-        projTable.innerHTML = '<tr><td style="text-align:center; padding: 20px; color:var(--c-muted);">No projects added yet. Your main website showcase is empty.</td></tr>';
-      } else {
+      if(projects.length === 0) projTable.innerHTML = '<tr><td>No projects added yet.</td></tr>';
+      else {
         let html = '<tr><th>Project Name</th><th>Year</th><th>Badge</th><th>Action</th></tr>';
         projects.forEach((proj, idx) => {
           html += `<tr><td>${proj.title}</td><td>${proj.year}</td><td>${proj.badge}</td>
@@ -337,12 +252,10 @@
         projTable.innerHTML = html;
       }
 
-      // 3. Committee Table
       const committee = JSON.parse(localStorage.getItem('mystem_committee')) || [];
       const comTable = document.getElementById('table-committee');
-      if(committee.length === 0) {
-        comTable.innerHTML = '<tr><td style="text-align:center; padding: 20px; color:var(--c-muted);">No members added yet. Your main website team section is empty.</td></tr>';
-      } else {
+      if(committee.length === 0) comTable.innerHTML = '<tr><td>No members added yet.</td></tr>';
+      else {
         let html = '<tr><th>Photo</th><th>Name</th><th>Role</th><th>Action</th></tr>';
         committee.forEach((com, idx) => {
           html += `<tr>
@@ -353,12 +266,10 @@
         comTable.innerHTML = html;
       }
 
-      // 4. Community Stories Table (RESTORED)
       const stories = JSON.parse(localStorage.getItem('mystem_experiences')) || [];
       const storyTable = document.getElementById('table-stories');
-      if(stories.length === 0) {
-        storyTable.innerHTML = '<tr><td style="text-align:center; padding: 20px; color:var(--c-muted);">No stories submitted by the community yet.</td></tr>';
-      } else {
+      if(stories.length === 0) storyTable.innerHTML = '<tr><td>No stories submitted yet.</td></tr>';
+      else {
         let html = '<tr><th>Name</th><th>Story Snippet</th><th>Action</th></tr>';
         stories.forEach((story, idx) => {
           let snippet = story.text.length > 50 ? story.text.substring(0, 50) + '...' : story.text;
@@ -371,7 +282,7 @@
 
     /* --- DELETE LOGIC --- */
     window.deleteItem = function(storageKey, index) {
-      if(confirm("Are you sure you want to delete this? It will be instantly removed from the main site.")) {
+      if(confirm("Are you sure you want to delete this?")) {
         let items = JSON.parse(localStorage.getItem(storageKey)) || [];
         items.splice(index, 1); 
         localStorage.setItem(storageKey, JSON.stringify(items)); 
@@ -379,25 +290,54 @@
       }
     };
 
-    /* --- SAVE DATA HELPER FUNCTION --- */
+    /* --- SAVE DATA HELPER FUNCTION (WITH ERROR HANDLING) --- */
     function saveToArray(storageKey, newItem, msgId) {
-      let items = JSON.parse(localStorage.getItem(storageKey)) || [];
-      items.unshift(newItem); 
-      localStorage.setItem(storageKey, JSON.stringify(items));
-      
-      const msg = document.getElementById(msgId);
-      msg.style.display = 'block';
-      setTimeout(() => msg.style.display = 'none', 3000);
-      
-      renderAdminTables();
+      try {
+        let items = JSON.parse(localStorage.getItem(storageKey)) || [];
+        items.unshift(newItem); 
+        localStorage.setItem(storageKey, JSON.stringify(items));
+        
+        const msg = document.getElementById(msgId);
+        msg.style.display = 'block';
+        setTimeout(() => msg.style.display = 'none', 3000);
+        
+        renderAdminTables();
+      } catch (error) {
+        console.error(error);
+        alert("❌ ERROR: Your browser's local memory is full! Please upload a smaller image file, or delete old items first.");
+      }
     }
-    
-    /* --- IMAGE CONVERTER FUNCTION --- */
-    function getBase64(file) {
+
+    /* --- ADVANCED IMAGE COMPRESSOR --- */
+    function compressImage(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
+        reader.onload = (event) => {
+          const img = new Image();
+          img.src = event.target.result;
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const MAX_WIDTH = 400; // Resizes the image so it fits perfectly in memory
+            const MAX_HEIGHT = 400;
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height) {
+              if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+            } else {
+              if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+            }
+            
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            // Compress to JPEG with 70% quality to save massive amounts of space
+            resolve(canvas.toDataURL('image/jpeg', 0.7)); 
+          };
+        };
         reader.onerror = error => reject(error);
       });
     }
@@ -440,13 +380,19 @@
       this.reset();
     });
 
+    /* THE FIX: Button feedback + Image Compression */
     document.getElementById('committeeForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       const fileInput = document.getElementById('comPhoto');
+      const submitBtn = this.querySelector('button[type="submit"]');
+      
+      // Tell the user it's processing the image
+      submitBtn.innerText = "Processing Image...";
+      submitBtn.style.opacity = "0.7";
       
       let photoBase64 = '';
       if (fileInput.files.length > 0) {
-        photoBase64 = await getBase64(fileInput.files[0]);
+        photoBase64 = await compressImage(fileInput.files[0]); // Shrinks the image!
       }
       
       const newMember = {
@@ -457,8 +403,13 @@
         li: document.getElementById('comLi').value,   
         wa: document.getElementById('comWa').value     
       };
+      
       saveToArray('mystem_committee', newMember, 'msg-com');
+      
+      // Reset the form back to normal
       this.reset();
+      submitBtn.innerText = "Add to Committee List";
+      submitBtn.style.opacity = "1";
     });
 
     // Run table generator on load
