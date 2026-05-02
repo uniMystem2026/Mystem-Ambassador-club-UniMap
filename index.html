@@ -676,56 +676,7 @@
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    /* ─── Bottom Nav Bar (Mobile Only) ─────────────── */
-    .bottom-nav {
-      display: flex;
-      position: fixed; bottom: 0; left: 0; right: 0; z-index: 90;
-      background: #020b14ee;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-top: 1px solid var(--c-border);
-      padding: 8px 4px;
-      padding-bottom: max(8px, var(--safe-bottom));
-      justify-content: space-around;
-      align-items: center;
-    }
-    @media (min-width: 768px) { .bottom-nav { display: none; } }
 
-    .bnav-item {
-      display: flex; flex-direction: column; align-items: center; gap: 3px;
-      font-family: var(--font-head); font-size: 8px; letter-spacing: .06em;
-      text-transform: uppercase; color: var(--c-muted);
-      padding: 6px 10px; border-radius: 10px;
-      -webkit-tap-highlight-color: transparent;
-      transition: color .2s, background .2s;
-      flex: 1;
-    }
-    .bnav-item:active { background: #00c8ff14; color: var(--c-accent); }
-    .bnav-item.active { color: var(--c-accent); }
-    .bnav-icon { font-size: 20px; line-height: 1; }
-
-    /* Add bottom padding to body so content doesn't hide behind bottom nav */
-    @media (max-width: 767px) {
-      body { padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)); }
-    }
-
-    /* ─── Floating Join Button (Mobile) ─────────────── */
-    .fab {
-      display: none;
-    }
-    @media (max-width: 767px) {
-      .fab {
-        display: flex; align-items: center; justify-content: center;
-        position: fixed; bottom: calc(76px + env(safe-area-inset-bottom, 0px));
-        right: 16px; z-index: 89;
-        width: 52px; height: 52px; border-radius: 50%;
-        background: var(--c-accent); color: var(--c-bg);
-        font-size: 22px; box-shadow: var(--glow-blue), 0 4px 20px #0008;
-        -webkit-tap-highlight-color: transparent;
-        animation: fab-pulse 3s ease infinite;
-      }
-    }
-    @keyframes fab-pulse { 0%,100% { box-shadow: var(--glow-blue), 0 4px 20px #0008; } 50% { box-shadow: 0 0 32px #00c8ffcc, 0 4px 20px #0008; } }
 
     /* ─── Pull-to-reveal section separator ──────────── */
     .section-sep {
@@ -788,17 +739,6 @@
   </div>
 </nav>
 
-<!-- ═══════════════ BOTTOM NAV (Mobile) ═══════════════ -->
-<nav class="bottom-nav z1" id="bottomNav">
-  <a href="#hero"     class="bnav-item active" data-section="hero"><div class="bnav-icon">🏠</div>Home</a>
-  <a href="#programs" class="bnav-item" data-section="programs"><div class="bnav-icon">📚</div>Programs</a>
-  <a href="#events"   class="bnav-item" data-section="events"><div class="bnav-icon">📅</div>Events</a>
-  <a href="#team"     class="bnav-item" data-section="team"><div class="bnav-icon">👥</div>Team</a>
-  <a href="#contact"  class="bnav-item" data-section="contact"><div class="bnav-icon">📩</div>Contact</a>
-</nav>
-
-<!-- Floating Action Button (mobile) -->
-<a href="#share" class="fab z1" title="Share your story">✍️</a>
 
 <!-- ═══════════════ HERO ═══════════════ -->
 <section id="hero">
@@ -1183,7 +1123,6 @@
   /* ── Bottom nav active state on scroll ── */
   const sections = document.querySelectorAll('section[id]');
   const navLinks  = document.querySelectorAll('.nav-links a');
-  const bnavItems = document.querySelectorAll('.bnav-item');
 
   window.addEventListener('scroll', () => {
     let current = '';
@@ -1192,9 +1131,6 @@
     });
     navLinks.forEach(a => {
       a.style.color = a.getAttribute('href') === '#' + current ? 'var(--c-accent)' : '';
-    });
-    bnavItems.forEach(a => {
-      a.classList.toggle('active', a.dataset.section === current);
     });
   }, { passive: true });
 
