@@ -102,8 +102,6 @@
 
     <!-- PANEL 2: MANAGE EVENTS -->
     <div id="view-events" class="view-panel">
-      
-      <!-- THIS IS THE LIST WHERE YOU CAN DELETE EVENTS -->
       <div class="editor-panel">
         <h3 style="color: var(--c-accent2);">📋 Current Live Events</h3>
         <p style="color: var(--c-muted); font-size: 13px; margin-top: 8px;">These are the events currently showing on your main website. Click Delete to remove them.</p>
@@ -153,10 +151,9 @@
 
     <!-- PANEL 3: MANAGE PROJECTS -->
     <div id="view-projects" class="view-panel">
-      
-      <!-- THIS IS THE LIST WHERE YOU CAN DELETE PROJECTS -->
       <div class="editor-panel">
         <h3 style="color: var(--c-accent2);">📋 Current Live Projects</h3>
+        <p style="color: var(--c-muted); font-size: 13px; margin-top: 8px;">These are the projects currently showing on your portfolio. Click Delete to remove them.</p>
         <table id="table-projects">
           <!-- Populated by Javascript -->
         </table>
@@ -195,10 +192,9 @@
 
     <!-- PANEL 4: COMMITTEE LIST -->
     <div id="view-committee" class="view-panel">
-      
-      <!-- THIS IS THE LIST WHERE YOU CAN DELETE COMMITTEE MEMBERS -->
       <div class="editor-panel">
         <h3 style="color: var(--c-accent2);">📋 Current Committee Members</h3>
+        <p style="color: var(--c-muted); font-size: 13px; margin-top: 8px;">These are the active committee members showing on the main site. Click Delete to remove them.</p>
         <table id="table-committee">
           <!-- Populated by Javascript -->
         </table>
@@ -261,7 +257,7 @@
       const events = JSON.parse(localStorage.getItem('mystem_events')) || [];
       const evTable = document.getElementById('table-events');
       if(events.length === 0) {
-        evTable.innerHTML = '<tr><td style="text-align:center; color:var(--c-muted);">No events added yet. Your main website is empty.</td></tr>';
+        evTable.innerHTML = '<tr><td style="text-align:center; padding: 20px; color:var(--c-muted);">No events added yet. Your main website is empty.</td></tr>';
       } else {
         let html = '<tr><th>Title</th><th>Date</th><th>Type</th><th>Action</th></tr>';
         events.forEach((ev, idx) => {
@@ -275,7 +271,7 @@
       const projects = JSON.parse(localStorage.getItem('mystem_projects')) || [];
       const projTable = document.getElementById('table-projects');
       if(projects.length === 0) {
-        projTable.innerHTML = '<tr><td style="text-align:center; color:var(--c-muted);">No projects added yet.</td></tr>';
+        projTable.innerHTML = '<tr><td style="text-align:center; padding: 20px; color:var(--c-muted);">No projects added yet. Your main website showcase is empty.</td></tr>';
       } else {
         let html = '<tr><th>Project Name</th><th>Year</th><th>Badge</th><th>Action</th></tr>';
         projects.forEach((proj, idx) => {
@@ -289,7 +285,7 @@
       const committee = JSON.parse(localStorage.getItem('mystem_committee')) || [];
       const comTable = document.getElementById('table-committee');
       if(committee.length === 0) {
-        comTable.innerHTML = '<tr><td style="text-align:center; color:var(--c-muted);">No members added yet.</td></tr>';
+        comTable.innerHTML = '<tr><td style="text-align:center; padding: 20px; color:var(--c-muted);">No members added yet. Your main website team section is empty.</td></tr>';
       } else {
         let html = '<tr><th>Name</th><th>Role</th><th>Action</th></tr>';
         committee.forEach((com, idx) => {
