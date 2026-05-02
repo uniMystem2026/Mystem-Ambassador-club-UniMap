@@ -207,14 +207,35 @@
             <label>Full Name</label>
             <input type="text" id="comName" required>
           </div>
-          <div class="form-group">
-            <label>Role</label>
-            <input type="text" id="comRole" placeholder="e.g. President, Multimedia Exco" required>
+          
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+            <div class="form-group">
+              <label>Role</label>
+              <input type="text" id="comRole" placeholder="e.g. President, Multimedia Exco" required>
+            </div>
+            <div class="form-group">
+              <label>Avatar Icon / Emoji</label>
+              <input type="text" id="comIcon" placeholder="e.g. 👑, 💻, 🎯" required>
+            </div>
           </div>
-          <div class="form-group">
-            <label>Avatar Icon / Emoji</label>
-            <input type="text" id="comIcon" placeholder="e.g. 👑, 💻, 🎯" required>
+
+          <h4 style="margin: 10px 0 15px; color: var(--c-white); font-family: var(--font-head); font-size: 14px;">Social Links (Optional)</h4>
+          
+          <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px;">
+            <div class="form-group">
+              <label>Instagram Link</label>
+              <input type="text" id="comIg" placeholder="e.g. https://instagram.com/username">
+            </div>
+            <div class="form-group">
+              <label>LinkedIn Link</label>
+              <input type="text" id="comLi" placeholder="e.g. https://linkedin.com/in/username">
+            </div>
+            <div class="form-group">
+              <label>WhatsApp Number</label>
+              <input type="text" id="comWa" placeholder="e.g. 0123456789">
+            </div>
           </div>
+
           <button type="submit" class="btn">Add to Committee List</button>
           <div id="msg-com" class="success-msg">✅ Member added!</div>
         </form>
@@ -253,7 +274,6 @@
 
     /* --- RENDER ADMIN LISTS --- */
     function renderAdminTables() {
-      // 1. Events Table
       const events = JSON.parse(localStorage.getItem('mystem_events')) || [];
       const evTable = document.getElementById('table-events');
       if(events.length === 0) {
@@ -267,7 +287,6 @@
         evTable.innerHTML = html;
       }
 
-      // 2. Projects Table
       const projects = JSON.parse(localStorage.getItem('mystem_projects')) || [];
       const projTable = document.getElementById('table-projects');
       if(projects.length === 0) {
@@ -281,7 +300,6 @@
         projTable.innerHTML = html;
       }
 
-      // 3. Committee Table
       const committee = JSON.parse(localStorage.getItem('mystem_committee')) || [];
       const comTable = document.getElementById('table-committee');
       if(committee.length === 0) {
@@ -362,7 +380,10 @@
       const newMember = {
         name: document.getElementById('comName').value,
         role: document.getElementById('comRole').value,
-        icon: document.getElementById('comIcon').value
+        icon: document.getElementById('comIcon').value,
+        ig: document.getElementById('comIg').value,    // NEW IG DATA
+        li: document.getElementById('comLi').value,    // NEW LINKEDIN DATA
+        wa: document.getElementById('comWa').value     // NEW WHATSAPP DATA
       };
       saveToArray('mystem_committee', newMember, 'msg-com');
       this.reset();
