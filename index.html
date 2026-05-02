@@ -138,7 +138,6 @@
     .nav-logo {
       display: flex; align-items: center; gap: 12px;
     }
-    /* Logo updated CSS */
     .logo-text { font-family: var(--font-head); font-size: 15px; font-weight: 700; letter-spacing: .05em; }
     .logo-text span { display: block; font-size: 10px; font-weight: 400; color: var(--c-muted); letter-spacing: .12em; margin-top: 1px; }
     .nav-links { display: flex; align-items: center; gap: 32px; }
@@ -826,71 +825,11 @@
         <h2 class="section-title">Featured Projects</h2>
         <div class="divider"></div>
       </div>
-      <a href="#" class="btn btn-outline">View All →</a>
     </div>
-    <div class="projects-grid">
-
-      <div class="proj-card reveal">
-        <div class="proj-banner" style="background:linear-gradient(135deg,#041526,#0a3d62);">🌾</div>
-        <div class="proj-body">
-          <div class="proj-meta">
-            <span class="proj-badge green">Live</span>
-            <span class="proj-year">2024</span>
-          </div>
-          <h3 class="proj-title">AgrioSense — Smart Paddy Field Monitor</h3>
-          <p class="proj-desc">
-            A solar-powered IoT sensor network deployed across 3 paddy fields in Perlis, monitoring soil moisture,
-            pH, temperature, and water levels in real-time via a custom mobile dashboard. Reduced water usage by 28%.
-          </p>
-        </div>
-      </div>
-
-      <div class="proj-card reveal">
-        <div class="proj-banner" style="background:linear-gradient(135deg,#041526,#1a0a3d);">🤖</div>
-        <div class="proj-body">
-          <div class="proj-meta">
-            <span class="proj-badge">Award</span>
-            <span class="proj-year">2023</span>
-          </div>
-          <h3 class="proj-title">AutoSort — Industrial Vision Sorting Robot</h3>
-          <p class="proj-desc">
-            A computer vision–powered conveyor sorting system built for a local manufacturing SME.
-            Uses YOLOv8 on Raspberry Pi 5 to sort defective parts at 95.3% accuracy. Won Silver at PECIPTA 2023.
-          </p>
-        </div>
-      </div>
-
-      <div class="proj-card reveal">
-        <div class="proj-banner" style="background:linear-gradient(135deg,#041526,#0a3d2a);">♻️</div>
-        <div class="proj-body">
-          <div class="proj-meta">
-            <span class="proj-badge gold">National</span>
-            <span class="proj-year">2024</span>
-          </div>
-          <h3 class="proj-title">EcoTrack — Campus Carbon Footprint Dashboard</h3>
-          <p class="proj-desc">
-            A real-time web platform tracking energy consumption across UniMAP buildings,
-            calculating CO₂ emissions and gamifying sustainability challenges for students and staff.
-          </p>
-        </div>
-      </div>
-
-      <div class="proj-card reveal">
-        <div class="proj-banner" style="background:linear-gradient(135deg,#041526,#3d1a0a);">🦾</div>
-        <div class="proj-body">
-          <div class="proj-meta">
-            <span class="proj-badge">Research</span>
-            <span class="proj-year">2025</span>
-          </div>
-          <h3 class="proj-title">NeuroArm — EMG-Controlled Prosthetic Prototype</h3>
-          <p class="proj-desc">
-            A 3D-printed prosthetic arm prototype controlled by electromyography (EMG) signals from muscle
-            activity, developed in collaboration with UniMAP's Biomedical Engineering lab.
-          </p>
-        </div>
-      </div>
-
-    </div>
+    
+    <!-- Projects Grid is now EMPTY and waiting for Admin Dashboard inputs -->
+    <div class="projects-grid"></div>
+    
   </div>
 </section>
 
@@ -903,61 +842,11 @@
         <h2 class="section-title">Upcoming Events</h2>
         <div class="divider"></div>
       </div>
-      <a href="#" class="btn btn-outline">Full Calendar →</a>
     </div>
-    <div class="events-list">
-
-      <div class="event-item reveal">
-        <div class="event-date"><div class="event-day">15</div><div class="event-month">Jun 2025</div></div>
-        <div class="event-info">
-          <div class="event-type">Workshop</div>
-          <div class="event-title">Industry 4.0 Bootcamp: PLC &amp; SCADA Systems</div>
-          <div class="event-loc">📍 FKEE Lab, UniMAP Pauh Putra Campus</div>
-        </div>
-        <span class="event-status status-upcoming">Upcoming</span>
-      </div>
-
-      <div class="event-item reveal">
-        <div class="event-date"><div class="event-day">22</div><div class="event-month">Jun 2025</div></div>
-        <div class="event-info">
-          <div class="event-type">Outreach</div>
-          <div class="event-title">STEM Carnival @ SMK Kangar</div>
-          <div class="event-loc">📍 SMK Kangar, Perlis</div>
-        </div>
-        <span class="event-status status-open">Open</span>
-      </div>
-
-      <div class="event-item reveal">
-        <div class="event-date"><div class="event-day">05</div><div class="event-month">Jul 2025</div></div>
-        <div class="event-info">
-          <div class="event-type">Competition</div>
-          <div class="event-title">UniMAP Innovathon 2025 — Open Hackathon</div>
-          <div class="event-loc">📍 DKU, UniMAP Alam Pauh Campus</div>
-        </div>
-        <span class="event-status status-open">Open</span>
-      </div>
-
-      <div class="event-item reveal">
-        <div class="event-date"><div class="event-day">19</div><div class="event-month">Jul 2025</div></div>
-        <div class="event-info">
-          <div class="event-type">Talk</div>
-          <div class="event-title">Guest Lecture: AI in Malaysian Manufacturing</div>
-          <div class="event-loc">📍 DKA UniMAP + Online (Zoom)</div>
-        </div>
-        <span class="event-status status-upcoming">Upcoming</span>
-      </div>
-
-      <div class="event-item reveal">
-        <div class="event-date"><div class="event-day">10</div><div class="event-month">May 2025</div></div>
-        <div class="event-info">
-          <div class="event-type">Internal</div>
-          <div class="event-title">Annual General Meeting (AGM) 2025</div>
-          <div class="event-loc">📍 Meeting Room A, FKEE UniMAP</div>
-        </div>
-        <span class="event-status status-past">Completed</span>
-      </div>
-
-    </div>
+    
+    <!-- Events List is now EMPTY and waiting for Admin Dashboard inputs -->
+    <div class="events-list"></div>
+    
   </div>
 </section>
 
@@ -969,124 +858,10 @@
       <h2 class="section-title">Executive Committee 25/26</h2>
       <div class="divider" style="margin:20px auto 0;"></div>
     </div>
-    <div class="team-grid">
-
-      <!-- Executive Committee details populated from MY STEM ORGANISATION CHART 25/26 -->
-      <div class="team-card reveal">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#00c8ff22,#00c8ff44);">👑</div>
-        <div class="team-name">Anas Zuhairi Bin Zulkeffle</div>
-        <div class="team-role">President</div>
-      </div>
-
-      <div class="team-card reveal">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#00ff9f22,#00ff9f44);">⚡</div>
-        <div class="team-name">Nur Shazleen Binti Ardani</div>
-        <div class="team-role">Vice President</div>
-      </div>
-
-      <div class="team-card reveal">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#ffd16622,#ffd16644);">📋</div>
-        <div class="team-name">Muhammad Hannan Bin Rosli</div>
-        <div class="team-role">Secretary</div>
-      </div>
-      
-      <div class="team-card reveal">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#ffd16622,#ffd16644);">📝</div>
-        <div class="team-name">Nur Adleena Binti Ahmad Roshidi</div>
-        <div class="team-role">Vice Secretary</div>
-      </div>
-
-      <div class="team-card reveal">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#b48aff22,#b48aff44);">💰</div>
-        <div class="team-name">Praveen Sagaran</div>
-        <div class="team-role">Treasurer</div>
-      </div>
-
-      <div class="team-card reveal">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#ff8c6922,#ff8c6944);">💻</div>
-        <div class="team-name">Ahmad Izran Bin Mohd Alhalik</div>
-        <div class="team-role">Multimedia Exco</div>
-      </div>
-      
-      <div class="team-card reveal">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#ff8c6922,#ff8c6944);">💻</div>
-        <div class="team-name">Aisswarya A/P Kuganesan</div>
-        <div class="team-role">Multimedia Exco</div>
-      </div>
-      
-      <div class="team-card reveal">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#ff8c6922,#ff8c6944);">💻</div>
-        <div class="team-name">Siti Nurazalea Balqis Binti Zulkefli</div>
-        <div class="team-role">Multimedia Exco</div>
-      </div>
-      
-      <div class="team-card reveal">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#ff8c6922,#ff8c6944);">💻</div>
-        <div class="team-name">Muhammad Aqil Amani Bin Mohd Yusri</div>
-        <div class="team-role">Multimedia Exco</div>
-      </div>
-
-      <div class="team-card reveal">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#f7258522,#f7258544);">🎯</div>
-        <div class="team-name">Ummi Safiyyah Binti Mohamad Daud</div>
-        <div class="team-role">Activity Exco</div>
-      </div>
-      
-      <div class="team-card reveal">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#f7258522,#f7258544);">🎯</div>
-        <div class="team-name">Siti Maisarah Binti Abdul Ghani</div>
-        <div class="team-role">Activity Exco</div>
-      </div>
-      
-      <div class="team-card reveal">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#f7258522,#f7258544);">🎯</div>
-        <div class="team-name">Najwa Iman Tihani Binti Zulkarnain</div>
-        <div class="team-role">Activity Exco</div>
-      </div>
-
-      <div class="team-card reveal">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#f7258522,#f7258544);">🎯</div>
-        <div class="team-name">Nur Hanis Shafiya</div>
-        <div class="team-role">Activity Exco</div>
-      </div>
-
-      <div class="team-card reveal">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#00c8ff22,#00c8ff44);">🍕</div>
-        <div class="team-name">Sailambigay A/P Thirunyanam</div>
-        <div class="team-role">Food Exco</div>
-      </div>
-      
-      <div class="team-card reveal">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#00c8ff22,#00c8ff44);">🍕</div>
-        <div class="team-name">Thasyapriya A/P Sivakumar</div>
-        <div class="team-role">Food Exco</div>
-      </div>
-      
-      <div class="team-card reveal">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#00c8ff22,#00c8ff44);">🍕</div>
-        <div class="team-name">Muhammad Adam Danish Bin Muhammad Asrul Raflis</div>
-        <div class="team-role">Food Exco</div>
-      </div>
-
-      <div class="team-card reveal">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#00c8ff22,#00c8ff44);">🍕</div>
-        <div class="team-name">Nurul Sakinah Binti Hasrul Nizam</div>
-        <div class="team-role">Food Exco</div>
-      </div>
-
-      <div class="team-card reveal">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#00c8ff22,#00c8ff44);">🍕</div>
-        <div class="team-name">Aishah Binti Razak</div>
-        <div class="team-role">Food Exco</div>
-      </div>
-
-      <div class="team-card reveal">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#00c8ff22,#00c8ff44);">🍕</div>
-        <div class="team-name">Malini Chandran</div>
-        <div class="team-role">Food Exco</div>
-      </div>
-
-    </div>
+    
+    <!-- Team Grid is now EMPTY and waiting for Admin Dashboard inputs -->
+    <div class="team-grid"></div>
+    
   </div>
 </section>
 
@@ -1192,7 +967,6 @@
           </div>
         </div>
         <div class="social-bar">
-          <!-- Specific Social Media details populated from prompt -->
           <a href="https://www.facebook.com/share/1FqybMeai6/" target="_blank" class="social-link">📘 Facebook</a>
           <a href="https://www.instagram.com/mystem_unimap?igsh=am05NHRoYzUzMGFo" target="_blank" class="social-link">📸 Instagram</a>
           <a href="https://www.tiktok.com/@mystemunimap?_r=1&_t=ZS-95zUTvNnABw" target="_blank" class="social-link">🎵 TikTok</a>
@@ -1247,7 +1021,6 @@
           <li><a href="#join">Join Us</a></li>
           <li><a href="#contact">Contact</a></li>
           <li><a href="#">Gallery</a></li>
-          <!-- Admin Login Link inserted here -->
           <li><a href="admin.html" style="color: var(--c-accent);">Admin Login 🔒</a></li>
         </ul>
       </div>
@@ -1378,7 +1151,7 @@
             <div class="team-avatar" style="background:linear-gradient(135deg,#ffd16622,#ffd16644);">${member.icon}</div>
             <div class="team-name">${member.name}</div>
             <div class="team-role">${member.role}</div>
-            <div class="team-dept">Newly Added</div>
+            <div class="team-dept">MYSTEM UniMAP</div>
           </div>`;
         teamContainer.insertAdjacentHTML('afterbegin', html);
       });
