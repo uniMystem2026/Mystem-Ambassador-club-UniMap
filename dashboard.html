@@ -67,7 +67,7 @@
     <a class="nav-link" data-target="view-events">Manage Events</a>
     <a class="nav-link" data-target="view-projects">Manage Projects</a>
     <a class="nav-link" data-target="view-committee">Committee List</a>
-    <a href="index.html" class="nav-link logout">← Logout</a>
+    <a href="index.html" class="nav-link logout">← Back to Site</a>
   </div>
 
   <!-- MAIN CONTENT AREA -->
@@ -80,18 +80,19 @@
     <!-- PANEL 1: HOME HIGHLIGHT -->
     <div id="view-home" class="view-panel active">
       <div class="editor-panel">
+        <p style="color:var(--c-muted); margin-bottom:20px;">Edit the main landing page text here. If left completely blank, the site will use its default design.</p>
         <form id="highlightForm">
           <div class="form-group">
             <label>Highlight Badge (Text above title)</label>
-            <input type="text" id="badgeText" placeholder="e.g. Latest Announcement" value="Official STEM Ambassador Club · UniMAP">
+            <input type="text" id="badgeText" placeholder="e.g. Official STEM Ambassador Club · UniMAP">
           </div>
           <div class="form-group">
             <label>Main Headline</label>
-            <input type="text" id="headlineText" placeholder="Main Title" value="MYSTEM Ambassador Club">
+            <input type="text" id="headlineText" placeholder="e.g. MYSTEM Ambassador Club">
           </div>
           <div class="form-group">
             <label>Sub-Description</label>
-            <textarea id="subText" rows="4">Empowering the next generation of STEM leaders through innovation, automation, Industry 4.0 literacy, and community-driven outreach across Malaysia and beyond.</textarea>
+            <textarea id="subText" rows="4" placeholder="Enter short description here..."></textarea>
           </div>
           <button type="submit" class="btn">Update Front Page</button>
           <div id="msg-home" class="success-msg">✅ Main page updated successfully!</div>
@@ -101,8 +102,17 @@
 
     <!-- PANEL 2: MANAGE EVENTS -->
     <div id="view-events" class="view-panel">
+      
+      <!-- Event List Table Moved to TOP -->
       <div class="editor-panel">
-        <h3>Add New Event</h3><br>
+        <h3>Current Published Events</h3>
+        <table id="table-events">
+          <!-- Populated by Javascript -->
+        </table>
+      </div>
+
+      <div class="editor-panel">
+        <h3>+ Add New Event</h3><br>
         <form id="eventForm">
           <div class="form-group">
             <label>Event Title</label>
@@ -138,20 +148,21 @@
           <div id="msg-event" class="success-msg">✅ Event added to main page!</div>
         </form>
       </div>
-
-      <!-- NEW: Event List Table -->
-      <div class="editor-panel">
-        <h3>Current Published Events</h3>
-        <table id="table-events">
-          <!-- Populated by Javascript -->
-        </table>
-      </div>
     </div>
 
     <!-- PANEL 3: MANAGE PROJECTS -->
     <div id="view-projects" class="view-panel">
+      
+      <!-- Project List Table Moved to TOP -->
       <div class="editor-panel">
-        <h3>Add New Project Showcase</h3><br>
+        <h3>Current Published Projects</h3>
+        <table id="table-projects">
+          <!-- Populated by Javascript -->
+        </table>
+      </div>
+
+      <div class="editor-panel">
+        <h3>+ Add New Project Showcase</h3><br>
         <form id="projectForm">
           <div class="form-group">
             <label>Project Name</label>
@@ -179,20 +190,21 @@
           <div id="msg-project" class="success-msg">✅ Project added to portfolio!</div>
         </form>
       </div>
-
-      <!-- NEW: Project List Table -->
-      <div class="editor-panel">
-        <h3>Current Published Projects</h3>
-        <table id="table-projects">
-          <!-- Populated by Javascript -->
-        </table>
-      </div>
     </div>
 
     <!-- PANEL 4: COMMITTEE LIST -->
     <div id="view-committee" class="view-panel">
+      
+      <!-- Committee List Table Moved to TOP -->
       <div class="editor-panel">
-        <h3>Add Committee Member</h3><br>
+        <h3>Current Committee Members</h3>
+        <table id="table-committee">
+          <!-- Populated by Javascript -->
+        </table>
+      </div>
+
+      <div class="editor-panel">
+        <h3>+ Add Committee Member</h3><br>
         <form id="committeeForm">
           <div class="form-group">
             <label>Full Name</label>
@@ -209,14 +221,6 @@
           <button type="submit" class="btn">Add to Committee List</button>
           <div id="msg-com" class="success-msg">✅ Member added!</div>
         </form>
-      </div>
-
-      <!-- NEW: Committee List Table -->
-      <div class="editor-panel">
-        <h3>Current Committee Members</h3>
-        <table id="table-committee">
-          <!-- Populated by Javascript -->
-        </table>
       </div>
     </div>
 
@@ -239,13 +243,25 @@
       });
     });
 
-    /* --- RENDER ADMIN LISTS (NEW!) --- */
+    /* --- LOAD EXISTING HIGHLIGHT DATA --- */
+    // This runs automatically to fill the boxes with your current live text!
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedBadge = localStorage.getItem('mystem_badge');
+      const savedHead = localStorage.getItem('mystem_headline');
+      const savedDesc = localStorage.getItem('mystem_desc');
+
+      if(savedBadge) document.getElementById('badgeText').value = savedBadge;
+      if(savedHead) document.getElementById('headlineText').value = savedHead;
+      if(savedDesc) document.getElementById('subText').value = savedDesc;
+    });
+
+    /* --- RENDER ADMIN LISTS --- */
     function renderAdminTables() {
       // 1. Events Table
       const events = JSON.parse(localStorage.getItem('mystem_events')) || [];
       const evTable = document.getElementById('table-events');
       if(events.length === 0) {
-        evTable.innerHTML = '<tr><td style="text-align:center; color:var(--c-muted);">No events added yet.</td></tr>';
+        evTable.innerHTML = '<tr><td style="text-align:center; color:var(--c-muted);">No custom events added yet. Only default website events are visible.</td></tr>';
       } else {
         let html = '<tr><th>Title</th><th>Date</th><th>Type</th><th>Action</th></tr>';
         events.forEach((ev, idx) => {
@@ -259,7 +275,7 @@
       const projects = JSON.parse(localStorage.getItem('mystem_projects')) || [];
       const projTable = document.getElementById('table-projects');
       if(projects.length === 0) {
-        projTable.innerHTML = '<tr><td style="text-align:center; color:var(--c-muted);">No projects added yet.</td></tr>';
+        projTable.innerHTML = '<tr><td style="text-align:center; color:var(--c-muted);">No custom projects added yet.</td></tr>';
       } else {
         let html = '<tr><th>Project Name</th><th>Year</th><th>Badge</th><th>Action</th></tr>';
         projects.forEach((proj, idx) => {
@@ -273,7 +289,7 @@
       const committee = JSON.parse(localStorage.getItem('mystem_committee')) || [];
       const comTable = document.getElementById('table-committee');
       if(committee.length === 0) {
-        comTable.innerHTML = '<tr><td style="text-align:center; color:var(--c-muted);">No committee members added yet.</td></tr>';
+        comTable.innerHTML = '<tr><td style="text-align:center; color:var(--c-muted);">No custom members added yet.</td></tr>';
       } else {
         let html = '<tr><th>Name</th><th>Role</th><th>Action</th></tr>';
         committee.forEach((com, idx) => {
@@ -284,13 +300,13 @@
       }
     }
 
-    /* --- DELETE ITEM LOGIC (NEW!) --- */
+    /* --- DELETE LOGIC --- */
     window.deleteItem = function(storageKey, index) {
-      if(confirm("Are you sure you want to delete this item?")) {
+      if(confirm("Are you sure you want to delete this item? It will be instantly removed from the main site.")) {
         let items = JSON.parse(localStorage.getItem(storageKey)) || [];
-        items.splice(index, 1); // Remove the item
-        localStorage.setItem(storageKey, JSON.stringify(items)); // Save the updated list
-        renderAdminTables(); // Refresh the table
+        items.splice(index, 1); 
+        localStorage.setItem(storageKey, JSON.stringify(items)); 
+        renderAdminTables(); 
       }
     };
 
@@ -304,7 +320,6 @@
       msg.style.display = 'block';
       setTimeout(() => msg.style.display = 'none', 3000);
       
-      // Instantly refresh the tables after saving!
       renderAdminTables();
     }
 
@@ -357,9 +372,8 @@
       this.reset();
     });
 
-    // Run the table generator as soon as the dashboard opens
+    // Run table generator on load
     renderAdminTables();
-
   </script>
 </body>
 </html>
