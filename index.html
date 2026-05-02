@@ -396,7 +396,7 @@
     }
     .social-btn:hover { border-color: var(--c-accent); background: #00c8ff18; }
 
-    /* ─── NEW: COMMUNITY EXPERIENCES WALL ───────────── */
+    /* ─── COMMUNITY EXPERIENCES WALL ───────────── */
     .exp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
     .exp-card {
       background: var(--c-panel); border: 1px solid var(--c-border);
@@ -408,7 +408,7 @@
     .exp-text { font-size: 14px; color: var(--c-text); line-height: 1.7; margin-bottom: 16px; font-style: italic; }
     .exp-author { font-family: var(--font-head); font-size: 14px; font-weight: 700; color: var(--c-accent2); text-transform: uppercase; letter-spacing: .05em; }
 
-    /* ─── NEW: SHARE EXPERIENCE FORM ────────────────── */
+    /* ─── SHARE EXPERIENCE FORM ────────────────── */
     #share { background: var(--c-surface); }
     .share-inner {
       background: linear-gradient(135deg, var(--c-panel) 0%, #0a2840 100%);
@@ -870,7 +870,6 @@
 <section id="experiences-wall" class="section" style="background:var(--c-bg);">
   <div class="container z1">
     
-    <!-- UPDATED: Header now has the View All Button! -->
     <div class="projects-header reveal"> 
       <div>
         <span class="tag">Stories</span>
@@ -976,15 +975,18 @@
             <div class="map-pin-label">UniMAP · Arau, Perlis</div>
           </div>
         </div>
+        
+        <!-- NEW QUICK MESSAGE FORM -->
         <div style="margin-top:24px;background:var(--c-panel);border:1px solid var(--c-border);border-radius:16px;padding:24px;">
           <div style="font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--c-white);margin-bottom:12px;">
             Quick Message
           </div>
-          <input type="text"     class="form-input" placeholder="Your Name"    style="margin-bottom:10px;" />
-          <input type="email"    class="form-input" placeholder="Email"        style="margin-bottom:10px;" />
-          <textarea class="form-input" rows="4" placeholder="Your message..."  style="resize:vertical;margin-bottom:12px;"></textarea>
+          <input type="text" id="contactName" class="form-input" placeholder="Your Name" style="margin-bottom:10px;" required />
+          <input type="email" id="contactEmail" class="form-input" placeholder="Email" style="margin-bottom:10px;" required />
+          <textarea id="contactMessage" class="form-input" rows="4" placeholder="Your message..." style="resize:vertical;margin-bottom:12px;" required></textarea>
           <button class="btn btn-green" style="width:100%;justify-content:center;" onclick="handleContact()">Send Message →</button>
         </div>
+        
       </div>
     </div>
   </div>
@@ -1060,8 +1062,22 @@
   function closeMobileMenu() { document.getElementById('mobileMenu').classList.remove('open'); }
   document.getElementById('mobileClose').addEventListener('click', closeMobileMenu);
 
+  /* NEW MAILTO SCRIPT */
   function handleContact() {
-    alert('📨 Message sent! We will reply to your email shortly. Thank you!');
+    const name = document.getElementById('contactName').value;
+    const email = document.getElementById('contactEmail').value;
+    const message = document.getElementById('contactMessage').value;
+
+    if (!name || !email || !message) {
+      alert('Please fill in all fields before sending your message.');
+      return;
+    }
+
+    const targetEmail = 'mystemambassador@unimap.edu.my';
+    const subject = encodeURIComponent(`Website Inquiry from ${name}`);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+
+    window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
   }
 
   /* Active nav link on scroll */
@@ -1128,7 +1144,7 @@
      DYNAMIC CONTENT LOADER (Reads from Admin & Forms)
      ======================================================= */
   
-  // UPDATED: Only loads the TOP 3 most recent stories!
+  // Only loads the TOP 3 most recent stories!
   function loadExperiences() {
     const experiences = JSON.parse(localStorage.getItem('mystem_experiences')) || [];
     const container = document.getElementById('experiencesList');
@@ -1139,7 +1155,6 @@
     }
     
     let html = '';
-    // .slice(0, 3) makes sure ONLY the 3 newest ones show on the home page!
     const recentExperiences = experiences.slice(0, 3);
     
     recentExperiences.forEach(exp => {
