@@ -49,6 +49,13 @@
     .btn { padding: 14px 28px; background: var(--c-accent); color: var(--c-bg); font-family: var(--font-head); font-weight: 700; text-transform: uppercase; border-radius: 8px; border: none; cursor: pointer; transition: 0.3s; box-shadow: 0 0 15px #00c8ff88; display: inline-block; }
     .btn:hover { transform: translateY(-2px); box-shadow: 0 0 25px #00c8ffcc; }
     .success-msg { display: none; margin-top: 15px; color: var(--c-accent2); font-weight: 600; font-size: 14px; }
+
+    /* Data Tables */
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { text-align: left; padding: 14px 12px; border-bottom: 1px solid var(--c-border); font-size: 14px; }
+    th { color: var(--c-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; }
+    .action-btn { color: #ff4d4d; background: #ff4d4d15; border: 1px solid #ff4d4d44; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 11px; font-family: var(--font-head); transition: 0.2s; text-transform: uppercase; letter-spacing: .05em;}
+    .action-btn:hover { background: #ff4d4d; color: var(--c-white); }
   </style>
 </head>
 <body>
@@ -131,6 +138,14 @@
           <div id="msg-event" class="success-msg">✅ Event added to main page!</div>
         </form>
       </div>
+
+      <!-- NEW: Event List Table -->
+      <div class="editor-panel">
+        <h3>Current Published Events</h3>
+        <table id="table-events">
+          <!-- Populated by Javascript -->
+        </table>
+      </div>
     </div>
 
     <!-- PANEL 3: MANAGE PROJECTS -->
@@ -164,6 +179,14 @@
           <div id="msg-project" class="success-msg">✅ Project added to portfolio!</div>
         </form>
       </div>
+
+      <!-- NEW: Project List Table -->
+      <div class="editor-panel">
+        <h3>Current Published Projects</h3>
+        <table id="table-projects">
+          <!-- Populated by Javascript -->
+        </table>
+      </div>
     </div>
 
     <!-- PANEL 4: COMMITTEE LIST -->
@@ -187,6 +210,14 @@
           <div id="msg-com" class="success-msg">✅ Member added!</div>
         </form>
       </div>
+
+      <!-- NEW: Committee List Table -->
+      <div class="editor-panel">
+        <h3>Current Committee Members</h3>
+        <table id="table-committee">
+          <!-- Populated by Javascript -->
+        </table>
+      </div>
     </div>
 
   </div>
@@ -208,36 +239,86 @@
       });
     });
 
+    /* --- RENDER ADMIN LISTS (NEW!) --- */
+    function renderAdminTables() {
+      // 1. Events Table
+      const events = JSON.parse(localStorage.getItem('mystem_events')) || [];
+      const evTable = document.getElementById('table-events');
+      if(events.length === 0) {
+        evTable.innerHTML = '<tr><td style="text-align:center; color:var(--c-muted);">No events added yet.</td></tr>';
+      } else {
+        let html = '<tr><th>Title</th><th>Date</th><th>Type</th><th>Action</th></tr>';
+        events.forEach((ev, idx) => {
+          html += `<tr><td>${ev.title}</td><td>${ev.day} ${ev.month}</td><td>${ev.type}</td>
+                   <td><button class="action-btn" onclick="deleteItem('mystem_events', ${idx})">Delete</button></td></tr>`;
+        });
+        evTable.innerHTML = html;
+      }
+
+      // 2. Projects Table
+      const projects = JSON.parse(localStorage.getItem('mystem_projects')) || [];
+      const projTable = document.getElementById('table-projects');
+      if(projects.length === 0) {
+        projTable.innerHTML = '<tr><td style="text-align:center; color:var(--c-muted);">No projects added yet.</td></tr>';
+      } else {
+        let html = '<tr><th>Project Name</th><th>Year</th><th>Badge</th><th>Action</th></tr>';
+        projects.forEach((proj, idx) => {
+          html += `<tr><td>${proj.title}</td><td>${proj.year}</td><td>${proj.badge}</td>
+                   <td><button class="action-btn" onclick="deleteItem('mystem_projects', ${idx})">Delete</button></td></tr>`;
+        });
+        projTable.innerHTML = html;
+      }
+
+      // 3. Committee Table
+      const committee = JSON.parse(localStorage.getItem('mystem_committee')) || [];
+      const comTable = document.getElementById('table-committee');
+      if(committee.length === 0) {
+        comTable.innerHTML = '<tr><td style="text-align:center; color:var(--c-muted);">No committee members added yet.</td></tr>';
+      } else {
+        let html = '<tr><th>Name</th><th>Role</th><th>Action</th></tr>';
+        committee.forEach((com, idx) => {
+          html += `<tr><td>${com.name}</td><td>${com.role}</td>
+                   <td><button class="action-btn" onclick="deleteItem('mystem_committee', ${idx})">Delete</button></td></tr>`;
+        });
+        comTable.innerHTML = html;
+      }
+    }
+
+    /* --- DELETE ITEM LOGIC (NEW!) --- */
+    window.deleteItem = function(storageKey, index) {
+      if(confirm("Are you sure you want to delete this item?")) {
+        let items = JSON.parse(localStorage.getItem(storageKey)) || [];
+        items.splice(index, 1); // Remove the item
+        localStorage.setItem(storageKey, JSON.stringify(items)); // Save the updated list
+        renderAdminTables(); // Refresh the table
+      }
+    };
+
     /* --- SAVE DATA HELPER FUNCTION --- */
     function saveToArray(storageKey, newItem, msgId) {
-      // Get existing items or create empty array
       let items = JSON.parse(localStorage.getItem(storageKey)) || [];
-      // Add the new item to the top of the list
       items.unshift(newItem); 
-      // Save back to local storage
       localStorage.setItem(storageKey, JSON.stringify(items));
       
-      // Show success message
       const msg = document.getElementById(msgId);
       msg.style.display = 'block';
       setTimeout(() => msg.style.display = 'none', 3000);
+      
+      // Instantly refresh the tables after saving!
+      renderAdminTables();
     }
 
     /* --- FORM SUBMITS --- */
-    
-    // 1. Home Highlight
     document.getElementById('highlightForm').addEventListener('submit', function(e) {
       e.preventDefault();
       localStorage.setItem('mystem_badge', document.getElementById('badgeText').value);
       localStorage.setItem('mystem_headline', document.getElementById('headlineText').value);
       localStorage.setItem('mystem_desc', document.getElementById('subText').value);
-      
       const msg = document.getElementById('msg-home');
       msg.style.display = 'block';
       setTimeout(() => msg.style.display = 'none', 3000);
     });
 
-    // 2. Add Event
     document.getElementById('eventForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const newEvent = {
@@ -249,10 +330,9 @@
         status: document.getElementById('evStatus').value
       };
       saveToArray('mystem_events', newEvent, 'msg-event');
-      this.reset(); // clear form
+      this.reset();
     });
 
-    // 3. Add Project
     document.getElementById('projectForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const newProj = {
@@ -266,7 +346,6 @@
       this.reset();
     });
 
-    // 4. Add Committee
     document.getElementById('committeeForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const newMember = {
@@ -277,6 +356,9 @@
       saveToArray('mystem_committee', newMember, 'msg-com');
       this.reset();
     });
+
+    // Run the table generator as soon as the dashboard opens
+    renderAdminTables();
 
   </script>
 </body>
