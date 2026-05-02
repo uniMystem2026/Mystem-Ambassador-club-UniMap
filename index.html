@@ -1192,6 +1192,16 @@
 
   /* ── Load all dynamic content on DOM ready ── */
   window.addEventListener('DOMContentLoaded', () => {
+    // Debug: log all localStorage keys so you can verify the admin key name
+    console.log('[MYSTEM] localStorage keys:', Object.keys(localStorage));
+    Object.keys(localStorage).forEach(k => {
+      try {
+        const val = localStorage.getItem(k);
+        const parsed = JSON.parse(val);
+        if (Array.isArray(parsed)) console.log(`[MYSTEM] "${k}" → array of ${parsed.length} items`, parsed[0]);
+      } catch(e) {}
+    });
+
 
     // Hero badge/headline/desc overrides from admin
     const savedBadge = localStorage.getItem('mystem_badge');
@@ -1243,10 +1253,22 @@
       });
     }
 
-    // Committee
-    const committee = JSON.parse(localStorage.getItem('mystem_committee'));
+    // Committee — try known keys first, then scan all localStorage for committee-like arrays
+    let committeeRaw = localStorage.getItem('mystem_committee') || localStorage.getItem('committee');
+    if (!committeeRaw) {
+      // Scan every key to find one that looks like a committee array
+      Object.keys(localStorage).forEach(k => {
+        if (!committeeRaw && (k.toLowerCase().includes('committee') || k.toLowerCase().includes('team') || k.toLowerCase().includes('member'))) {
+          committeeRaw = localStorage.getItem(k);
+        }
+      });
+    }
+    let committee = [];
+    try { committee = committeeRaw ? JSON.parse(committeeRaw) : []; } catch(e) { committee = []; }
+
+    const teamContainer = document.querySelector('.team-grid');
     if (committee && committee.length > 0) {
-      const teamContainer = document.querySelector('.team-grid');
+      let allHtml = '';
       committee.forEach(member => {
         let socialHtml = '';
         if (member.ig || member.li || member.wa) {
@@ -1263,7 +1285,7 @@
         let avatarContent = member.photo && member.photo.trim() !== ''
           ? `<img src="${member.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" alt="${member.name}">`
           : (member.icon || '👤');
-        const html = `
+        allHtml += `
           <div class="team-card reveal visible" style="border-color:var(--c-gold);">
             <div class="team-avatar" style="background:linear-gradient(135deg,#ffd16622,#ffd16644);padding:0;">${avatarContent}</div>
             <div class="team-name">${member.name}</div>
@@ -1271,8 +1293,10 @@
             <div class="team-dept">MYSTEM UniMAP</div>
             ${socialHtml}
           </div>`;
-        teamContainer.insertAdjacentHTML('afterbegin', html);
       });
+      teamContainer.innerHTML = allHtml;
+    } else {
+      teamContainer.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:var(--c-muted);padding:40px;border:1px dashed var(--c-border);border-radius:16px;">Executive committee will appear here once added via the Admin Dashboard.</p>`;
     }
 
     // Experiences wall
