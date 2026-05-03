@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M² Admin - Dashboard</title>
     
-    <!-- Your Browser Tab Logo -->
     <link rel="icon" type="image/png" href="WhatsApp_Image_2024-12-02_at_15.29.32-removebg-preview.png">
 
     <style>
@@ -74,278 +73,80 @@
             display: block; 
         }
 
-        .nav-item:hover {
-            color: var(--accent-cyan);
-        }
+        .nav-item:hover { color: var(--accent-cyan); }
+        .nav-item.active { background-color: var(--sidebar-active-bg); color: var(--accent-cyan); }
 
-        .nav-item.active {
-            background-color: var(--sidebar-active-bg);
-            color: var(--accent-cyan);
-        }
-
-        .nav-footer {
-            margin-top: auto;
-            padding: 0 15px;
-        }
+        .nav-footer { margin-top: auto; padding: 0 15px; }
 
         .btn-back {
-            display: block;
-            padding: 12px 20px;
-            color: var(--accent-red);
-            text-decoration: none;
-            font-size: 14px;
-            border: 1px solid rgba(255, 76, 76, 0.2);
-            border-radius: 8px;
-            text-align: left;
-            transition: background 0.3s;
-            cursor: pointer;
-            background: transparent;
-            width: 100%;
+            display: block; padding: 12px 20px; color: var(--accent-red);
+            text-decoration: none; font-size: 14px; border: 1px solid rgba(255, 76, 76, 0.2);
+            border-radius: 8px; text-align: left; transition: background 0.3s;
+            cursor: pointer; background: transparent; width: 100%;
         }
-
-        .btn-back:hover {
-            background: rgba(255, 76, 76, 0.1);
-        }
+        .btn-back:hover { background: rgba(255, 76, 76, 0.1); }
 
         /* --- Main Content Styles --- */
-        .main-content {
-            flex: 1;
-            padding: 30px 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 15px;
-            margin-bottom: 10px;
-        }
-
-        .header h1 {
-            font-size: 24px;
-            color: var(--text-main);
-            letter-spacing: 1px;
-        }
-
-        .user-info {
-            font-size: 14px;
-            color: var(--text-muted);
-        }
+        .main-content { flex: 1; padding: 30px 40px; display: flex; flex-direction: column; gap: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 10px; }
+        .header h1 { font-size: 24px; color: var(--text-main); letter-spacing: 1px; }
+        .user-info { font-size: 14px; color: var(--text-muted); }
 
         /* --- Section Switching Logic --- */
-        .content-section {
-            display: none; 
-            animation: fadeIn 0.3s ease;
-        }
-
-        .content-section.active {
-            display: block; 
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .content-section { display: none; animation: fadeIn 0.3s ease; }
+        .content-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- Card Styles --- */
-        .card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 20px;
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .card-header h2 {
-            font-size: 16px;
-            color: var(--accent-cyan);
-            font-weight: 600;
-        }
-
-        .card-header.white-text h2 {
-            color: var(--text-main);
-        }
+        .card { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 25px; margin-bottom: 20px; }
+        .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .card-header h2 { font-size: 16px; color: var(--accent-cyan); font-weight: 600; }
+        .card-header.white-text h2 { color: var(--text-main); }
 
         /* --- Table Styles --- */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; font-size: 11px; color: var(--text-muted); text-transform: uppercase; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); font-weight: 600; letter-spacing: 0.5px; }
+        td { padding: 15px 0; font-size: 13px; color: var(--text-main); border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
 
-        th {
-            text-align: left;
-            font-size: 11px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
-            font-weight: 600;
-            letter-spacing: 0.5px;
+        .member-photo, .project-thumb {
+            width: 35px; height: 35px; border-radius: 4px;
+            background-color: var(--bg-input); border: 1px solid var(--accent-cyan); display: inline-block;
         }
-
-        td {
-            padding: 15px 0;
-            font-size: 13px;
-            color: var(--text-main);
-            border-bottom: 1px solid var(--border-color);
-            vertical-align: middle;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        .member-photo {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            background-color: var(--bg-input);
-            border: 1px solid var(--accent-cyan);
-            display: inline-block;
-        }
+        .member-photo { border-radius: 50%; } /* Circles for people */
 
         .btn-delete {
-            background: transparent;
-            color: var(--accent-red);
-            border: 1px solid rgba(255, 76, 76, 0.4);
-            padding: 6px 15px;
-            border-radius: 4px;
-            font-size: 11px;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: all 0.2s;
+            background: transparent; color: var(--accent-red); border: 1px solid rgba(255, 76, 76, 0.4);
+            padding: 6px 15px; border-radius: 4px; font-size: 11px; cursor: pointer; text-transform: uppercase; transition: all 0.2s;
         }
-
-        .btn-delete:hover {
-            background: rgba(255, 76, 76, 0.1);
-        }
+        .btn-delete:hover { background: rgba(255, 76, 76, 0.1); }
 
         .btn-edit {
-            background: transparent;
-            color: var(--accent-cyan);
-            border: 1px solid rgba(0, 210, 255, 0.4);
-            padding: 6px 15px;
-            border-radius: 4px;
-            font-size: 11px;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: all 0.2s;
-            margin-right: 5px;
+            background: transparent; color: var(--accent-cyan); border: 1px solid rgba(0, 210, 255, 0.4);
+            padding: 6px 15px; border-radius: 4px; font-size: 11px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; margin-right: 5px;
         }
-
-        .btn-edit:hover {
-            background: rgba(0, 210, 255, 0.1);
-        }
+        .btn-edit:hover { background: rgba(0, 210, 255, 0.1); }
 
         /* --- Form Styles --- */
-        .form-group {
-            margin-bottom: 20px;
+        .form-group { margin-bottom: 20px; }
+        .form-row { display: flex; gap: 20px; margin-bottom: 20px; }
+        .form-col { flex: 1; }
+        label { display: block; font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; font-weight: 600; letter-spacing: 0.5px; }
+        input[type="text"], input[type="file"], select {
+            width: 100%; background-color: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-main);
+            padding: 12px 15px; border-radius: 6px; font-size: 13px; outline: none; transition: border-color 0.2s;
         }
-
-        .form-row {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
+        input[type="text"]:focus, select:focus { border-color: var(--accent-cyan); }
+        .file-upload-wrapper { background-color: var(--bg-input); border: 1px dashed var(--border-color); padding: 8px; border-radius: 6px; display: flex; align-items: center; }
+        input[type="file"] { border: none; padding: 0; background: transparent; color: var(--text-muted); }
+        input[type="file"]::file-selector-button { background-color: #e0e0e0; color: #000; border: none; padding: 6px 12px; border-radius: 4px; margin-right: 15px; cursor: pointer; font-size: 12px; font-weight: 500; }
+        
+        .btn-submit, .btn-add-new {
+            background-color: var(--accent-cyan); color: #000000; border: none; padding: 12px 25px; border-radius: 6px;
+            font-size: 12px; font-weight: 700; cursor: pointer; text-transform: uppercase; margin-top: 10px; transition: background-color 0.2s;
         }
-
-        .form-col {
-            flex: 1;
-        }
-
-        label {
-            display: block;
-            font-size: 11px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        input[type="text"], 
-        input[type="file"] {
-            width: 100%;
-            background-color: var(--bg-input);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 12px 15px;
-            border-radius: 6px;
-            font-size: 13px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        input[type="text"]:focus {
-            border-color: var(--accent-cyan);
-        }
-
-        input::placeholder {
-            color: #3a4b61;
-        }
-
-        .file-upload-wrapper {
-            background-color: var(--bg-input);
-            border: 1px dashed var(--border-color);
-            padding: 8px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-        }
-
-        input[type="file"] {
-            border: none;
-            padding: 0;
-            background: transparent;
-            color: var(--text-muted);
-        }
-
-        input[type="file"]::file-selector-button {
-            background-color: #e0e0e0;
-            color: #000;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            margin-right: 15px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .section-title {
-            font-size: 14px;
-            color: var(--text-main);
-            margin: 25px 0 15px 0;
-            font-weight: 600;
-        }
-
-        .btn-submit {
-            background-color: var(--accent-cyan);
-            color: #000000;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            text-transform: uppercase;
-            margin-top: 10px;
-            transition: background-color 0.2s;
-        }
-
-        .btn-submit:hover {
-            background-color: var(--accent-cyan-hover);
-        }
+        .btn-submit:hover, .btn-add-new:hover { background-color: var(--accent-cyan-hover); }
+        .btn-add-new { float: right; margin-top: 0; }
     </style>
 </head>
 <body>
@@ -354,10 +155,10 @@
     <aside class="sidebar">
         <div class="logo">M² ADMIN</div>
         <div class="nav-menu">
-            <a href="#" class="nav-item" data-target="home-highlight">Home Highlight</a>
+            <a href="#" class="nav-item active" data-target="home-highlight">Home Highlight</a>
             <a href="#" class="nav-item" data-target="manage-events">Manage Events</a>
             <a href="#" class="nav-item" data-target="manage-projects">Manage Projects</a>
-            <a href="#" class="nav-item active" data-target="committee-list">Committee List</a>
+            <a href="#" class="nav-item" data-target="committee-list">Committee List</a>
             <a href="#" class="nav-item" data-target="community-stories">Community Stories</a>
             <a href="stem-games.html" class="nav-item">STEM Education Games</a>
         </div>
@@ -369,24 +170,124 @@
     <!-- Main Content -->
     <main class="main-content">
         <header class="header">
-            <h1 id="page-title">Committee List</h1>
+            <h1 id="page-title">Home Highlight</h1>
             <div class="user-info">Welcome, Executive Admin</div>
         </header>
 
-        <!-- Placeholder Sections -->
-        <section id="home-highlight" class="content-section">
-            <div class="card"><div class="card-header white-text"><h2>Home Highlight Details</h2></div></div>
-        </section>
-        <section id="manage-events" class="content-section">
-            <div class="card"><div class="card-header white-text"><h2>Manage Your Events</h2></div></div>
-        </section>
-        <section id="manage-projects" class="content-section">
-            <div class="card"><div class="card-header white-text"><h2>Project Dashboard</h2></div></div>
+        <!-- 1. HOME HIGHLIGHT SECTION -->
+        <section id="home-highlight" class="content-section active">
+            <div class="card">
+                <div class="card-header">
+                    <span>🏠</span>
+                    <h2>Manage Home Highlights</h2>
+                    <button class="btn-add-new" style="margin-left: auto;">+ Add Highlight</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 250px;">HEADLINE</th>
+                            <th>SUBTITLE</th>
+                            <th style="text-align: right; width: 150px;">ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: bold; color: var(--accent-cyan);">MYSTEM Ambassador Club</td>
+                            <td style="color: var(--text-muted);">Empowering the next generation of STEM leaders...</td>
+                            <td style="text-align: right;">
+                                <button class="btn-edit">EDIT</button>
+                                <button class="btn-delete">DELETE</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
 
-        <!-- Committee List View -->
-        <section id="committee-list" class="content-section active">
-            <!-- Current Members Table Card -->
+        <!-- 2. MANAGE EVENTS SECTION -->
+        <section id="manage-events" class="content-section">
+            <div class="card">
+                <div class="card-header">
+                    <span>📅</span>
+                    <h2>Manage Upcoming Events</h2>
+                    <button class="btn-add-new" style="margin-left: auto;">+ Add Event</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 120px;">DATE</th>
+                            <th>EVENT NAME</th>
+                            <th>STATUS</th>
+                            <th style="text-align: right; width: 150px;">ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="color: var(--accent-cyan);">24 AUG</td>
+                            <td>STEM School Outreach</td>
+                            <td><span style="background: rgba(0,255,159,0.1); color: var(--accent-cyan); padding: 4px 10px; border-radius: 20px; font-size: 10px; border: 1px solid var(--accent-cyan);">UPCOMING</span></td>
+                            <td style="text-align: right;">
+                                <button class="btn-edit">EDIT</button>
+                                <button class="btn-delete">DELETE</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="color: var(--text-muted);">12 JUL</td>
+                            <td>Robotics Lab Session</td>
+                            <td><span style="background: rgba(255,255,255,0.05); color: var(--text-muted); padding: 4px 10px; border-radius: 20px; font-size: 10px; border: 1px solid var(--border-color);">COMPLETED</span></td>
+                            <td style="text-align: right;">
+                                <button class="btn-edit">EDIT</button>
+                                <button class="btn-delete">DELETE</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 3. MANAGE PROJECTS SECTION -->
+        <section id="manage-projects" class="content-section">
+            <div class="card">
+                <div class="card-header">
+                    <span>🚀</span>
+                    <h2>Manage Featured Projects</h2>
+                    <button class="btn-add-new" style="margin-left: auto;">+ Add Project</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 80px;">IMAGE</th>
+                            <th>PROJECT TITLE</th>
+                            <th>CATEGORY</th>
+                            <th style="text-align: right; width: 150px;">ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><div class="project-thumb"></div></td>
+                            <td>Autonomous Drone</td>
+                            <td style="color: var(--text-muted);">Robotics</td>
+                            <td style="text-align: right;">
+                                <button class="btn-edit">EDIT</button>
+                                <button class="btn-delete">DELETE</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><div class="project-thumb"></div></td>
+                            <td>Smart AgriTech IoT</td>
+                            <td style="color: var(--text-muted);">Industry 4.0</td>
+                            <td style="text-align: right;">
+                                <button class="btn-edit">EDIT</button>
+                                <button class="btn-delete">DELETE</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 4. COMMITTEE LIST SECTION -->
+        <section id="committee-list" class="content-section">
             <div class="card">
                 <div class="card-header">
                     <span>📋</span>
@@ -398,18 +299,16 @@
                             <th style="width: 80px;">PHOTO</th>
                             <th>NAME</th>
                             <th>ROLE</th>
-                            <th style="text-align: right;">ACTION</th>
+                            <th style="text-align: right; width: 150px;">ACTION</th>
                         </tr>
                     </thead>
                     <tbody id="member-table-body">
-                        <!-- Members will be added here -->
                         <tr>
-                            <td>
-                                <div class="member-photo"></div>
-                            </td>
+                            <td><div class="member-photo"></div></td>
                             <td>ANAS ZUHAIRI BIN ZULLKEFFLE</td>
                             <td>PRESIDENT</td>
                             <td style="text-align: right;">
+                                <button class="btn-edit">EDIT</button>
                                 <button class="btn-delete">DELETE</button>
                             </td>
                         </tr>
@@ -422,13 +321,11 @@
                 <div class="card-header white-text">
                     <h2>+ Add Committee Member</h2>
                 </div>
-                
                 <form id="add-member-form">
                     <div class="form-group">
                         <label>FULL NAME</label>
                         <input type="text" id="input-name" placeholder="Enter full name">
                     </div>
-
                     <div class="form-row">
                         <div class="form-col">
                             <label>ROLE</label>
@@ -441,30 +338,18 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="section-title">Social Links (Optional)</div>
-                    
                     <div class="form-row" style="margin-bottom: 10px;">
-                        <div class="form-col">
-                            <label>INSTAGRAM LINK</label>
-                            <input type="text" id="input-ig">
-                        </div>
-                        <div class="form-col">
-                            <label>LINKEDIN LINK</label>
-                            <input type="text" id="input-linkedin">
-                        </div>
-                        <div class="form-col">
-                            <label>WHATSAPP NUMBER</label>
-                            <input type="text" id="input-whatsapp">
-                        </div>
+                        <div class="form-col"><label>INSTAGRAM LINK</label><input type="text" id="input-ig"></div>
+                        <div class="form-col"><label>LINKEDIN LINK</label><input type="text" id="input-linkedin"></div>
+                        <div class="form-col"><label>WHATSAPP NUMBER</label><input type="text" id="input-whatsapp"></div>
                     </div>
-
                     <button type="button" class="btn-submit" id="btn-add-member">ADD TO COMMITTEE LIST</button>
                 </form>
             </div>
         </section>
 
-        <!-- Community Stories Admin View -->
+        <!-- 5. COMMUNITY STORIES SECTION -->
         <section id="community-stories" class="content-section">
             <div class="card">
                 <div class="card-header">
@@ -475,14 +360,13 @@
                     <thead>
                         <tr>
                             <th style="width: 200px;">AUTHOR</th>
-                            <th style="width: 200px;">SOURCE</th>
+                            <th style="width: 150px;">SOURCE</th>
                             <th>STORY SNIPPET</th>
                             <th style="text-align: right; width: 150px;">ACTION</th>
                         </tr>
                     </thead>
-                    <!-- The empty table body where stories will dynamically load -->
                     <tbody id="story-table-body">
-                        
+                        <!-- Dynamic Stories load here -->
                     </tbody>
                 </table>
             </div>
@@ -499,7 +383,6 @@
 
         navLinks.forEach(link => {
             link.addEventListener('click', function(e) {
-                // If the link has an external href (like stem-games.html), let the browser load it!
                 const href = this.getAttribute('href');
                 if (href && href !== '#' && href !== 'dashboard.html') {
                     return; 
@@ -521,7 +404,23 @@
             });
         });
 
-        // --- 2. ADD & DELETE MEMBER LOGIC ---
+        // --- 2. GLOBAL DELETE/EDIT LOGIC FOR ALL TABLES ---
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn-delete')) {
+                // If it's a dynamic story, handle it differently
+                if(e.target.closest('#story-table-body')) return; 
+
+                if(confirm("Are you sure you want to delete this row?")) {
+                    const row = e.target.closest('tr');
+                    row.remove();
+                }
+            }
+            if (e.target.classList.contains('btn-edit')) {
+                alert("Edit feature ready to be connected to backend!");
+            }
+        });
+
+        // --- 3. ADD COMMITTEE MEMBER LOGIC ---
         const tableBody = document.getElementById('member-table-body');
         const btnAddMember = document.getElementById('btn-add-member');
         
@@ -531,72 +430,59 @@
         const inputLinkedin = document.getElementById('input-linkedin');
         const inputWhatsapp = document.getElementById('input-whatsapp');
 
-        tableBody.addEventListener('click', function(e) {
-            if (e.target.classList.contains('btn-delete')) {
-                const row = e.target.closest('tr');
-                row.remove();
-            }
-        });
+        if(btnAddMember) {
+            btnAddMember.addEventListener('click', function() {
+                const nameValue = inputName.value.trim();
+                const roleValue = inputRole.value.trim();
 
-        btnAddMember.addEventListener('click', function() {
-            const nameValue = inputName.value.trim();
-            const roleValue = inputRole.value.trim();
+                if (nameValue === '' || roleValue === '') {
+                    alert('Please fill in at least the Full Name and Role.');
+                    return;
+                }
 
-            if (nameValue === '' || roleValue === '') {
-                alert('Please fill in at least the Full Name and Role.');
-                return;
-            }
+                const newRow = document.createElement('tr');
+                
+                newRow.innerHTML = `
+                    <td><div class="member-photo"></div></td>
+                    <td style="text-transform: uppercase;">${nameValue}</td>
+                    <td style="text-transform: uppercase;">${roleValue}</td>
+                    <td style="text-align: right;">
+                        <button class="btn-edit">EDIT</button>
+                        <button class="btn-delete">DELETE</button>
+                    </td>
+                `;
 
-            const newRow = document.createElement('tr');
-            
-            newRow.innerHTML = `
-                <td>
-                    <div class="member-photo"></div>
-                </td>
-                <td>${nameValue}</td>
-                <td>${roleValue}</td>
-                <td style="text-align: right;">
-                    <button class="btn-delete">DELETE</button>
-                </td>
-            `;
+                tableBody.appendChild(newRow);
 
-            tableBody.appendChild(newRow);
+                inputName.value = ''; inputRole.value = ''; inputIg.value = ''; inputLinkedin.value = ''; inputWhatsapp.value = '';
+            });
+        }
 
-            inputName.value = '';
-            inputRole.value = '';
-            inputIg.value = '';
-            inputLinkedin.value = '';
-            inputWhatsapp.value = '';
-        });
-
-        // --- 3. DYNAMIC COMMUNITY STORIES LOGIC ---
+        // --- 4. DYNAMIC COMMUNITY STORIES LOGIC ---
         const storyTableBody = document.getElementById('story-table-body');
         
         function loadAdminStories() {
             if (!storyTableBody) return;
             
-            // Grab experiences from the browser storage (saved by your main website)
             let experiences = JSON.parse(localStorage.getItem('mystem_experiences')) || [];
             
-            // If no stories exist, show a clean message
             if (experiences.length === 0) {
                 storyTableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); font-style: italic; padding: 30px;">No community stories submitted yet.</td></tr>';
                 return;
             }
             
-            // If stories exist, loop through them and add them to the table
             let html = '';
             experiences.forEach((exp, index) => {
-                // Trim long stories so they fit nicely in the table
                 let snippet = exp.text.length > 80 ? exp.text.substring(0, 80) + '...' : exp.text;
                 
                 html += `
                     <tr>
                         <td style="text-transform: uppercase;">${exp.name}</td>
-                        <td style="color: var(--text-muted); font-size: 11px;">Main Site Submission</td>
+                        <td style="color: var(--text-muted); font-size: 11px;">Main Site</td>
                         <td style="font-style: italic;">"${snippet}"</td>
                         <td style="text-align: right;">
-                            <button class="btn-delete" data-index="${index}">DELETE</button>
+                            <button class="btn-edit">EDIT</button>
+                            <button class="btn-delete story-delete" data-index="${index}">DELETE</button>
                         </td>
                     </tr>
                 `;
@@ -604,26 +490,18 @@
             storyTableBody.innerHTML = html;
         }
 
-        // Handle deleting stories
         if (storyTableBody) {
             storyTableBody.addEventListener('click', function(e) {
-                // When the delete button is clicked
-                if (e.target.classList.contains('btn-delete')) {
+                if (e.target.classList.contains('story-delete')) {
                     if(confirm("Are you sure you want to permanently delete this story from the main page?")) {
                         const index = e.target.getAttribute('data-index');
-                        
-                        // Grab the array, remove the specific item, and save it back
                         let experiences = JSON.parse(localStorage.getItem('mystem_experiences')) || [];
                         experiences.splice(index, 1);
                         localStorage.setItem('mystem_experiences', JSON.stringify(experiences));
-                        
-                        // Reload the table instantly
                         loadAdminStories(); 
                     }
                 }
             });
-            
-            // Automatically run this function when the page loads
             loadAdminStories();
         }
     </script>
