@@ -19,12 +19,14 @@
       --c-accent2:   #00ff9f;
       --c-gold:      #ffd166;
       --c-red:       #ff4c4c;
+      --c-purple:    #b48aff; /* Added for Game 4 */
       --c-text:      #d4eaf7;
       --c-muted:     #5a8ca8;
       --font-head:   'Orbitron', sans-serif;
       --font-body:   'Exo 2', sans-serif;
       --glow-blue:   0 0 18px #00c8ff88, 0 0 40px #00c8ff33;
       --glow-green:  0 0 18px #00ff9f88, 0 0 40px #00ff9f33;
+      --glow-purple: 0 0 18px #b48aff88, 0 0 40px #b48aff33;
     }
 
     /* ─── Base ─── */
@@ -93,19 +95,20 @@
 
     /* ─── GAMES GRID ─── */
     .games-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;
     }
     .game-card {
       background: var(--c-panel); border: 1px solid var(--c-border);
       border-radius: 16px; padding: 30px; text-align: center;
       transition: all 0.3s ease; position: relative; overflow: hidden;
+      display: flex; flex-direction: column;
     }
     .game-card:hover { transform: translateY(-5px); border-color: var(--c-accent); box-shadow: var(--glow-blue); }
     .game-icon { font-size: 50px; margin-bottom: 15px; }
     .game-name { font-family: var(--font-head); font-size: 20px; color: var(--c-white); margin-bottom: 10px; }
-    .game-desc { font-size: 14px; color: var(--c-muted); line-height: 1.6; margin-bottom: 25px; }
+    .game-desc { font-size: 14px; color: var(--c-muted); line-height: 1.6; margin-bottom: 25px; flex-grow: 1; }
     
-    .tags { display: flex; justify-content: center; gap: 8px; margin-bottom: 25px; }
+    .tags { display: flex; justify-content: center; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; }
     .tag { 
         font-family: var(--font-head); font-size: 10px; padding: 4px 10px; 
         border-radius: 20px; border: 1px solid var(--c-muted); color: var(--c-muted); 
@@ -116,6 +119,7 @@
       font-family: var(--font-head); font-size: 12px; font-weight: bold;
       letter-spacing: 1px; color: #000; background: var(--c-accent);
       border: none; cursor: pointer; transition: all 0.3s ease; box-shadow: var(--glow-blue);
+      margin-top: auto;
     }
     .btn-play:hover { background: #33dbff; transform: scale(1.05); }
 
@@ -129,15 +133,17 @@
     
     .modal-content {
       background: var(--c-surface); border: 1px solid var(--c-accent);
-      border-radius: 16px; width: 90%; max-width: 600px; padding: 40px;
+      border-radius: 16px; width: 95%; max-width: 650px; padding: 40px 20px;
       position: relative; box-shadow: var(--glow-blue); text-align: center;
       transform: translateY(20px); transition: transform 0.3s ease;
+      max-height: 95vh; overflow-y: auto;
     }
+    @media (min-width: 768px) { .modal-content { padding: 40px; } }
     .modal-overlay.active .modal-content { transform: translateY(0); }
     
     .btn-close {
       position: absolute; top: 15px; right: 20px; background: transparent; border: none;
-      color: var(--c-muted); font-size: 24px; cursor: pointer; transition: color 0.2s;
+      color: var(--c-muted); font-size: 24px; cursor: pointer; transition: color 0.2s; z-index: 10;
     }
     .btn-close:hover { color: var(--c-red); }
 
@@ -149,10 +155,15 @@
         padding: 10px; border-radius: 8px; width: 200px; outline: none; margin-bottom: 20px;
     }
     .game-input:focus { border-color: var(--c-accent); box-shadow: var(--glow-blue); }
-    
-    .game-controls { display: flex; justify-content: center; gap: 10px; }
     .game-score { font-size: 16px; color: var(--c-accent2); margin-top: 20px; font-family: var(--font-head); }
-    .game-msg { min-height: 24px; font-size: 14px; margin-bottom: 15px; }
+    .game-msg { min-height: 24px; font-size: 14px; margin-bottom: 15px; font-weight: bold;}
+
+    /* Special Canvas styling for Game 4 */
+    #orbitCanvas {
+        background-color: #01060e; border: 2px solid var(--c-purple);
+        border-radius: 8px; box-shadow: var(--glow-purple); cursor: crosshair;
+        max-width: 100%; height: auto; display: block; margin: 15px auto;
+    }
 
     /* Footer */
     footer { background: var(--c-bg); border-top: 1px solid var(--c-border); padding: 30px; text-align: center; }
@@ -223,6 +234,18 @@
             <button class="btn-play" style="background:var(--c-gold); box-shadow:0 0 18px #ffd16688;" onclick="openGame('reflex')">PLAY NOW</button>
         </div>
 
+        <!-- Game 4: Orbital Slingshot (The Complex One!) -->
+        <div class="game-card" style="border-color: var(--c-purple);">
+            <div class="game-icon">🪐</div>
+            <h3 class="game-name">Orbit Slingshot</h3>
+            <div class="tags">
+                <span class="tag" style="color:var(--c-purple); border-color:var(--c-purple)">Astrophysics</span>
+                <span class="tag" style="color:var(--c-purple); border-color:var(--c-purple)">Vectors</span>
+            </div>
+            <p class="game-desc">A complex physics simulator. Drag to aim and launch your satellite. Use planetary gravity fields to bend your trajectory and hit the target zone!</p>
+            <button class="btn-play" style="background:var(--c-purple); box-shadow:var(--glow-purple);" onclick="openGame('orbit')">PLAY NOW</button>
+        </div>
+
     </div>
 </main>
 
@@ -230,10 +253,7 @@
 <div class="modal-overlay" id="gameModal">
     <div class="modal-content">
         <button class="btn-close" onclick="closeGame()">✖</button>
-        
-        <!-- Dynamic Game Content Injected Here -->
         <div id="gameUI"></div>
-        
     </div>
 </div>
 
@@ -253,17 +273,19 @@
     let timer;
     let reflexStartTime;
     let reflexTimeout;
+    let orbitAnimFrame; // Needed to stop physics engine
 
     // --- Core Modal Logic ---
     function openGame(gameType) {
         currentGame = gameType;
         modal.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        document.body.style.overflow = 'hidden'; 
         score = 0;
 
         if (gameType === 'binary') initBinary();
         if (gameType === 'math') initMath();
         if (gameType === 'reflex') initReflex();
+        if (gameType === 'orbit') initOrbit();
     }
 
     function closeGame() {
@@ -271,6 +293,7 @@
         document.body.style.overflow = '';
         clearTimeout(timer);
         clearTimeout(reflexTimeout);
+        if(orbitAnimFrame) cancelAnimationFrame(orbitAnimFrame);
     }
 
     // ==========================================
@@ -292,8 +315,8 @@
     }
 
     function nextBinaryRound() {
-        const dec = Math.floor(Math.random() * 31) + 1; // 1 to 31
-        currentAnswer = dec.toString(2); // Convert to binary string
+        const dec = Math.floor(Math.random() * 31) + 1; 
+        currentAnswer = dec.toString(2); 
         document.getElementById('binDecimal').innerText = dec;
         document.getElementById('binInput').value = '';
     }
@@ -305,13 +328,13 @@
         if (input === currentAnswer) {
             score += 10;
             document.getElementById('binScore').innerText = score;
-            msg.innerText = "CORRECT!";
+            msg.innerText = "CORRECT! +10 Points";
             msg.style.color = "var(--c-accent2)";
             nextBinaryRound();
         } else {
-            msg.innerText = `INCORRECT! Answer was ${currentAnswer}`;
+            msg.innerText = `INCORRECT! The answer was ${currentAnswer}`;
             msg.style.color = "var(--c-red)";
-            score = 0; // Reset score on fail
+            score = 0; 
             document.getElementById('binScore').innerText = score;
             setTimeout(nextBinaryRound, 1500);
         }
@@ -343,7 +366,6 @@
         let num1 = Math.floor(Math.random() * 12) + 1;
         let num2 = Math.floor(Math.random() * 12) + 1;
         
-        // Ensure no negative answers for simple mode
         if (op === '-' && num1 < num2) { let temp = num1; num1 = num2; num2 = temp; }
 
         if (op === '+') currentAnswer = num1 + num2;
@@ -361,11 +383,11 @@
         if (input === currentAnswer) {
             score++;
             document.getElementById('mathScore').innerText = score;
-            msg.innerText = "GOOD!";
+            msg.innerText = "GOOD! Keep going.";
             msg.style.color = "var(--c-accent2)";
             nextMathRound();
         } else {
-            msg.innerText = "WRONG!";
+            msg.innerText = "WRONG! Streak broken.";
             msg.style.color = "var(--c-red)";
             score = 0;
             document.getElementById('mathScore').innerText = score;
@@ -378,16 +400,16 @@
     // ==========================================
     // GAME 3: REFLEX TESTER
     // ==========================================
-    let reflexState = 'waiting'; // waiting, ready, done
+    let reflexState = 'waiting'; 
 
     function initReflex() {
         gameUI.innerHTML = `
             <h2 style="color:var(--c-gold); font-family:var(--font-head); margin-bottom:10px;">REFLEX TESTER</h2>
-            <p style="color:var(--c-muted); font-size:14px;">Click the box when it turns GREEN.</p>
+            <p style="color:var(--c-muted); font-size:14px;">Click the box exactly when it turns GREEN.</p>
             <div id="reflexBox" style="width:100%; height:200px; background:var(--c-red); border-radius:12px; margin:20px 0; cursor:pointer; display:flex; align-items:center; justify-content:center; font-family:var(--font-head); font-size:24px; color:#fff; transition: background 0.1s;" onclick="handleReflexClick()">
                 WAIT FOR GREEN...
             </div>
-            <div class="game-score">Time: <span id="reflexTime" style="color:var(--c-gold)">0 ms</span></div>
+            <div class="game-score">Reaction Time: <span id="reflexTime" style="color:var(--c-gold)">0 ms</span></div>
             <button class="btn-play" style="background:var(--c-gold); box-shadow:0 0 18px #ffd16688; margin-top:15px;" onclick="startReflex()">RESTART</button>
         `;
         startReflex();
@@ -399,14 +421,12 @@
         box.innerText = "WAIT...";
         reflexState = 'waiting';
         document.getElementById('reflexTime').innerText = "0 ms";
-        
         clearTimeout(reflexTimeout);
         
-        // Random wait time between 2 and 5 seconds
         const waitTime = Math.floor(Math.random() * 3000) + 2000;
         
         reflexTimeout = setTimeout(() => {
-            box.style.background = 'var(--c-accent2)'; // Turn Green
+            box.style.background = 'var(--c-accent2)'; 
             box.innerText = "CLICK NOW!";
             reflexState = 'ready';
             reflexStartTime = Date.now();
@@ -427,6 +447,196 @@
             document.getElementById('reflexTime').innerText = reactionTime + " ms";
             reflexState = 'done';
         }
+    }
+
+    // ==========================================
+    // GAME 4: ORBITAL SLINGSHOT (PHYSICS ENGINE)
+    // ==========================================
+    // This requires a render loop, vector mathematics, and gravity algorithms.
+    
+    function initOrbit() {
+        gameUI.innerHTML = `
+            <h2 style="color:var(--c-purple); font-family:var(--font-head); margin-bottom:10px;">ORBIT SLINGSHOT</h2>
+            <p style="color:var(--c-muted); font-size:12px; max-width:400px; margin:0 auto;">Drag from the white satellite to aim. Release to launch. Use the yellow planet's gravity ($F = G \\frac{m_1 m_2}{r^2}$) to bend your trajectory into the green target zone!</p>
+            <canvas id="orbitCanvas" width="400" height="400"></canvas>
+            <div class="game-msg" id="orbitMsg" style="color:var(--c-purple); font-family:var(--font-head);">Drag to Aim!</div>
+            <button class="btn-play" style="background:var(--c-purple); box-shadow:var(--glow-purple);" onclick="resetOrbitLevel()">RESET LEVEL</button>
+        `;
+        
+        startOrbitEngine();
+    }
+
+    function startOrbitEngine() {
+        const canvas = document.getElementById('orbitCanvas');
+        const ctx = canvas.getContext('2d');
+        const msg = document.getElementById('orbitMsg');
+        
+        // Physics constants
+        const G = 0.5; // Gravitational constant for game feel
+        
+        let state = 'aiming'; // 'aiming', 'flying', 'won', 'lost'
+        let mouseX = 0; let mouseY = 0;
+        let isDragging = false;
+
+        // Entities
+        let planet = { x: 200, y: 200, r: 35, mass: 2000 };
+        let target = { x: 50, y: 50, r: 20 };
+        let startPos = { x: 350, y: 350 };
+        let sat = { x: 350, y: 350, vx: 0, vy: 0, r: 5 };
+
+        // Mouse Controls
+        canvas.addEventListener('mousedown', (e) => {
+            if(state !== 'aiming') return;
+            const rect = canvas.getBoundingClientRect();
+            let clickX = e.clientX - rect.left;
+            let clickY = e.clientY - rect.top;
+            
+            // Check if clicking near satellite
+            let dist = Math.hypot(clickX - sat.x, clickY - sat.y);
+            if(dist < 30) {
+                isDragging = true;
+            }
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if(!isDragging) return;
+            const rect = canvas.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            if(!isDragging) return;
+            isDragging = false;
+            
+            // Calculate launch velocity based on drag line (opposite direction)
+            let dx = sat.x - mouseX;
+            let dy = sat.y - mouseY;
+            
+            // Limit max power
+            sat.vx = dx * 0.05; 
+            sat.vy = dy * 0.05;
+            
+            state = 'flying';
+            msg.innerText = "IN TRANSIT...";
+        });
+        
+        // Expose reset function globally for the button
+        window.resetOrbitLevel = function() {
+            state = 'aiming';
+            sat.x = startPos.x;
+            sat.y = startPos.y;
+            sat.vx = 0;
+            sat.vy = 0;
+            msg.innerText = "Drag to Aim!";
+            msg.style.color = "var(--c-purple)";
+            
+            // Randomize planet/target position slightly for replayability
+            target.x = Math.random() * 100 + 30;
+            target.y = Math.random() * 100 + 30;
+            planet.y = Math.random() * 100 + 150;
+        }
+
+        // The Main Render Loop
+        function gameLoop() {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Target (Green)
+            ctx.beginPath();
+            ctx.arc(target.x, target.y, target.r, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0, 255, 159, 0.3)';
+            ctx.fill();
+            ctx.strokeStyle = '#00ff9f';
+            ctx.stroke();
+
+            // Draw Planet (Gold Gravity Well)
+            ctx.beginPath();
+            ctx.arc(planet.x, planet.y, planet.r, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffd166';
+            ctx.fill();
+            // Draw gravity aura
+            ctx.beginPath();
+            ctx.arc(planet.x, planet.y, planet.r * 2.5, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255, 209, 102, 0.05)';
+            ctx.fill();
+
+            // Draw Aiming Line
+            if (isDragging && state === 'aiming') {
+                ctx.beginPath();
+                ctx.moveTo(sat.x, sat.y);
+                // Draw line in opposite direction of drag to simulate pulling a slingshot
+                let targetX = sat.x + (sat.x - mouseX);
+                let targetY = sat.y + (sat.y - mouseY);
+                ctx.lineTo(targetX, targetY);
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.setLineDash([5, 5]);
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+
+            // PHYSICS SIMULATION
+            if (state === 'flying') {
+                // 1. Calculate distance between satellite and planet
+                let dx = planet.x - sat.x;
+                let dy = planet.y - sat.y;
+                let distSq = (dx * dx) + (dy * dy);
+                let distance = Math.sqrt(distSq);
+
+                // 2. Apply Gravity F = G * m1*m2 / r^2
+                if (distance > planet.r) { 
+                    let force = (G * planet.mass) / distSq;
+                    let ax = force * (dx / distance);
+                    let ay = force * (dy / distance);
+                    
+                    sat.vx += ax;
+                    sat.vy += ay;
+                }
+
+                // 3. Move Satellite
+                sat.x += sat.vx;
+                sat.y += sat.vy;
+
+                // 4. Collision Detections
+                
+                // Hit Planet (Loss)
+                if (distance < planet.r + sat.r) {
+                    state = 'lost';
+                    msg.innerText = "CRASHED INTO PLANET!";
+                    msg.style.color = "var(--c-red)";
+                }
+                
+                // Hit Target (Win)
+                let tDx = target.x - sat.x;
+                let tDy = target.y - sat.y;
+                let tDist = Math.sqrt((tDx * tDx) + (tDy * tDy));
+                if (tDist < target.r + sat.r) {
+                    state = 'won';
+                    msg.innerText = "MISSION SUCCESS!";
+                    msg.style.color = "var(--c-accent2)";
+                }
+                
+                // Out of Bounds (Loss)
+                if (sat.x < 0 || sat.x > canvas.width || sat.y < 0 || sat.y > canvas.height) {
+                    state = 'lost';
+                    msg.innerText = "LOST IN DEEP SPACE...";
+                    msg.style.color = "var(--c-muted)";
+                }
+            }
+
+            // Draw Satellite (White)
+            ctx.beginPath();
+            ctx.arc(sat.x, sat.y, sat.r, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
+
+            // Request next frame
+            orbitAnimFrame = requestAnimationFrame(gameLoop);
+        }
+        
+        // Start loop
+        gameLoop();
     }
 </script>
 
