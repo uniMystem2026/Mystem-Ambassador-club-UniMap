@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M² Admin - Dashboard</title>
     
-    <!-- UPDATED: Browser Tab Logo using your exact file name -->
+    <!-- Your Browser Tab Logo -->
     <link rel="icon" type="image/png" href="WhatsApp_Image_2024-12-02_at_15.29.32-removebg-preview.png">
 
     <style>
@@ -338,11 +338,13 @@
             <a href="#" class="nav-item" data-target="home-highlight">Home Highlight</a>
             <a href="#" class="nav-item" data-target="manage-events">Manage Events</a>
             <a href="#" class="nav-item" data-target="manage-projects">Manage Projects</a>
-            <a href="#" class="nav-item active" data-target="committee-list">Committee List</a>
-            <a href="#" class="nav-item" data-target="community-stories">Community Stories</a>
+            <a href="dashboard.html" class="nav-item active" data-target="committee-list">Committee List</a>
+            <a href="stories.html" class="nav-item">Community Stories</a>
+            <a href="stem-games.html" class="nav-item">STEM Education Games</a>
         </div>
         <div class="nav-footer">
-            <a href="#" class="btn-back">← Back to Site</a>
+            <!-- FIXED: This now links back to your main site index.html -->
+            <a href="index.html" class="btn-back">← Back to Site</a>
         </div>
     </aside>
 
@@ -444,11 +446,6 @@
             </div>
         </section>
 
-        <!-- Community Stories View -->
-        <section id="community-stories" class="content-section">
-            <div class="card"><div class="card-header white-text"><h2>Community Stories</h2></div></div>
-        </section>
-
     </main>
 
     <!-- JavaScript logic -->
@@ -460,17 +457,25 @@
 
         navLinks.forEach(link => {
             link.addEventListener('click', function(e) {
+                // If the link has an href pointing to another HTML file, let the browser load it!
+                const href = this.getAttribute('href');
+                if (href && href !== '#' && href !== 'dashboard.html') {
+                    return; 
+                }
+
                 e.preventDefault(); 
                 navLinks.forEach(nav => nav.classList.remove('active'));
                 this.classList.add('active');
                 
                 const targetSectionId = this.getAttribute('data-target');
-                pageTitle.textContent = this.textContent;
+                if(targetSectionId) {
+                    pageTitle.textContent = this.textContent;
 
-                contentSections.forEach(section => {
-                    section.classList.remove('active');
-                });
-                document.getElementById(targetSectionId).classList.add('active');
+                    contentSections.forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    document.getElementById(targetSectionId).classList.add('active');
+                }
             });
         });
 
@@ -478,14 +483,12 @@
         const tableBody = document.getElementById('member-table-body');
         const btnAddMember = document.getElementById('btn-add-member');
         
-        // Input fields
         const inputName = document.getElementById('input-name');
         const inputRole = document.getElementById('input-role');
         const inputIg = document.getElementById('input-ig');
         const inputLinkedin = document.getElementById('input-linkedin');
         const inputWhatsapp = document.getElementById('input-whatsapp');
 
-        // Delete Row Functionality (Event Delegation)
         tableBody.addEventListener('click', function(e) {
             if (e.target.classList.contains('btn-delete')) {
                 const row = e.target.closest('tr');
@@ -493,7 +496,6 @@
             }
         });
 
-        // Add Row Functionality
         btnAddMember.addEventListener('click', function() {
             const nameValue = inputName.value.trim();
             const roleValue = inputRole.value.trim();
