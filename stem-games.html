@@ -5,14 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>STEM Games | MYSTEM Ambassador Club</title>
   
-  <!-- Your Logo for the Browser Tab -->
   <link rel="icon" type="image/png" href="WhatsApp_Image_2024-12-02_at_15.29.32-removebg-preview.png" />
-  
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet" />
   
   <style>
-    /* ─── CSS Variables (Matching your main theme) ─── */
+    /* ─── CSS Variables ─── */
     :root {
       --c-bg:        #020b14;
       --c-surface:   #041526;
@@ -21,31 +18,25 @@
       --c-accent:    #00c8ff;
       --c-accent2:   #00ff9f;
       --c-gold:      #ffd166;
+      --c-red:       #ff4c4c;
       --c-text:      #d4eaf7;
       --c-muted:     #5a8ca8;
-      --c-white:     #ffffff;
       --font-head:   'Orbitron', sans-serif;
       --font-body:   'Exo 2', sans-serif;
       --glow-blue:   0 0 18px #00c8ff88, 0 0 40px #00c8ff33;
       --glow-green:  0 0 18px #00ff9f88, 0 0 40px #00ff9f33;
     }
 
-    /* ─── Reset & Base ─── */
+    /* ─── Base ─── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
     body {
-      background: var(--c-bg);
-      color: var(--c-text);
-      font-family: var(--font-body);
-      font-weight: 300;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow-x: hidden;
+      background: var(--c-bg); color: var(--c-text);
+      font-family: var(--font-body); font-weight: 300;
+      min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden;
     }
     a { color: inherit; text-decoration: none; }
 
-    /* ─── Noise & Grid Background ─── */
+    /* ─── Background ─── */
     body::before {
       content: ''; position: fixed; inset: 0; z-index: 0;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
@@ -56,15 +47,12 @@
       background-image: linear-gradient(var(--c-border) 1px, transparent 1px), linear-gradient(90deg, var(--c-border) 1px, transparent 1px);
       background-size: 40px 40px; opacity: 0.06; pointer-events: none;
     }
-
-    /* ─── Animated background orbs ─── */
+    
     .bg-orb {
-      position: fixed; border-radius: 50%;
-      filter: blur(90px); opacity: 0.1;
-      pointer-events: none; z-index: 0;
-      animation: orb-drift 14s ease-in-out infinite alternate;
+      position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.1;
+      pointer-events: none; z-index: 0; animation: orb-drift 14s ease-in-out infinite alternate;
     }
-    .bg-orb-1 { width: 400px; height: 400px; background: var(--c-accent);  top: -150px; left: -150px; animation-duration: 16s; }
+    .bg-orb-1 { width: 400px; height: 400px; background: var(--c-accent); top: -150px; left: -150px; animation-duration: 16s; }
     .bg-orb-2 { width: 350px; height: 350px; background: var(--c-accent2); bottom: -100px; right: -100px; animation-duration: 12s; animation-delay: -6s; }
     @keyframes orb-drift { from { transform: translate(0, 0) scale(1); } to { transform: translate(30px, 20px) scale(1.08); } }
 
@@ -73,93 +61,101 @@
     /* ─── NAV ─── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      padding: 0 16px;
-      background: linear-gradient(180deg, #020b14f0 0%, transparent 100%);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid #0d3a5e44;
+      padding: 0 16px; background: linear-gradient(180deg, #020b14f0 0%, transparent 100%);
+      backdrop-filter: blur(16px); border-bottom: 1px solid #0d3a5e44;
     }
     @media (min-width: 768px) { nav { padding: 0 32px; } }
-    
-    .nav-inner {
-      max-width: 1180px; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between;
-      height: 60px;
-    }
+    .nav-inner { max-width: 1180px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
     @media (min-width: 768px) { .nav-inner { height: 70px; } }
-    
     .nav-logo { display: flex; align-items: center; gap: 8px; }
     .nav-logo img { height: 34px; width: auto; object-fit: contain; }
     @media (min-width: 768px) { .nav-logo img { height: 42px; } }
-    
     .logo-text { font-family: var(--font-head); font-size: 13px; font-weight: 700; letter-spacing: .05em; }
     .logo-text span { display: block; font-size: 9px; font-weight: 400; color: var(--c-muted); letter-spacing: .10em; margin-top: 1px; }
-    @media (min-width: 768px) { .logo-text { font-size: 15px; } .logo-text span { font-size: 10px; } }
-    
-    .nav-links { display: flex; align-items: center; gap: 28px; }
-    
     .btn-return {
       font-family: var(--font-head); font-size: 10px; letter-spacing: .1em; 
       text-transform: uppercase; color: var(--c-accent); 
       transition: all .3s ease; border: 1px solid var(--c-accent);
       padding: 8px 16px; border-radius: 20px; background: rgba(0, 200, 255, 0.05);
     }
-    @media (min-width: 768px) { .btn-return { font-size: 11px; } }
     .btn-return:hover { background: rgba(0, 200, 255, 0.15); box-shadow: var(--glow-blue); }
 
-    /* ─── BLANK GAMES SPACE ─── */
+    /* ─── GAMES PAGE LAYOUT ─── */
     .games-container {
-      flex: 1; /* Pushes footer down */
-      padding: 150px 24px 80px;
-      max-width: 1180px;
-      margin: 0 auto;
-      width: 100%;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      animation: fade-up 1s ease both;
+      flex: 1; padding: 120px 24px 80px; max-width: 1180px; margin: 0 auto; width: 100%;
     }
-    
-    @keyframes fade-up {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    
     .games-title {
-      font-family: var(--font-head);
-      font-size: clamp(28px, 5vw, 48px);
-      font-weight: 900;
-      color: var(--c-accent);
-      text-shadow: var(--glow-blue);
-      margin-bottom: 20px;
-      letter-spacing: 2px;
+      font-family: var(--font-head); font-size: clamp(28px, 5vw, 42px);
+      font-weight: 900; color: var(--c-accent); text-shadow: var(--glow-blue);
+      margin-bottom: 10px; text-align: center; letter-spacing: 2px;
     }
+    .games-subtitle { text-align: center; color: var(--c-muted); margin-bottom: 50px; font-size: 16px; }
 
-    .games-placeholder {
-      border: 2px dashed var(--c-border);
-      border-radius: 20px;
-      background: rgba(7, 30, 53, 0.5);
-      padding: 60px 20px;
-      max-width: 800px;
-      width: 100%;
-      color: var(--c-muted);
-      font-size: 16px;
-      backdrop-filter: blur(10px);
-      transition: border-color 0.3s ease;
+    /* ─── GAMES GRID ─── */
+    .games-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;
     }
-    @media (min-width: 768px) { .games-placeholder { font-size: 18px; padding: 60px; } }
+    .game-card {
+      background: var(--c-panel); border: 1px solid var(--c-border);
+      border-radius: 16px; padding: 30px; text-align: center;
+      transition: all 0.3s ease; position: relative; overflow: hidden;
+    }
+    .game-card:hover { transform: translateY(-5px); border-color: var(--c-accent); box-shadow: var(--glow-blue); }
+    .game-icon { font-size: 50px; margin-bottom: 15px; }
+    .game-name { font-family: var(--font-head); font-size: 20px; color: var(--c-white); margin-bottom: 10px; }
+    .game-desc { font-size: 14px; color: var(--c-muted); line-height: 1.6; margin-bottom: 25px; }
     
-    .games-placeholder:hover {
-      border-color: var(--c-accent);
+    .tags { display: flex; justify-content: center; gap: 8px; margin-bottom: 25px; }
+    .tag { 
+        font-family: var(--font-head); font-size: 10px; padding: 4px 10px; 
+        border-radius: 20px; border: 1px solid var(--c-muted); color: var(--c-muted); 
     }
 
-    /* ─── FOOTER ─── */
-    footer {
-      background: var(--c-bg); border-top: 1px solid var(--c-border);
-      padding: 40px 24px 24px;
-      text-align: center;
+    .btn-play {
+      display: inline-block; padding: 12px 30px; border-radius: 25px;
+      font-family: var(--font-head); font-size: 12px; font-weight: bold;
+      letter-spacing: 1px; color: #000; background: var(--c-accent);
+      border: none; cursor: pointer; transition: all 0.3s ease; box-shadow: var(--glow-blue);
     }
+    .btn-play:hover { background: #33dbff; transform: scale(1.05); }
+
+    /* ─── MODAL (GAME POPUP) ─── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(2, 11, 20, 0.9);
+      backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center;
+      z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+    }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+    
+    .modal-content {
+      background: var(--c-surface); border: 1px solid var(--c-accent);
+      border-radius: 16px; width: 90%; max-width: 600px; padding: 40px;
+      position: relative; box-shadow: var(--glow-blue); text-align: center;
+      transform: translateY(20px); transition: transform 0.3s ease;
+    }
+    .modal-overlay.active .modal-content { transform: translateY(0); }
+    
+    .btn-close {
+      position: absolute; top: 15px; right: 20px; background: transparent; border: none;
+      color: var(--c-muted); font-size: 24px; cursor: pointer; transition: color 0.2s;
+    }
+    .btn-close:hover { color: var(--c-red); }
+
+    /* ─── GAME UI ELEMENTS ─── */
+    .game-display { font-family: var(--font-head); font-size: 40px; color: var(--c-white); margin: 20px 0; letter-spacing: 2px; }
+    .game-input { 
+        background: var(--c-panel); border: 2px solid var(--c-border); color: var(--c-accent);
+        font-family: var(--font-head); font-size: 24px; text-align: center;
+        padding: 10px; border-radius: 8px; width: 200px; outline: none; margin-bottom: 20px;
+    }
+    .game-input:focus { border-color: var(--c-accent); box-shadow: var(--glow-blue); }
+    
+    .game-controls { display: flex; justify-content: center; gap: 10px; }
+    .game-score { font-size: 16px; color: var(--c-accent2); margin-top: 20px; font-family: var(--font-head); }
+    .game-msg { min-height: 24px; font-size: 14px; margin-bottom: 15px; }
+
+    /* Footer */
+    footer { background: var(--c-bg); border-top: 1px solid var(--c-border); padding: 30px; text-align: center; }
     .footer-copy { font-size: 12px; color: var(--c-muted); }
   </style>
 </head>
@@ -169,10 +165,9 @@
 <div class="bg-orb bg-orb-1"></div>
 <div class="bg-orb bg-orb-2"></div>
 
-<!-- ═══════════════ NAV ═══════════════ -->
+<!-- NAV -->
 <nav class="z1">
   <div class="nav-inner">
-    <!-- Clicking the logo safely returns to main page -->
     <a href="index.html" class="nav-logo" onclick="window.location.href='index.html'; return false;">
       <img src="WhatsApp_Image_2024-12-02_at_15.29.32-removebg-preview.png" alt="MY STEM Logo">
       <img src="LogoUniMAP2017.png" alt="UniMAP Logo" style="margin-left:6px;">
@@ -181,35 +176,259 @@
         <span>Ambassador · UniMAP</span>
       </div>
     </a>
-    <div class="nav-links">
-      <!-- Safely returns to main page -->
-      <a href="index.html" class="btn-return" onclick="window.location.href='index.html'; return false;">← Back to Main Site</a>
-    </div>
+    <a href="index.html" class="btn-return" onclick="window.location.href='index.html'; return false;">← Back to Main Site</a>
   </div>
 </nav>
 
-<!-- ═══════════════ BLANK GAMES SPACE ═══════════════ -->
+<!-- GAMES SECTION -->
 <main class="games-container z1">
     <h1 class="games-title">STEM EDUCATION GAMES</h1>
+    <p class="games-subtitle">Learn through interactive challenges built by the MYSTEM team.</p>
     
-    <div class="games-placeholder">
-        <div style="font-size: 50px; margin-bottom: 20px; animation: bounce 2s ease infinite;">🎮</div>
-        <p>Interactive STEM Education Games are currently under development.</p>
-        <p style="font-size: 14px; margin-top: 10px; color: var(--c-accent2); font-weight: 600; letter-spacing: 1px;">CHECK BACK SOON!</p>
+    <div class="games-grid">
+        
+        <!-- Game 1: Binary Decoder -->
+        <div class="game-card">
+            <div class="game-icon">💻</div>
+            <h3 class="game-name">Binary Ninja</h3>
+            <div class="tags">
+                <span class="tag">Comp Sci</span>
+                <span class="tag">Logic</span>
+            </div>
+            <p class="game-desc">Computers think in 1s and 0s. Test your ability to translate decimal numbers into binary code before the system resets!</p>
+            <button class="btn-play" onclick="openGame('binary')">PLAY NOW</button>
+        </div>
+
+        <!-- Game 2: Math Sprint -->
+        <div class="game-card" style="border-color: var(--c-accent2);">
+            <div class="game-icon">🧮</div>
+            <h3 class="game-name">Math Sprint</h3>
+            <div class="tags">
+                <span class="tag" style="color:var(--c-accent2); border-color:var(--c-accent2)">Mathematics</span>
+                <span class="tag" style="color:var(--c-accent2); border-color:var(--c-accent2)">Speed</span>
+            </div>
+            <p class="game-desc">Sharpen your mental arithmetic. Solve as many equations as you can to build a massive high score!</p>
+            <button class="btn-play" style="background:var(--c-accent2); box-shadow:var(--glow-green);" onclick="openGame('math')">PLAY NOW</button>
+        </div>
+
+        <!-- Game 3: Reflex Speed -->
+        <div class="game-card" style="border-color: var(--c-gold);">
+            <div class="game-icon">⚡</div>
+            <h3 class="game-name">Reflex Tester</h3>
+            <div class="tags">
+                <span class="tag" style="color:var(--c-gold); border-color:var(--c-gold)">Biology</span>
+                <span class="tag" style="color:var(--c-gold); border-color:var(--c-gold)">Physics</span>
+            </div>
+            <p class="game-desc">Measure human reaction time in milliseconds. Wait for the terminal to turn green, then strike as fast as possible!</p>
+            <button class="btn-play" style="background:var(--c-gold); box-shadow:0 0 18px #ffd16688;" onclick="openGame('reflex')">PLAY NOW</button>
+        </div>
+
     </div>
 </main>
 
-<style>
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-</style>
+<!-- GAME MODAL -->
+<div class="modal-overlay" id="gameModal">
+    <div class="modal-content">
+        <button class="btn-close" onclick="closeGame()">✖</button>
+        
+        <!-- Dynamic Game Content Injected Here -->
+        <div id="gameUI"></div>
+        
+    </div>
+</div>
 
-<!-- ═══════════════ FOOTER ═══════════════ -->
-<footer class="z1">
-  <div class="footer-copy">© 2025 MYSTEM Ambassador Club, Universiti Malaysia Perlis. All rights reserved.</div>
+<footer>
+  <div class="footer-copy">© 2026 MYSTEM Ambassador Club, Universiti Malaysia Perlis. All rights reserved.</div>
 </footer>
+
+<!-- ─── JAVASCRIPT GAME LOGIC ─── -->
+<script>
+    const modal = document.getElementById('gameModal');
+    const gameUI = document.getElementById('gameUI');
+    let currentGame = '';
+    
+    // --- Global Game Variables ---
+    let score = 0;
+    let currentAnswer = 0;
+    let timer;
+    let reflexStartTime;
+    let reflexTimeout;
+
+    // --- Core Modal Logic ---
+    function openGame(gameType) {
+        currentGame = gameType;
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        score = 0;
+
+        if (gameType === 'binary') initBinary();
+        if (gameType === 'math') initMath();
+        if (gameType === 'reflex') initReflex();
+    }
+
+    function closeGame() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        clearTimeout(timer);
+        clearTimeout(reflexTimeout);
+    }
+
+    // ==========================================
+    // GAME 1: BINARY NINJA
+    // ==========================================
+    function initBinary() {
+        gameUI.innerHTML = `
+            <h2 style="color:var(--c-accent); font-family:var(--font-head); margin-bottom:10px;">BINARY NINJA</h2>
+            <p style="color:var(--c-muted); font-size:14px;">Convert the decimal number to binary.</p>
+            <div class="game-msg" id="binMsg"></div>
+            <div class="game-display" id="binDecimal">--</div>
+            <input type="number" id="binInput" class="game-input" placeholder="e.g. 1010" onkeypress="if(event.key === 'Enter') checkBinary()">
+            <br>
+            <button class="btn-play" onclick="checkBinary()">SUBMIT</button>
+            <div class="game-score">Score: <span id="binScore">0</span></div>
+        `;
+        nextBinaryRound();
+        setTimeout(() => document.getElementById('binInput').focus(), 100);
+    }
+
+    function nextBinaryRound() {
+        const dec = Math.floor(Math.random() * 31) + 1; // 1 to 31
+        currentAnswer = dec.toString(2); // Convert to binary string
+        document.getElementById('binDecimal').innerText = dec;
+        document.getElementById('binInput').value = '';
+    }
+
+    function checkBinary() {
+        const input = document.getElementById('binInput').value.trim();
+        const msg = document.getElementById('binMsg');
+        
+        if (input === currentAnswer) {
+            score += 10;
+            document.getElementById('binScore').innerText = score;
+            msg.innerText = "CORRECT!";
+            msg.style.color = "var(--c-accent2)";
+            nextBinaryRound();
+        } else {
+            msg.innerText = `INCORRECT! Answer was ${currentAnswer}`;
+            msg.style.color = "var(--c-red)";
+            score = 0; // Reset score on fail
+            document.getElementById('binScore').innerText = score;
+            setTimeout(nextBinaryRound, 1500);
+        }
+        document.getElementById('binInput').focus();
+    }
+
+
+    // ==========================================
+    // GAME 2: MATH SPRINT
+    // ==========================================
+    function initMath() {
+        gameUI.innerHTML = `
+            <h2 style="color:var(--c-accent2); font-family:var(--font-head); margin-bottom:10px;">MATH SPRINT</h2>
+            <p style="color:var(--c-muted); font-size:14px;">Solve fast!</p>
+            <div class="game-msg" id="mathMsg"></div>
+            <div class="game-display" id="mathEquation">--</div>
+            <input type="number" id="mathInput" class="game-input" style="border-color:var(--c-accent2); color:var(--c-accent2);" placeholder="Answer" onkeypress="if(event.key === 'Enter') checkMath()">
+            <br>
+            <button class="btn-play" style="background:var(--c-accent2); box-shadow:var(--glow-green);" onclick="checkMath()">SUBMIT</button>
+            <div class="game-score">Streak: <span id="mathScore" style="color:var(--c-accent2)">0</span></div>
+        `;
+        nextMathRound();
+        setTimeout(() => document.getElementById('mathInput').focus(), 100);
+    }
+
+    function nextMathRound() {
+        const ops = ['+', '-', '*'];
+        const op = ops[Math.floor(Math.random() * ops.length)];
+        let num1 = Math.floor(Math.random() * 12) + 1;
+        let num2 = Math.floor(Math.random() * 12) + 1;
+        
+        // Ensure no negative answers for simple mode
+        if (op === '-' && num1 < num2) { let temp = num1; num1 = num2; num2 = temp; }
+
+        if (op === '+') currentAnswer = num1 + num2;
+        if (op === '-') currentAnswer = num1 - num2;
+        if (op === '*') currentAnswer = num1 * num2;
+
+        document.getElementById('mathEquation').innerText = `${num1} ${op} ${num2}`;
+        document.getElementById('mathInput').value = '';
+    }
+
+    function checkMath() {
+        const input = parseInt(document.getElementById('mathInput').value);
+        const msg = document.getElementById('mathMsg');
+        
+        if (input === currentAnswer) {
+            score++;
+            document.getElementById('mathScore').innerText = score;
+            msg.innerText = "GOOD!";
+            msg.style.color = "var(--c-accent2)";
+            nextMathRound();
+        } else {
+            msg.innerText = "WRONG!";
+            msg.style.color = "var(--c-red)";
+            score = 0;
+            document.getElementById('mathScore').innerText = score;
+            setTimeout(nextMathRound, 1000);
+        }
+        document.getElementById('mathInput').focus();
+    }
+
+
+    // ==========================================
+    // GAME 3: REFLEX TESTER
+    // ==========================================
+    let reflexState = 'waiting'; // waiting, ready, done
+
+    function initReflex() {
+        gameUI.innerHTML = `
+            <h2 style="color:var(--c-gold); font-family:var(--font-head); margin-bottom:10px;">REFLEX TESTER</h2>
+            <p style="color:var(--c-muted); font-size:14px;">Click the box when it turns GREEN.</p>
+            <div id="reflexBox" style="width:100%; height:200px; background:var(--c-red); border-radius:12px; margin:20px 0; cursor:pointer; display:flex; align-items:center; justify-content:center; font-family:var(--font-head); font-size:24px; color:#fff; transition: background 0.1s;" onclick="handleReflexClick()">
+                WAIT FOR GREEN...
+            </div>
+            <div class="game-score">Time: <span id="reflexTime" style="color:var(--c-gold)">0 ms</span></div>
+            <button class="btn-play" style="background:var(--c-gold); box-shadow:0 0 18px #ffd16688; margin-top:15px;" onclick="startReflex()">RESTART</button>
+        `;
+        startReflex();
+    }
+
+    function startReflex() {
+        const box = document.getElementById('reflexBox');
+        box.style.background = 'var(--c-red)';
+        box.innerText = "WAIT...";
+        reflexState = 'waiting';
+        document.getElementById('reflexTime').innerText = "0 ms";
+        
+        clearTimeout(reflexTimeout);
+        
+        // Random wait time between 2 and 5 seconds
+        const waitTime = Math.floor(Math.random() * 3000) + 2000;
+        
+        reflexTimeout = setTimeout(() => {
+            box.style.background = 'var(--c-accent2)'; // Turn Green
+            box.innerText = "CLICK NOW!";
+            reflexState = 'ready';
+            reflexStartTime = Date.now();
+        }, waitTime);
+    }
+
+    function handleReflexClick() {
+        const box = document.getElementById('reflexBox');
+        if (reflexState === 'waiting') {
+            clearTimeout(reflexTimeout);
+            box.style.background = 'var(--c-panel)';
+            box.innerText = "TOO SOON! CLICK RESTART";
+            reflexState = 'done';
+        } else if (reflexState === 'ready') {
+            const reactionTime = Date.now() - reflexStartTime;
+            box.style.background = 'var(--c-accent)';
+            box.innerText = "EXCELLENT!";
+            document.getElementById('reflexTime').innerText = reactionTime + " ms";
+            reflexState = 'done';
+        }
+    }
+</script>
 
 </body>
 </html>
