@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M² Admin - Dashboard</title>
+    
+    <!-- UPDATED: Browser Tab Logo using your exact file name -->
+    <link rel="icon" type="image/png" href="WhatsApp_Image_2024-12-02_at_15.29.32-removebg-preview.png">
+
     <style>
         :root {
             --bg-body: #050b14;
@@ -131,12 +135,12 @@
 
         /* --- Section Switching Logic --- */
         .content-section {
-            display: none; /* Hide all sections by default */
+            display: none; 
             animation: fadeIn 0.3s ease;
         }
 
         .content-section.active {
-            display: block; /* Only show the active section */
+            display: block; 
         }
 
         @keyframes fadeIn {
@@ -193,6 +197,7 @@
             color: var(--text-main);
             border-bottom: 1px solid var(--border-color);
             vertical-align: middle;
+            text-transform: uppercase; 
         }
 
         tr:last-child td {
@@ -330,7 +335,6 @@
     <aside class="sidebar">
         <div class="logo">M² ADMIN</div>
         <div class="nav-menu">
-            <!-- data-target links the button to the section ID below -->
             <a href="#" class="nav-item" data-target="home-highlight">Home Highlight</a>
             <a href="#" class="nav-item" data-target="manage-events">Manage Events</a>
             <a href="#" class="nav-item" data-target="manage-projects">Manage Projects</a>
@@ -349,39 +353,18 @@
             <div class="user-info">Welcome, Executive Admin</div>
         </header>
 
-        <!-- VIEWS START HERE -->
-
-        <!-- 1. Home Highlight View -->
+        <!-- Placeholder Sections -->
         <section id="home-highlight" class="content-section">
-            <div class="card">
-                <div class="card-header white-text">
-                    <h2>Home Highlight Details</h2>
-                </div>
-                <p style="color: var(--text-muted); font-size: 14px;">This is the home highlight editing page. Content goes here.</p>
-            </div>
+            <div class="card"><div class="card-header white-text"><h2>Home Highlight Details</h2></div></div>
         </section>
-
-        <!-- 2. Manage Events View -->
         <section id="manage-events" class="content-section">
-            <div class="card">
-                <div class="card-header white-text">
-                    <h2>Manage Your Events</h2>
-                </div>
-                <p style="color: var(--text-muted); font-size: 14px;">Event management list and tools will go here.</p>
-            </div>
+            <div class="card"><div class="card-header white-text"><h2>Manage Your Events</h2></div></div>
         </section>
-
-        <!-- 3. Manage Projects View -->
         <section id="manage-projects" class="content-section">
-            <div class="card">
-                <div class="card-header white-text">
-                    <h2>Project Dashboard</h2>
-                </div>
-                <p style="color: var(--text-muted); font-size: 14px;">Project tracking and updates go here.</p>
-            </div>
+            <div class="card"><div class="card-header white-text"><h2>Project Dashboard</h2></div></div>
         </section>
 
-        <!-- 4. Committee List View (Currently Active) -->
+        <!-- Committee List View -->
         <section id="committee-list" class="content-section active">
             <!-- Current Members Table Card -->
             <div class="card">
@@ -398,7 +381,8 @@
                             <th style="text-align: right;">ACTION</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="member-table-body">
+                        <!-- Members will be added here -->
                         <tr>
                             <td>
                                 <div class="member-photo"></div>
@@ -419,16 +403,16 @@
                     <h2>+ Add Committee Member</h2>
                 </div>
                 
-                <form>
+                <form id="add-member-form">
                     <div class="form-group">
                         <label>FULL NAME</label>
-                        <input type="text">
+                        <input type="text" id="input-name" placeholder="Enter full name">
                     </div>
 
                     <div class="form-row">
                         <div class="form-col">
                             <label>ROLE</label>
-                            <input type="text" placeholder="e.g. President">
+                            <input type="text" id="input-role" placeholder="e.g. President">
                         </div>
                         <div class="form-col">
                             <label>UPLOAD MEMBER PHOTO</label>
@@ -443,67 +427,102 @@
                     <div class="form-row" style="margin-bottom: 10px;">
                         <div class="form-col">
                             <label>INSTAGRAM LINK</label>
-                            <input type="text">
+                            <input type="text" id="input-ig">
                         </div>
                         <div class="form-col">
                             <label>LINKEDIN LINK</label>
-                            <input type="text">
+                            <input type="text" id="input-linkedin">
                         </div>
                         <div class="form-col">
                             <label>WHATSAPP NUMBER</label>
-                            <input type="text">
+                            <input type="text" id="input-whatsapp">
                         </div>
                     </div>
 
-                    <button type="button" class="btn-submit">ADD TO COMMITTEE LIST</button>
+                    <button type="button" class="btn-submit" id="btn-add-member">ADD TO COMMITTEE LIST</button>
                 </form>
             </div>
         </section>
 
-        <!-- 5. Community Stories View -->
+        <!-- Community Stories View -->
         <section id="community-stories" class="content-section">
-            <div class="card">
-                <div class="card-header white-text">
-                    <h2>Community Stories</h2>
-                </div>
-                <p style="color: var(--text-muted); font-size: 14px;">Manage community blog posts and stories here.</p>
-            </div>
+            <div class="card"><div class="card-header white-text"><h2>Community Stories</h2></div></div>
         </section>
 
     </main>
 
-    <!-- JavaScript to handle switching tabs -->
+    <!-- JavaScript logic -->
     <script>
-        // Select all the navigation links and all the content sections
+        // --- 1. TAB SWITCHING LOGIC ---
         const navLinks = document.querySelectorAll('.nav-item');
         const contentSections = document.querySelectorAll('.content-section');
         const pageTitle = document.getElementById('page-title');
 
-        // Add a click event to each navigation link
         navLinks.forEach(link => {
             link.addEventListener('click', function(e) {
-                e.preventDefault(); // Stop the page from jumping
-
-                // 1. Remove the "active" highlight from all menu items
+                e.preventDefault(); 
                 navLinks.forEach(nav => nav.classList.remove('active'));
-                
-                // 2. Add the "active" highlight to the one we just clicked
                 this.classList.add('active');
-
-                // 3. Find out which section this link is supposed to open (using data-target)
+                
                 const targetSectionId = this.getAttribute('data-target');
-
-                // 4. Change the Header Title to match the link text
                 pageTitle.textContent = this.textContent;
 
-                // 5. Hide all content sections
                 contentSections.forEach(section => {
                     section.classList.remove('active');
                 });
-
-                // 6. Show the specific content section we targeted
                 document.getElementById(targetSectionId).classList.add('active');
             });
+        });
+
+        // --- 2. ADD & DELETE MEMBER LOGIC ---
+        const tableBody = document.getElementById('member-table-body');
+        const btnAddMember = document.getElementById('btn-add-member');
+        
+        // Input fields
+        const inputName = document.getElementById('input-name');
+        const inputRole = document.getElementById('input-role');
+        const inputIg = document.getElementById('input-ig');
+        const inputLinkedin = document.getElementById('input-linkedin');
+        const inputWhatsapp = document.getElementById('input-whatsapp');
+
+        // Delete Row Functionality (Event Delegation)
+        tableBody.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn-delete')) {
+                const row = e.target.closest('tr');
+                row.remove();
+            }
+        });
+
+        // Add Row Functionality
+        btnAddMember.addEventListener('click', function() {
+            const nameValue = inputName.value.trim();
+            const roleValue = inputRole.value.trim();
+
+            if (nameValue === '' || roleValue === '') {
+                alert('Please fill in at least the Full Name and Role.');
+                return;
+            }
+
+            const newRow = document.createElement('tr');
+            
+            newRow.innerHTML = `
+                <td>
+                    <div class="member-photo"></div>
+                </td>
+                <td>${nameValue}</td>
+                <td>${roleValue}</td>
+                <td style="text-align: right;">
+                    <button class="btn-delete">DELETE</button>
+                </td>
+            `;
+
+            tableBody.appendChild(newRow);
+
+            inputName.value = '';
+            inputRole.value = '';
+            inputIg.value = '';
+            inputLinkedin.value = '';
+            inputWhatsapp.value = '';
         });
     </script>
 </body>
