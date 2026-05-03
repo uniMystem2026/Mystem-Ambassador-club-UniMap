@@ -37,7 +37,7 @@
         th { text-align: left; font-size: 11px; color: var(--text-muted); text-transform: uppercase; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); font-weight: 600; letter-spacing: 0.5px; }
         td { padding: 15px 0; font-size: 13px; color: var(--text-main); border-bottom: 1px solid var(--border-color); vertical-align: middle; }
         tr:last-child td { border-bottom: none; }
-        .member-photo, .project-thumb { width: 35px; height: 35px; border-radius: 10px; background-color: var(--bg-input); border: 1px solid var(--accent-cyan); display: inline-block; }
+        .member-photo, .project-thumb { width: 35px; height: 35px; border-radius: 10px; background-color: var(--bg-input); border: 1px solid var(--accent-cyan); display: inline-block; object-fit: cover; }
         .btn-delete { background: transparent; color: var(--accent-red); border: 1px solid rgba(255, 76, 76, 0.4); padding: 6px 15px; border-radius: 4px; font-size: 11px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; }
         .btn-delete:hover { background: rgba(255, 76, 76, 0.1); }
         .btn-edit { background: transparent; color: var(--accent-cyan); border: 1px solid rgba(0, 210, 255, 0.4); padding: 6px 15px; border-radius: 4px; font-size: 11px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; margin-right: 5px; }
@@ -61,10 +61,10 @@
     <aside class="sidebar">
         <div class="logo">M² ADMIN</div>
         <div class="nav-menu">
-            <a href="#" class="nav-item active" data-target="home-highlight">Home Highlight</a>
+            <a href="#" class="nav-item" data-target="home-highlight">Home Highlight</a>
             <a href="#" class="nav-item" data-target="manage-events">Manage Events</a>
             <a href="#" class="nav-item" data-target="manage-projects">Manage Projects</a>
-            <a href="#" class="nav-item" data-target="committee-list">Committee List</a>
+            <a href="#" class="nav-item active" data-target="committee-list">Committee List</a>
             <a href="#" class="nav-item" data-target="community-stories">Community Stories</a>
             <a href="stem-games.html" class="nav-item">STEM Education Games</a>
         </div>
@@ -75,12 +75,12 @@
 
     <main class="main-content">
         <header class="header">
-            <h1 id="page-title">Home Highlight</h1>
+            <h1 id="page-title">Committee List</h1>
             <div class="user-info">Welcome, Executive Admin</div>
         </header>
 
         <!-- 1. HOME HIGHLIGHT -->
-        <section id="home-highlight" class="content-section active">
+        <section id="home-highlight" class="content-section">
             <div class="card">
                 <div class="card-header"><span>🏠</span><h2>Manage Home Highlights</h2></div>
                 <table>
@@ -119,7 +119,7 @@
         </section>
 
         <!-- 4. COMMITTEE LIST SECTION -->
-        <section id="committee-list" class="content-section">
+        <section id="committee-list" class="content-section active">
             <div class="card">
                 <div class="card-header">
                     <span>📋</span>
@@ -146,9 +146,9 @@
                     </div>
                     <div class="section-title">Social Links (Optional)</div>
                     <div class="form-row" style="margin-bottom: 10px;">
-                        <div class="form-col"><label>INSTAGRAM LINK</label><input type="text" id="input-ig"></div>
-                        <div class="form-col"><label>LINKEDIN LINK</label><input type="text" id="input-linkedin"></div>
-                        <div class="form-col"><label>WHATSAPP NUMBER</label><input type="text" id="input-whatsapp"></div>
+                        <div class="form-col"><label>INSTAGRAM LINK</label><input type="text" id="input-ig" placeholder="https://instagram.com/..."></div>
+                        <div class="form-col"><label>LINKEDIN LINK</label><input type="text" id="input-linkedin" placeholder="https://linkedin.com/in/..."></div>
+                        <div class="form-col"><label>WHATSAPP NUMBER</label><input type="text" id="input-whatsapp" placeholder="e.g. 60123456789"></div>
                     </div>
                     <button type="button" class="btn-submit" id="btn-add-member">ADD TO COMMITTEE LIST</button>
                 </form>
@@ -178,11 +178,9 @@
             link.addEventListener('click', function(e) {
                 const href = this.getAttribute('href');
                 if (href && href !== '#' && href !== 'dashboard.html') return; 
-
                 e.preventDefault(); 
                 navLinks.forEach(nav => nav.classList.remove('active'));
                 this.classList.add('active');
-                
                 const targetSectionId = this.getAttribute('data-target');
                 if(targetSectionId) {
                     pageTitle.textContent = this.textContent;
@@ -217,20 +215,21 @@
             let committee = JSON.parse(localStorage.getItem('mystem_committee')) || [];
             let html = '';
             
-            // Note: Anas is hardcoded on the main page, so he won't appear in the admin list of "dynamic" members unless added manually.
             if(committee.length === 0) {
                 memberTableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); font-style: italic; padding: 20px;">No custom members added yet.</td></tr>';
                 return;
             }
 
             committee.forEach((member, index) => {
-                let imgHtml = member.photo ? `<img src="${member.photo}" style="width:35px;height:35px;border-radius:10px;object-fit:cover;">` : `<div class="member-photo" style="display:flex;align-items:center;justify-content:center;font-size:16px;">👤</div>`;
+                let imgHtml = member.photo ? `<img src="${member.photo}" class="member-photo">` : `<div class="member-photo" style="display:flex;align-items:center;justify-content:center;font-size:16px;">👤</div>`;
                 html += `
                     <tr>
                         <td>${imgHtml}</td>
                         <td style="text-transform: uppercase;">${member.name}</td>
                         <td style="text-transform: uppercase;">${member.role}</td>
                         <td style="text-align: right;">
+                            <!-- THE RESTORED EDIT BUTTON -->
+                            <button class="btn-edit member-edit" data-index="${index}">EDIT</button>
                             <button class="btn-delete member-delete" data-index="${index}">DELETE</button>
                         </td>
                     </tr>
@@ -239,9 +238,10 @@
             memberTableBody.innerHTML = html;
         }
 
-        // Handle Member Delete
+        // Handle Member Edit and Delete
         if (memberTableBody) {
             memberTableBody.addEventListener('click', function(e) {
+                // DELETE
                 if (e.target.classList.contains('member-delete')) {
                     if(confirm("Delete this member? They will be removed from the main site.")) {
                         const index = e.target.getAttribute('data-index');
@@ -250,6 +250,28 @@
                         localStorage.setItem('mystem_committee', JSON.stringify(committee));
                         loadAdminCommittee();
                     }
+                }
+                
+                // EDIT
+                if (e.target.classList.contains('member-edit')) {
+                    const index = e.target.getAttribute('data-index');
+                    let committee = JSON.parse(localStorage.getItem('mystem_committee')) || [];
+                    let memberToEdit = committee[index];
+
+                    const newName = prompt("Edit Committee Member Name:", memberToEdit.name);
+                    if (newName !== null && newName.trim() !== "") {
+                        memberToEdit.name = newName.toUpperCase();
+                    }
+
+                    const newRole = prompt("Edit Role:", memberToEdit.role);
+                    if (newRole !== null && newRole.trim() !== "") {
+                        memberToEdit.role = newRole.toUpperCase();
+                    }
+
+                    // Save the updated info back to storage
+                    committee[index] = memberToEdit;
+                    localStorage.setItem('mystem_committee', JSON.stringify(committee));
+                    loadAdminCommittee(); // Refresh table
                 }
             });
         }
@@ -300,7 +322,6 @@
                 committee.push(newMember);
                 localStorage.setItem('mystem_committee', JSON.stringify(committee));
 
-                // Clear fields
                 inputName.value = ''; inputRole.value = ''; inputIg.value = ''; inputLinkedin.value = ''; inputWhatsapp.value = '';
                 fileInput.value = '';
 
@@ -349,7 +370,6 @@
             });
         }
 
-        // Load dynamic data on startup
         document.addEventListener('DOMContentLoaded', () => {
             loadAdminCommittee();
             loadAdminStories();
