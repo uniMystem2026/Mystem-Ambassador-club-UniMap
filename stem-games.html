@@ -19,7 +19,7 @@
       --c-accent2:   #00ff9f;
       --c-gold:      #ffd166;
       --c-red:       #ff4c4c;
-      --c-purple:    #b48aff; /* Added for Game 4 */
+      --c-purple:    #b48aff;
       --c-text:      #d4eaf7;
       --c-muted:     #5a8ca8;
       --font-head:   'Orbitron', sans-serif;
@@ -163,6 +163,7 @@
         background-color: #01060e; border: 2px solid var(--c-purple);
         border-radius: 8px; box-shadow: var(--glow-purple); cursor: crosshair;
         max-width: 100%; height: auto; display: block; margin: 15px auto;
+        touch-action: none; /* VERY IMPORTANT: Prevents screen from scrolling while dragging on mobile! */
     }
 
     /* Footer */
@@ -273,7 +274,7 @@
     let timer;
     let reflexStartTime;
     let reflexTimeout;
-    let orbitAnimFrame; // Needed to stop physics engine
+    let orbitAnimFrame;
 
     // --- Core Modal Logic ---
     function openGame(gameType) {
@@ -452,8 +453,6 @@
     // ==========================================
     // GAME 4: ORBITAL SLINGSHOT (PHYSICS ENGINE)
     // ==========================================
-    // This requires a render loop, vector mathematics, and gravity algorithms.
-    
     function initOrbit() {
         gameUI.innerHTML = `
             <h2 style="color:var(--c-purple); font-family:var(--font-head); margin-bottom:10px;">ORBIT SLINGSHOT</h2>
@@ -471,57 +470,74 @@
         const ctx = canvas.getContext('2d');
         const msg = document.getElementById('orbitMsg');
         
-        // Physics constants
-        const G = 0.5; // Gravitational constant for game feel
+        const G = 0.5; 
         
         let state = 'aiming'; // 'aiming', 'flying', 'won', 'lost'
         let mouseX = 0; let mouseY = 0;
         let isDragging = false;
 
-        // Entities
         let planet = { x: 200, y: 200, r: 35, mass: 2000 };
         let target = { x: 50, y: 50, r: 20 };
         let startPos = { x: 350, y: 350 };
         let sat = { x: 350, y: 350, vx: 0, vy: 0, r: 5 };
 
-        // Mouse Controls
-        canvas.addEventListener('mousedown', (e) => {
-            if(state !== 'aiming') return;
+        // Helper function to get correct coordinates for Mouse AND Touch
+        function getCoords(e) {
             const rect = canvas.getBoundingClientRect();
-            let clickX = e.clientX - rect.left;
-            let clickY = e.clientY - rect.top;
-            
-            // Check if clicking near satellite
-            let dist = Math.hypot(clickX - sat.x, clickY - sat.y);
-            if(dist < 30) {
-                isDragging = true;
+            if (e.touches && e.touches.length > 0) {
+                return { x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top };
+            } else if (e.changedTouches && e.changedTouches.length > 0) {
+                return { x: e.changedTouches[0].clientX - rect.left, y: e.changedTouches[0].clientY - rect.top };
             }
-        });
+            return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+        }
 
-        canvas.addEventListener('mousemove', (e) => {
+        // Unified Event Handlers (Desktop + Mobile)
+        function handleStart(e) {
+            if(state !== 'aiming') return;
+            const coords = getCoords(e);
+            
+            // Increased grab radius to 50 for easier mobile tapping
+            let dist = Math.hypot(coords.x - sat.x, coords.y - sat.y);
+            if(dist < 50) {
+                isDragging = true;
+                if(e.cancelable) e.preventDefault(); // Stop screen scroll
+            }
+        }
+
+        function handleMove(e) {
             if(!isDragging) return;
-            const rect = canvas.getBoundingClientRect();
-            mouseX = e.clientX - rect.left;
-            mouseY = e.clientY - rect.top;
-        });
+            const coords = getCoords(e);
+            mouseX = coords.x;
+            mouseY = coords.y;
+            if(e.cancelable) e.preventDefault(); // Stop screen scroll
+        }
 
-        canvas.addEventListener('mouseup', () => {
+        function handleEnd(e) {
             if(!isDragging) return;
             isDragging = false;
             
-            // Calculate launch velocity based on drag line (opposite direction)
             let dx = sat.x - mouseX;
             let dy = sat.y - mouseY;
             
-            // Limit max power
             sat.vx = dx * 0.05; 
             sat.vy = dy * 0.05;
             
             state = 'flying';
             msg.innerText = "IN TRANSIT...";
-        });
+            if(e.cancelable) e.preventDefault(); // Stop screen scroll
+        }
+
+        // Attach Mouse Events
+        canvas.addEventListener('mousedown', handleStart);
+        canvas.addEventListener('mousemove', handleMove);
+        canvas.addEventListener('mouseup', handleEnd);
         
-        // Expose reset function globally for the button
+        // Attach Touch Events (Mobile)
+        canvas.addEventListener('touchstart', handleStart, {passive: false});
+        canvas.addEventListener('touchmove', handleMove, {passive: false});
+        canvas.addEventListener('touchend', handleEnd, {passive: false});
+        
         window.resetOrbitLevel = function() {
             state = 'aiming';
             sat.x = startPos.x;
@@ -531,18 +547,15 @@
             msg.innerText = "Drag to Aim!";
             msg.style.color = "var(--c-purple)";
             
-            // Randomize planet/target position slightly for replayability
             target.x = Math.random() * 100 + 30;
             target.y = Math.random() * 100 + 30;
             planet.y = Math.random() * 100 + 150;
         }
 
-        // The Main Render Loop
         function gameLoop() {
-            // Clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Draw Target (Green)
+            // Draw Target
             ctx.beginPath();
             ctx.arc(target.x, target.y, target.r, 0, Math.PI * 2);
             ctx.fillStyle = 'rgba(0, 255, 159, 0.3)';
@@ -550,12 +563,11 @@
             ctx.strokeStyle = '#00ff9f';
             ctx.stroke();
 
-            // Draw Planet (Gold Gravity Well)
+            // Draw Planet
             ctx.beginPath();
             ctx.arc(planet.x, planet.y, planet.r, 0, Math.PI * 2);
             ctx.fillStyle = '#ffd166';
             ctx.fill();
-            // Draw gravity aura
             ctx.beginPath();
             ctx.arc(planet.x, planet.y, planet.r * 2.5, 0, Math.PI * 2);
             ctx.fillStyle = 'rgba(255, 209, 102, 0.05)';
@@ -565,7 +577,6 @@
             if (isDragging && state === 'aiming') {
                 ctx.beginPath();
                 ctx.moveTo(sat.x, sat.y);
-                // Draw line in opposite direction of drag to simulate pulling a slingshot
                 let targetX = sat.x + (sat.x - mouseX);
                 let targetY = sat.y + (sat.y - mouseY);
                 ctx.lineTo(targetX, targetY);
@@ -578,13 +589,11 @@
 
             // PHYSICS SIMULATION
             if (state === 'flying') {
-                // 1. Calculate distance between satellite and planet
                 let dx = planet.x - sat.x;
                 let dy = planet.y - sat.y;
                 let distSq = (dx * dx) + (dy * dy);
                 let distance = Math.sqrt(distSq);
 
-                // 2. Apply Gravity F = G * m1*m2 / r^2
                 if (distance > planet.r) { 
                     let force = (G * planet.mass) / distSq;
                     let ax = force * (dx / distance);
@@ -594,20 +603,16 @@
                     sat.vy += ay;
                 }
 
-                // 3. Move Satellite
                 sat.x += sat.vx;
                 sat.y += sat.vy;
 
-                // 4. Collision Detections
-                
-                // Hit Planet (Loss)
+                // Collisions
                 if (distance < planet.r + sat.r) {
                     state = 'lost';
                     msg.innerText = "CRASHED INTO PLANET!";
                     msg.style.color = "var(--c-red)";
                 }
                 
-                // Hit Target (Win)
                 let tDx = target.x - sat.x;
                 let tDy = target.y - sat.y;
                 let tDist = Math.sqrt((tDx * tDx) + (tDy * tDy));
@@ -617,7 +622,6 @@
                     msg.style.color = "var(--c-accent2)";
                 }
                 
-                // Out of Bounds (Loss)
                 if (sat.x < 0 || sat.x > canvas.width || sat.y < 0 || sat.y > canvas.height) {
                     state = 'lost';
                     msg.innerText = "LOST IN DEEP SPACE...";
@@ -625,17 +629,15 @@
                 }
             }
 
-            // Draw Satellite (White)
+            // Draw Satellite
             ctx.beginPath();
             ctx.arc(sat.x, sat.y, sat.r, 0, Math.PI * 2);
             ctx.fillStyle = '#ffffff';
             ctx.fill();
 
-            // Request next frame
             orbitAnimFrame = requestAnimationFrame(gameLoop);
         }
         
-        // Start loop
         gameLoop();
     }
 </script>
