@@ -1,577 +1,412 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard | MYSTEM UniMAP</title>
-  
-  <link rel="icon" type="image/png" href="WhatsApp_Image_2024-12-02_at_15.29.32-removebg-preview.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --c-bg:        #020b14;
-      --c-surface:   #041526;
-      --c-panel:     #071e35;
-      --c-border:    #0d3a5e;
-      --c-accent:    #00c8ff;
-      --c-accent2:   #00ff9f;
-      --c-text:      #d4eaf7;
-      --c-muted:     #5a8ca8;
-      --font-head:   'Orbitron', sans-serif;
-      --font-body:   'Exo 2', sans-serif;
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--c-bg); color: var(--c-text); font-family: var(--font-body); display: flex; min-height: 100vh; }
-    
-    /* Sidebar */
-    .sidebar { width: 250px; background: var(--c-surface); border-right: 1px solid var(--c-border); padding: 24px; display: flex; flex-direction: column; }
-    .brand { font-family: var(--font-head); font-weight: 900; font-size: 18px; color: var(--c-white); margin-bottom: 40px; display: flex; align-items: center; gap: 10px;}
-    .nav-link { display: block; padding: 12px 16px; color: var(--c-muted); text-decoration: none; border-radius: 8px; margin-bottom: 8px; font-weight: 600; transition: 0.2s; cursor: pointer; }
-    .nav-link:hover, .nav-link.active { background: #00c8ff15; color: var(--c-accent); }
-    .logout { margin-top: 12px; color: #ff4d4d; border: 1px solid #ff4d4d33; }
-    .logout:hover { background: #ff4d4d15; color: #ff4d4d; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M² Admin - Committee List</title>
+    <style>
+        :root {
+            --bg-body: #050b14;
+            --bg-sidebar: #08111c;
+            --bg-card: #0a1929;
+            --bg-input: #03070c;
+            --text-main: #ffffff;
+            --text-muted: #6b8299;
+            --accent-cyan: #00d2ff;
+            --accent-cyan-hover: #00b8e6;
+            --accent-red: #ff4c4c;
+            --border-color: #1a2f4c;
+            --sidebar-active-bg: #0d2136;
+        }
 
-    /* Export button in sidebar */
-    .sync-btn {
-      display: block; padding: 12px 16px; border-radius: 8px; margin-bottom: 8px;
-      font-weight: 700; cursor: pointer; border: 1px solid #00ff9f66;
-      background: #00ff9f15; color: var(--c-accent2);
-      font-family: var(--font-body); font-size: 14px;
-      transition: 0.2s; text-align: left;
-    }
-    .sync-btn:hover { background: #00ff9f25; box-shadow: 0 0 16px #00ff9f44; }
-    
-    /* Main Content */
-    .main-content { flex: 1; padding: 40px; overflow-y: auto; }
-    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 1px solid var(--c-border); padding-bottom: 20px; }
-    h1 { font-family: var(--font-head); font-size: 28px; }
-    
-    /* Panels */
-    .view-panel { display: none; } 
-    .view-panel.active { display: block; animation: fadeIn 0.4s ease; } 
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-    /* Editor Panel & Forms */
-    .editor-panel { background: var(--c-panel); border: 1px solid var(--c-border); border-radius: 16px; padding: 30px; max-width: 800px; margin-bottom: 20px; }
-    .form-group { margin-bottom: 20px; }
-    label { display: block; font-size: 12px; color: var(--c-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
-    input, textarea, select { width: 100%; padding: 14px; background: var(--c-bg); border: 1px solid var(--c-border); border-radius: 8px; color: var(--c-text); font-family: var(--font-body); outline: none; transition: 0.3s; }
-    input:focus, textarea:focus, select:focus { border-color: var(--c-accent); box-shadow: 0 0 15px #00c8ff33; }
-    
-    .btn { padding: 14px 28px; background: var(--c-accent); color: var(--c-bg); font-family: var(--font-head); font-weight: 700; text-transform: uppercase; border-radius: 8px; border: none; cursor: pointer; transition: 0.3s; box-shadow: 0 0 15px #00c8ff88; display: inline-block; }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 0 25px #00c8ffcc; }
-    .success-msg { display: none; margin-top: 15px; color: var(--c-accent2); font-weight: 600; font-size: 14px; }
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
 
-    /* Data Tables */
-    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-    th, td { text-align: left; padding: 14px 12px; border-bottom: 1px solid var(--c-border); font-size: 14px; }
-    th { color: var(--c-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; }
-    .action-btn { color: #ff4d4d; background: #ff4d4d15; border: 1px solid #ff4d4d44; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 11px; font-family: var(--font-head); transition: 0.2s; text-transform: uppercase; letter-spacing: .05em;}
-    .action-btn:hover { background: #ff4d4d; color: var(--c-white); }
-    
-    .admin-com-photo { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid var(--c-accent); }
+        /* --- Sidebar Styles --- */
+        .sidebar {
+            width: 250px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+        }
 
-    /* ── EXPORT SYNC MODAL ── */
-    .modal-overlay {
-      display: none; position: fixed; inset: 0; z-index: 999;
-      background: #020b14f5; backdrop-filter: blur(16px);
-      align-items: center; justify-content: center; padding: 20px;
-    }
-    .modal-overlay.open { display: flex; }
-    .modal-box {
-      background: var(--c-panel); border: 1px solid var(--c-accent2);
-      border-radius: 20px; padding: 36px 28px; max-width: 520px; width: 100%;
-      box-shadow: 0 0 50px #00ff9f22; position: relative;
-    }
-    .modal-close {
-      position: absolute; top: 14px; right: 14px;
-      background: var(--c-surface); border: 1px solid var(--c-border);
-      color: var(--c-text); width: 34px; height: 34px; border-radius: 50%;
-      cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center;
-    }
-    .modal-close:hover { border-color: #ff4d4d; color: #ff4d4d; }
-    .key-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
-    .key-pill {
-      padding: 8px 12px; border-radius: 8px; font-size: 11px;
-      background: var(--c-surface); border: 1px solid var(--c-border);
-    }
-    .key-pill .kname { color: var(--c-accent); font-family: var(--font-head); font-size: 9px; letter-spacing: .08em; margin-bottom: 2px; }
-    .key-pill .kval { color: var(--c-muted); }
-    .key-pill.found { border-color: var(--c-accent2); }
-    .key-pill.found .kval { color: var(--c-accent2); }
-    #syncCode {
-      width: 100%; height: 100px; padding: 12px; border-radius: 10px;
-      background: var(--c-bg); border: 1px solid var(--c-border);
-      color: var(--c-accent); font-size: 11px; font-family: monospace;
-      resize: none; outline: none; margin-bottom: 12px; cursor: text;
-    }
-    #syncCode:focus { border-color: var(--c-accent2); }
-    .copy-btn {
-      width: 100%; padding: 14px; border-radius: 10px; border: none; cursor: pointer;
-      background: var(--c-accent2); color: var(--c-bg);
-      font-family: var(--font-head); font-weight: 700; font-size: 12px;
-      letter-spacing: .08em; text-transform: uppercase;
-      box-shadow: 0 0 20px #00ff9f66; transition: .2s;
-    }
-    .copy-btn:hover { box-shadow: 0 0 32px #00ff9fcc; transform: translateY(-1px); }
-    .how-to-box {
-      margin-top: 18px; padding: 14px 16px;
-      background: var(--c-surface); border-radius: 10px; border: 1px solid var(--c-border);
-    }
-    .how-to-box .ht-title { font-family: var(--font-head); font-size: 9px; color: var(--c-muted); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px; }
-    .how-to-box ol { padding-left: 16px; font-size: 12px; color: var(--c-muted); line-height: 2; }
-    .how-to-box ol strong { color: var(--c-accent); }
-  </style>
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            padding: 0 20px 30px;
+            color: var(--text-main);
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .nav-item {
+            padding: 12px 20px;
+            margin: 0 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            color: var(--accent-cyan);
+        }
+
+        .nav-item.active {
+            background-color: var(--sidebar-active-bg);
+            color: var(--accent-cyan);
+        }
+
+        .nav-footer {
+            margin-top: auto;
+            padding: 0 15px;
+        }
+
+        .btn-back {
+            display: block;
+            padding: 12px 20px;
+            color: var(--accent-red);
+            text-decoration: none;
+            font-size: 14px;
+            border: 1px solid rgba(255, 76, 76, 0.2);
+            border-radius: 8px;
+            text-align: left;
+            transition: background 0.3s;
+        }
+
+        .btn-back:hover {
+            background: rgba(255, 76, 76, 0.1);
+        }
+
+        /* --- Main Content Styles --- */
+        .main-content {
+            flex: 1;
+            padding: 30px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: var(--text-main);
+            letter-spacing: 1px;
+        }
+
+        .user-info {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* --- Card Styles --- */
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 25px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .card-header h2 {
+            font-size: 16px;
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .card-header.white-text h2 {
+            color: var(--text-main);
+        }
+
+        /* --- Table Styles --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 15px 0;
+            font-size: 13px;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .member-photo {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: var(--bg-input);
+            border: 1px solid var(--accent-cyan);
+            display: inline-block;
+        }
+
+        .btn-delete {
+            background: transparent;
+            color: var(--accent-red);
+            border: 1px solid rgba(255, 76, 76, 0.4);
+            padding: 6px 15px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+
+        .btn-delete:hover {
+            background: rgba(255, 76, 76, 0.1);
+        }
+
+        /* --- Form Styles --- */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-col {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"], 
+        input[type="file"] {
+            width: 100%;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--accent-cyan);
+        }
+
+        input::placeholder {
+            color: #3a4b61;
+        }
+
+        .file-upload-wrapper {
+            background-color: var(--bg-input);
+            border: 1px dashed var(--border-color);
+            padding: 8px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+        }
+
+        input[type="file"] {
+            border: none;
+            padding: 0;
+            background: transparent;
+        }
+
+        input[type="file"]::file-selector-button {
+            background-color: #e0e0e0;
+            color: #000;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            margin-right: 15px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .section-title {
+            font-size: 14px;
+            color: var(--text-main);
+            margin: 25px 0 15px 0;
+            font-weight: 600;
+        }
+
+        .btn-submit {
+            background-color: var(--accent-cyan);
+            color: #000000;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--accent-cyan-hover);
+        }
+    </style>
 </head>
 <body>
 
-  <!-- ══ EXPORT SYNC MODAL ══ -->
-  <div class="modal-overlay" id="exportModal">
-    <div class="modal-box">
-      <button class="modal-close" onclick="closeExport()">✕</button>
-      <div style="text-align:center;font-size:36px;margin-bottom:10px;">📱</div>
-      <h3 style="font-family:var(--font-head);font-size:17px;color:#fff;text-align:center;margin-bottom:6px;">Export to Phone</h3>
-      <p style="font-size:12px;color:var(--c-muted);text-align:center;line-height:1.7;margin-bottom:18px;">
-        This code carries all your saved data. Paste it once on any device to sync.
-      </p>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">M² ADMIN</div>
+        <ul class="nav-menu">
+            <a class="nav-item">Home Highlight</a>
+            <a class="nav-item">Manage Events</a>
+            <a class="nav-item">Manage Projects</a>
+            <a class="nav-item active">Committee List</a>
+            <a class="nav-item">Community Stories</a>
+        </ul>
+        <div class="nav-footer">
+            <a href="#" class="btn-back">← Back to Site</a>
+        </div>
+    </aside>
 
-      <!-- Data status pills -->
-      <div class="key-grid" id="keyGrid"></div>
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="header">
+            <h1>Committee List</h1>
+            <div class="user-info">Welcome, Executive Admin</div>
+        </header>
 
-      <!-- The sync code -->
-      <textarea id="syncCode" readonly onclick="this.select()" placeholder="Click 'Generate' to create your sync code..."></textarea>
-
-      <button class="copy-btn" id="copyBtn" onclick="copySyncCode()">📋 Copy Sync Code</button>
-      <div id="copyMsg" style="text-align:center;font-size:12px;color:var(--c-accent2);margin-top:8px;min-height:16px;"></div>
-
-      <div class="how-to-box">
-        <div class="ht-title">How to sync to your phone</div>
-        <ol>
-          <li>Click <strong>Copy Sync Code</strong> above</li>
-          <li>Open the main website on your phone</li>
-          <li>Scroll to the very bottom of the page</li>
-          <li>Tap <strong>"Innovating · Inspiring · Impacting"</strong> <strong style="color:var(--c-accent2)">5 times fast</strong></li>
-          <li>Paste the code → tap <strong>Apply &amp; Sync</strong></li>
-          <li>Page reloads with all your data ✅</li>
-        </ol>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══ SIDEBAR ══ -->
-  <div class="sidebar">
-    <div class="brand">M² ADMIN</div>
-    <a class="nav-link active" data-target="view-home">Home Highlight</a>
-    <a class="nav-link" data-target="view-events">Manage Events</a>
-    <a class="nav-link" data-target="view-projects">Manage Projects</a>
-    <a class="nav-link" data-target="view-committee">Committee List</a>
-    <a class="nav-link" data-target="view-stories">Community Stories</a>
-
-    <!-- ★ SYNC EXPORT BUTTON ★ -->
-    <button class="sync-btn" onclick="openExport()">📤 Export Sync Code</button>
-
-    <a href="index.html" class="nav-link logout">← Back to Site</a>
-  </div>
-
-  <!-- ══ MAIN CONTENT AREA ══ -->
-  <div class="main-content">
-    <div class="header">
-      <h1 id="page-title">Edit Main Page Highlight</h1>
-      <div>Welcome, Executive Admin</div>
-    </div>
-
-    <!-- PANEL 1: HOME HIGHLIGHT -->
-    <div id="view-home" class="view-panel active">
-      <div class="editor-panel">
-        <p style="color:var(--c-muted); margin-bottom:20px;">Edit the main landing page text here.</p>
-        <form id="highlightForm">
-          <div class="form-group">
-            <label>Highlight Badge (Text above title)</label>
-            <input type="text" id="badgeText" placeholder="e.g. Official STEM Ambassador Club · UniMAP">
-          </div>
-          <div class="form-group">
-            <label>Main Headline</label>
-            <input type="text" id="headlineText" placeholder="e.g. MYSTEM Ambassador Club">
-          </div>
-          <div class="form-group">
-            <label>Sub-Description</label>
-            <textarea id="subText" rows="4" placeholder="Enter short description here..."></textarea>
-          </div>
-          <button type="submit" class="btn">Update Front Page</button>
-          <div id="msg-home" class="success-msg">✅ Main page updated successfully!</div>
-        </form>
-      </div>
-    </div>
-
-    <!-- PANEL 2: MANAGE EVENTS -->
-    <div id="view-events" class="view-panel">
-      <div class="editor-panel">
-        <h3 style="color: var(--c-accent2);">📋 Current Live Events</h3>
-        <table id="table-events"></table>
-      </div>
-      <div class="editor-panel">
-        <h3>+ Add New Event</h3><br>
-        <form id="eventForm">
-          <div class="form-group"><label>Event Title</label><input type="text" id="evTitle" required></div>
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
-            <div class="form-group"><label>Day (e.g. 15)</label><input type="text" id="evDay" required></div>
-            <div class="form-group"><label>Month & Year (e.g. Jun 2026)</label><input type="text" id="evMonth" required></div>
-          </div>
-          <div class="form-group"><label>Event Type</label><input type="text" id="evType" required></div>
-          <div class="form-group"><label>Location</label><input type="text" id="evLoc" required></div>
-          <div class="form-group">
-            <label>Status</label>
-            <select id="evStatus"><option value="upcoming">Upcoming</option><option value="open">Open</option><option value="past">Completed</option></select>
-          </div>
-          <button type="submit" class="btn">Push Event to Live Site</button>
-          <div id="msg-event" class="success-msg">✅ Event added to main page!</div>
-        </form>
-      </div>
-    </div>
-
-    <!-- PANEL 3: MANAGE PROJECTS -->
-    <div id="view-projects" class="view-panel">
-      <div class="editor-panel">
-        <h3 style="color: var(--c-accent2);">📋 Current Live Projects</h3>
-        <table id="table-projects"></table>
-      </div>
-      <div class="editor-panel">
-        <h3>+ Add New Project Showcase</h3><br>
-        <form id="projectForm">
-          <div class="form-group"><label>Project Name</label><input type="text" id="projTitle" required></div>
-          <div class="form-group"><label>Project Description</label><textarea id="projDesc" rows="3" required></textarea></div>
-          <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px;">
-            <div class="form-group"><label>Year</label><input type="text" id="projYear" required></div>
-            <div class="form-group"><label>Badge Text</label><input type="text" id="projBadge" required></div>
-            <div class="form-group"><label>Icon / Emoji</label><input type="text" id="projIcon" required></div>
-          </div>
-          <button type="submit" class="btn">Add Project</button>
-          <div id="msg-project" class="success-msg">✅ Project added to portfolio!</div>
-        </form>
-      </div>
-    </div>
-
-    <!-- PANEL 4: COMMITTEE LIST -->
-    <div id="view-committee" class="view-panel">
-      <div class="editor-panel">
-        <h3 style="color: var(--c-accent2);">📋 Current Committee Members</h3>
-        <table id="table-committee"></table>
-      </div>
-      <div class="editor-panel">
-        <h3>+ Add Committee Member</h3><br>
-        <form id="committeeForm">
-          <div class="form-group">
-            <label>Full Name</label>
-            <input type="text" id="comName" required>
-          </div>
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; align-items: center;">
-            <div class="form-group">
-              <label>Role</label>
-              <input type="text" id="comRole" placeholder="e.g. President" required>
+        <!-- Current Members Table Card -->
+        <section class="card">
+            <div class="card-header">
+                <span>📋</span>
+                <h2>Current Committee Members</h2>
             </div>
-            <div class="form-group">
-              <label>Upload Member Photo</label>
-              <input type="file" id="comPhoto" accept="image/*" style="padding: 10px; background: transparent; border: 1px dashed var(--c-border); cursor: pointer;" required />
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">PHOTO</th>
+                        <th>NAME</th>
+                        <th>ROLE</th>
+                        <th style="text-align: right;">ACTION</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="member-photo"></div>
+                        </td>
+                        <td>ANAS ZUHAIRI BIN ZULLKEFFLE</td>
+                        <td>PRESIDENT</td>
+                        <td style="text-align: right;">
+                            <button class="btn-delete">DELETE</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Add Member Form Card -->
+        <section class="card">
+            <div class="card-header white-text">
+                <h2>+ Add Committee Member</h2>
             </div>
-          </div>
-          <h4 style="margin: 10px 0 15px; color: var(--c-white); font-family: var(--font-head); font-size: 14px;">Social Links (Optional)</h4>
-          <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px;">
-            <div class="form-group"><label>Instagram Link</label><input type="text" id="comIg"></div>
-            <div class="form-group"><label>LinkedIn Link</label><input type="text" id="comLi"></div>
-            <div class="form-group"><label>WhatsApp Number</label><input type="text" id="comWa"></div>
-          </div>
-          <button type="submit" class="btn">Add to Committee List</button>
-          <div id="msg-com" class="success-msg">✅ Member added with photo!</div>
-        </form>
-      </div>
-    </div>
+            
+            <form>
+                <div class="form-group">
+                    <label>FULL NAME</label>
+                    <input type="text">
+                </div>
 
-    <!-- PANEL 5: COMMUNITY STORIES -->
-    <div id="view-stories" class="view-panel">
-      <div class="editor-panel">
-        <h3 style="color: var(--c-accent2);">📋 Moderation: Community Stories</h3>
-        <table id="table-stories"></table>
-      </div>
-    </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <label>ROLE</label>
+                        <input type="text" placeholder="e.g. President">
+                    </div>
+                    <div class="form-col">
+                        <label>UPLOAD MEMBER PHOTO</label>
+                        <div class="file-upload-wrapper">
+                            <input type="file">
+                        </div>
+                    </div>
+                </div>
 
-  </div>
+                <div class="section-title">Social Links (Optional)</div>
+                
+                <div class="form-row" style="margin-bottom: 10px;">
+                    <div class="form-col">
+                        <label>INSTAGRAM LINK</label>
+                        <input type="text">
+                    </div>
+                    <div class="form-col">
+                        <label>LINKEDIN LINK</label>
+                        <input type="text">
+                    </div>
+                    <div class="form-col">
+                        <label>WHATSAPP NUMBER</label>
+                        <input type="text">
+                    </div>
+                </div>
 
-  <script>
-    /* ── TAB SWITCHING ── */
-    const navLinks = document.querySelectorAll('.nav-link:not(.logout)');
-    const panels = document.querySelectorAll('.view-panel');
-    const pageTitle = document.getElementById('page-title');
+                <button type="submit" class="btn-submit">ADD TO COMMITTEE LIST</button>
+            </form>
+        </section>
+    </main>
 
-    navLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        navLinks.forEach(l => l.classList.remove('active'));
-        panels.forEach(p => p.classList.remove('active'));
-        this.classList.add('active');
-        document.getElementById(this.getAttribute('data-target')).classList.add('active');
-        pageTitle.innerText = this.innerText;
-      });
-    });
-
-    /* ── LOAD EXISTING HIGHLIGHT DATA ── */
-    window.addEventListener('DOMContentLoaded', () => {
-      const savedBadge = localStorage.getItem('mystem_badge');
-      const savedHead  = localStorage.getItem('mystem_headline');
-      const savedDesc  = localStorage.getItem('mystem_desc');
-      if (savedBadge) document.getElementById('badgeText').value   = savedBadge;
-      if (savedHead)  document.getElementById('headlineText').value = savedHead;
-      if (savedDesc)  document.getElementById('subText').value      = savedDesc;
-      renderAdminTables();
-    });
-
-    /* ── RENDER ADMIN TABLES ── */
-    function renderAdminTables() {
-      const events = JSON.parse(localStorage.getItem('mystem_events')) || [];
-      const evTable = document.getElementById('table-events');
-      if (events.length === 0) evTable.innerHTML = '<tr><td>No events added yet.</td></tr>';
-      else {
-        let html = '<tr><th>Title</th><th>Date</th><th>Type</th><th>Action</th></tr>';
-        events.forEach((ev, idx) => {
-          html += `<tr><td>${ev.title}</td><td>${ev.day} ${ev.month}</td><td>${ev.type}</td>
-                   <td><button class="action-btn" onclick="deleteItem('mystem_events',${idx})">Delete</button></td></tr>`;
-        });
-        evTable.innerHTML = html;
-      }
-
-      const projects = JSON.parse(localStorage.getItem('mystem_projects')) || [];
-      const projTable = document.getElementById('table-projects');
-      if (projects.length === 0) projTable.innerHTML = '<tr><td>No projects added yet.</td></tr>';
-      else {
-        let html = '<tr><th>Project Name</th><th>Year</th><th>Badge</th><th>Action</th></tr>';
-        projects.forEach((proj, idx) => {
-          html += `<tr><td>${proj.title}</td><td>${proj.year}</td><td>${proj.badge}</td>
-                   <td><button class="action-btn" onclick="deleteItem('mystem_projects',${idx})">Delete</button></td></tr>`;
-        });
-        projTable.innerHTML = html;
-      }
-
-      const committee = JSON.parse(localStorage.getItem('mystem_committee')) || [];
-      const comTable = document.getElementById('table-committee');
-      if (committee.length === 0) comTable.innerHTML = '<tr><td>No members added yet.</td></tr>';
-      else {
-        let html = '<tr><th>Photo</th><th>Name</th><th>Role</th><th>Action</th></tr>';
-        committee.forEach((com, idx) => {
-          html += `<tr>
-                     <td><img src="${com.photo}" class="admin-com-photo" alt="Photo"></td>
-                     <td>${com.name}</td><td>${com.role}</td>
-                     <td><button class="action-btn" onclick="deleteItem('mystem_committee',${idx})">Delete</button></td>
-                   </tr>`;
-        });
-        comTable.innerHTML = html;
-      }
-
-      const stories = JSON.parse(localStorage.getItem('mystem_experiences')) || [];
-      const storyTable = document.getElementById('table-stories');
-      if (stories.length === 0) storyTable.innerHTML = '<tr><td>No stories submitted yet.</td></tr>';
-      else {
-        let html = '<tr><th>Name</th><th>Story Snippet</th><th>Action</th></tr>';
-        stories.forEach((story, idx) => {
-          let snippet = story.text.length > 50 ? story.text.substring(0, 50) + '...' : story.text;
-          html += `<tr><td>${story.name}</td><td style="font-style:italic;">"${snippet}"</td>
-                   <td><button class="action-btn" onclick="deleteItem('mystem_experiences',${idx})">Delete</button></td></tr>`;
-        });
-        storyTable.innerHTML = html;
-      }
-    }
-
-    /* ── DELETE ── */
-    window.deleteItem = function(storageKey, index) {
-      if (confirm("Are you sure you want to delete this?")) {
-        let items = JSON.parse(localStorage.getItem(storageKey)) || [];
-        items.splice(index, 1);
-        localStorage.setItem(storageKey, JSON.stringify(items));
-        renderAdminTables();
-      }
-    };
-
-    /* ── SAVE HELPER ── */
-    function saveToArray(storageKey, newItem, msgId) {
-      try {
-        let items = JSON.parse(localStorage.getItem(storageKey)) || [];
-        items.unshift(newItem);
-        localStorage.setItem(storageKey, JSON.stringify(items));
-        const msg = document.getElementById(msgId);
-        msg.style.display = 'block';
-        setTimeout(() => msg.style.display = 'none', 3000);
-        renderAdminTables();
-      } catch (error) {
-        console.error(error);
-        alert("❌ ERROR: Storage is full! Upload a smaller image or delete old items first.");
-      }
-    }
-
-    /* ── IMAGE COMPRESSOR ── */
-    function compressImage(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = (event) => {
-          const img = new Image();
-          img.src = event.target.result;
-          img.onload = () => {
-            const canvas = document.createElement('canvas');
-            const MAX = 400;
-            let w = img.width, h = img.height;
-            if (w > h) { if (w > MAX) { h *= MAX / w; w = MAX; } }
-            else       { if (h > MAX) { w *= MAX / h; h = MAX; } }
-            canvas.width = w; canvas.height = h;
-            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-            resolve(canvas.toDataURL('image/jpeg', 0.7));
-          };
-        };
-        reader.onerror = error => reject(error);
-      });
-    }
-
-    /* ── FORM SUBMITS ── */
-    document.getElementById('highlightForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      localStorage.setItem('mystem_badge',    document.getElementById('badgeText').value);
-      localStorage.setItem('mystem_headline', document.getElementById('headlineText').value);
-      localStorage.setItem('mystem_desc',     document.getElementById('subText').value);
-      const msg = document.getElementById('msg-home');
-      msg.style.display = 'block';
-      setTimeout(() => msg.style.display = 'none', 3000);
-    });
-
-    document.getElementById('eventForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      saveToArray('mystem_events', {
-        title:  document.getElementById('evTitle').value,
-        day:    document.getElementById('evDay').value,
-        month:  document.getElementById('evMonth').value,
-        type:   document.getElementById('evType').value,
-        loc:    document.getElementById('evLoc').value,
-        status: document.getElementById('evStatus').value
-      }, 'msg-event');
-      this.reset();
-    });
-
-    document.getElementById('projectForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      saveToArray('mystem_projects', {
-        title: document.getElementById('projTitle').value,
-        desc:  document.getElementById('projDesc').value,
-        year:  document.getElementById('projYear').value,
-        badge: document.getElementById('projBadge').value,
-        icon:  document.getElementById('projIcon').value
-      }, 'msg-project');
-      this.reset();
-    });
-
-    document.getElementById('committeeForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const fileInput = document.getElementById('comPhoto');
-      const submitBtn = this.querySelector('button[type="submit"]');
-      submitBtn.innerText = "Processing Image...";
-      submitBtn.style.opacity = "0.7";
-      let photoBase64 = '';
-      if (fileInput.files.length > 0) photoBase64 = await compressImage(fileInput.files[0]);
-      saveToArray('mystem_committee', {
-        name:  document.getElementById('comName').value,
-        role:  document.getElementById('comRole').value,
-        photo: photoBase64,
-        ig:    document.getElementById('comIg').value,
-        li:    document.getElementById('comLi').value,
-        wa:    document.getElementById('comWa').value
-      }, 'msg-com');
-      this.reset();
-      submitBtn.innerText = "Add to Committee List";
-      submitBtn.style.opacity = "1";
-    });
-
-    /* ════════════════════════════════════════════
-       ★ EXPORT SYNC CODE SYSTEM ★
-       Packages all localStorage data into a
-       base64 string the phone can import.
-    ════════════════════════════════════════════ */
-    const SYNC_KEYS = [
-      'mystem_committee',
-      'mystem_events',
-      'mystem_projects',
-      'mystem_badge',
-      'mystem_headline',
-      'mystem_desc'
-    ];
-
-    function openExport() {
-      // Build status pills
-      const grid = document.getElementById('keyGrid');
-      grid.innerHTML = SYNC_KEYS.map(k => {
-        const val = localStorage.getItem(k);
-        let preview = 'empty';
-        let found = false;
-        if (val) {
-          found = true;
-          try {
-            const p = JSON.parse(val);
-            preview = Array.isArray(p) ? `${p.length} item${p.length !== 1 ? 's' : ''}` : (val.length > 24 ? val.slice(0,24)+'…' : val);
-          } catch { preview = val.length > 24 ? val.slice(0,24)+'…' : val; }
-        }
-        return `<div class="key-pill ${found ? 'found' : ''}">
-          <div class="kname">${k.replace('mystem_','')}</div>
-          <div class="kval">${preview}</div>
-        </div>`;
-      }).join('');
-
-      // Generate sync code
-      const data = {};
-      let count = 0;
-      SYNC_KEYS.forEach(k => {
-        const v = localStorage.getItem(k);
-        if (v) { data[k] = v; count++; }
-      });
-
-      const ta = document.getElementById('syncCode');
-      const copyBtn = document.getElementById('copyBtn');
-      const copyMsg = document.getElementById('copyMsg');
-      copyMsg.textContent = '';
-
-      if (count === 0) {
-        ta.value = '';
-        ta.placeholder = '⚠️ No data found. Add committee members, events, or projects first.';
-        copyBtn.style.opacity = '0.4';
-        copyBtn.style.pointerEvents = 'none';
-      } else {
-        ta.value = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
-        ta.placeholder = '';
-        copyBtn.style.opacity = '1';
-        copyBtn.style.pointerEvents = 'auto';
-      }
-
-      document.getElementById('exportModal').classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeExport() {
-      document.getElementById('exportModal').classList.remove('open');
-      document.body.style.overflow = '';
-    }
-
-    function copySyncCode() {
-      const ta = document.getElementById('syncCode');
-      if (!ta.value) return;
-      navigator.clipboard.writeText(ta.value).then(() => {
-        const msg = document.getElementById('copyMsg');
-        msg.textContent = '✅ Copied! Now go to your phone and tap the footer badge 5 times.';
-        msg.style.color = 'var(--c-accent2)';
-      }).catch(() => {
-        // Fallback for browsers that block clipboard
-        ta.select();
-        document.execCommand('copy');
-        document.getElementById('copyMsg').textContent = '✅ Copied!';
-      });
-    }
-
-    // Close modal if clicking outside
-    document.getElementById('exportModal').addEventListener('click', function(e) {
-      if (e.target === this) closeExport();
-    });
-  </script>
 </body>
 </html>
