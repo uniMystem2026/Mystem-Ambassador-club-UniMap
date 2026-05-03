@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>M² Admin - Committee List</title>
+    <title>M² Admin - Dashboard</title>
     <style>
         :root {
             --bg-body: #050b14;
@@ -67,7 +67,7 @@
             font-size: 14px;
             font-weight: 500;
             transition: all 0.3s ease;
-            cursor: pointer;
+            display: block; 
         }
 
         .nav-item:hover {
@@ -129,12 +129,28 @@
             color: var(--text-muted);
         }
 
+        /* --- Section Switching Logic --- */
+        .content-section {
+            display: none; /* Hide all sections by default */
+            animation: fadeIn 0.3s ease;
+        }
+
+        .content-section.active {
+            display: block; /* Only show the active section */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* --- Card Styles --- */
         .card {
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 10px;
             padding: 25px;
+            margin-bottom: 20px;
         }
 
         .card-header {
@@ -267,6 +283,7 @@
             border: none;
             padding: 0;
             background: transparent;
+            color: var(--text-muted);
         }
 
         input[type="file"]::file-selector-button {
@@ -312,13 +329,14 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="logo">M² ADMIN</div>
-        <ul class="nav-menu">
-            <a class="nav-item">Home Highlight</a>
-            <a class="nav-item">Manage Events</a>
-            <a class="nav-item">Manage Projects</a>
-            <a class="nav-item active">Committee List</a>
-            <a class="nav-item">Community Stories</a>
-        </ul>
+        <div class="nav-menu">
+            <!-- data-target links the button to the section ID below -->
+            <a href="#" class="nav-item" data-target="home-highlight">Home Highlight</a>
+            <a href="#" class="nav-item" data-target="manage-events">Manage Events</a>
+            <a href="#" class="nav-item" data-target="manage-projects">Manage Projects</a>
+            <a href="#" class="nav-item active" data-target="committee-list">Committee List</a>
+            <a href="#" class="nav-item" data-target="community-stories">Community Stories</a>
+        </div>
         <div class="nav-footer">
             <a href="#" class="btn-back">← Back to Site</a>
         </div>
@@ -327,86 +345,166 @@
     <!-- Main Content -->
     <main class="main-content">
         <header class="header">
-            <h1>Committee List</h1>
+            <h1 id="page-title">Committee List</h1>
             <div class="user-info">Welcome, Executive Admin</div>
         </header>
 
-        <!-- Current Members Table Card -->
-        <section class="card">
-            <div class="card-header">
-                <span>📋</span>
-                <h2>Current Committee Members</h2>
+        <!-- VIEWS START HERE -->
+
+        <!-- 1. Home Highlight View -->
+        <section id="home-highlight" class="content-section">
+            <div class="card">
+                <div class="card-header white-text">
+                    <h2>Home Highlight Details</h2>
+                </div>
+                <p style="color: var(--text-muted); font-size: 14px;">This is the home highlight editing page. Content goes here.</p>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 80px;">PHOTO</th>
-                        <th>NAME</th>
-                        <th>ROLE</th>
-                        <th style="text-align: right;">ACTION</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <div class="member-photo"></div>
-                        </td>
-                        <td>ANAS ZUHAIRI BIN ZULLKEFFLE</td>
-                        <td>PRESIDENT</td>
-                        <td style="text-align: right;">
-                            <button class="btn-delete">DELETE</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
         </section>
 
-        <!-- Add Member Form Card -->
-        <section class="card">
-            <div class="card-header white-text">
-                <h2>+ Add Committee Member</h2>
-            </div>
-            
-            <form>
-                <div class="form-group">
-                    <label>FULL NAME</label>
-                    <input type="text">
+        <!-- 2. Manage Events View -->
+        <section id="manage-events" class="content-section">
+            <div class="card">
+                <div class="card-header white-text">
+                    <h2>Manage Your Events</h2>
                 </div>
+                <p style="color: var(--text-muted); font-size: 14px;">Event management list and tools will go here.</p>
+            </div>
+        </section>
 
-                <div class="form-row">
-                    <div class="form-col">
-                        <label>ROLE</label>
-                        <input type="text" placeholder="e.g. President">
+        <!-- 3. Manage Projects View -->
+        <section id="manage-projects" class="content-section">
+            <div class="card">
+                <div class="card-header white-text">
+                    <h2>Project Dashboard</h2>
+                </div>
+                <p style="color: var(--text-muted); font-size: 14px;">Project tracking and updates go here.</p>
+            </div>
+        </section>
+
+        <!-- 4. Committee List View (Currently Active) -->
+        <section id="committee-list" class="content-section active">
+            <!-- Current Members Table Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span>📋</span>
+                    <h2>Current Committee Members</h2>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 80px;">PHOTO</th>
+                            <th>NAME</th>
+                            <th>ROLE</th>
+                            <th style="text-align: right;">ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="member-photo"></div>
+                            </td>
+                            <td>ANAS ZUHAIRI BIN ZULLKEFFLE</td>
+                            <td>PRESIDENT</td>
+                            <td style="text-align: right;">
+                                <button class="btn-delete">DELETE</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Add Member Form Card -->
+            <div class="card">
+                <div class="card-header white-text">
+                    <h2>+ Add Committee Member</h2>
+                </div>
+                
+                <form>
+                    <div class="form-group">
+                        <label>FULL NAME</label>
+                        <input type="text">
                     </div>
-                    <div class="form-col">
-                        <label>UPLOAD MEMBER PHOTO</label>
-                        <div class="file-upload-wrapper">
-                            <input type="file">
+
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label>ROLE</label>
+                            <input type="text" placeholder="e.g. President">
+                        </div>
+                        <div class="form-col">
+                            <label>UPLOAD MEMBER PHOTO</label>
+                            <div class="file-upload-wrapper">
+                                <input type="file">
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="section-title">Social Links (Optional)</div>
-                
-                <div class="form-row" style="margin-bottom: 10px;">
-                    <div class="form-col">
-                        <label>INSTAGRAM LINK</label>
-                        <input type="text">
+                    <div class="section-title">Social Links (Optional)</div>
+                    
+                    <div class="form-row" style="margin-bottom: 10px;">
+                        <div class="form-col">
+                            <label>INSTAGRAM LINK</label>
+                            <input type="text">
+                        </div>
+                        <div class="form-col">
+                            <label>LINKEDIN LINK</label>
+                            <input type="text">
+                        </div>
+                        <div class="form-col">
+                            <label>WHATSAPP NUMBER</label>
+                            <input type="text">
+                        </div>
                     </div>
-                    <div class="form-col">
-                        <label>LINKEDIN LINK</label>
-                        <input type="text">
-                    </div>
-                    <div class="form-col">
-                        <label>WHATSAPP NUMBER</label>
-                        <input type="text">
-                    </div>
-                </div>
 
-                <button type="submit" class="btn-submit">ADD TO COMMITTEE LIST</button>
-            </form>
+                    <button type="button" class="btn-submit">ADD TO COMMITTEE LIST</button>
+                </form>
+            </div>
         </section>
+
+        <!-- 5. Community Stories View -->
+        <section id="community-stories" class="content-section">
+            <div class="card">
+                <div class="card-header white-text">
+                    <h2>Community Stories</h2>
+                </div>
+                <p style="color: var(--text-muted); font-size: 14px;">Manage community blog posts and stories here.</p>
+            </div>
+        </section>
+
     </main>
 
+    <!-- JavaScript to handle switching tabs -->
+    <script>
+        // Select all the navigation links and all the content sections
+        const navLinks = document.querySelectorAll('.nav-item');
+        const contentSections = document.querySelectorAll('.content-section');
+        const pageTitle = document.getElementById('page-title');
+
+        // Add a click event to each navigation link
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault(); // Stop the page from jumping
+
+                // 1. Remove the "active" highlight from all menu items
+                navLinks.forEach(nav => nav.classList.remove('active'));
+                
+                // 2. Add the "active" highlight to the one we just clicked
+                this.classList.add('active');
+
+                // 3. Find out which section this link is supposed to open (using data-target)
+                const targetSectionId = this.getAttribute('data-target');
+
+                // 4. Change the Header Title to match the link text
+                pageTitle.textContent = this.textContent;
+
+                // 5. Hide all content sections
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+
+                // 6. Show the specific content section we targeted
+                document.getElementById(targetSectionId).classList.add('active');
+            });
+        });
+    </script>
 </body>
 </html>
