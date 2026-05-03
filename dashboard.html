@@ -67,7 +67,7 @@
             font-size: 14px;
             font-weight: 500;
             transition: all 0.3s ease;
-            display: block; /* Ensures the whole area is clickable */
+            cursor: pointer;
         }
 
         .nav-item:hover {
@@ -267,7 +267,6 @@
             border: none;
             padding: 0;
             background: transparent;
-            color: var(--text-muted);
         }
 
         input[type="file"]::file-selector-button {
@@ -313,14 +312,13 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="logo">M² ADMIN</div>
-        <div class="nav-menu">
-            <!-- Added href="#" to make links clickable -->
-            <a href="#" class="nav-item">Home Highlight</a>
-            <a href="#" class="nav-item">Manage Events</a>
-            <a href="#" class="nav-item">Manage Projects</a>
-            <a href="#" class="nav-item active">Committee List</a>
-            <a href="#" class="nav-item">Community Stories</a>
-        </div>
+        <ul class="nav-menu">
+            <a class="nav-item">Home Highlight</a>
+            <a class="nav-item">Manage Events</a>
+            <a class="nav-item">Manage Projects</a>
+            <a class="nav-item active">Committee List</a>
+            <a class="nav-item">Community Stories</a>
+        </ul>
         <div class="nav-footer">
             <a href="#" class="btn-back">← Back to Site</a>
         </div>
@@ -405,7 +403,7 @@
                     </div>
                 </div>
 
-                <button type="button" class="btn-submit">ADD TO COMMITTEE LIST</button>
+                <button type="submit" class="btn-submit">ADD TO COMMITTEE LIST</button>
             </form>
         </section>
     </main>
