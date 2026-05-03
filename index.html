@@ -132,6 +132,15 @@
       border: 1px solid var(--c-accent);
     }
     .btn-outline:hover { background: #00c8ff14; box-shadow: var(--glow-blue); }
+    
+    /* ADDED FOR STEM GAMES BUTTON */
+    .btn-outline-cyan {
+      background: rgba(0, 200, 255, 0.05); color: var(--c-accent);
+      border: 1px solid var(--c-accent);
+      box-shadow: inset 0 0 10px rgba(0, 200, 255, 0.1);
+    }
+    .btn-outline-cyan:hover { background: rgba(0, 200, 255, 0.15); box-shadow: var(--glow-blue); }
+
     .btn-green {
       background: var(--c-accent2); color: var(--c-bg);
       box-shadow: var(--glow-green);
@@ -708,6 +717,7 @@
   <a href="#events"   onclick="closeMobileMenu()">Events</a>
   <a href="#team"     onclick="closeMobileMenu()">Team</a>
   <a href="#share"    onclick="closeMobileMenu()">Stories</a>
+  <a href="stem-games.html" onclick="closeMobileMenu()">STEM Games</a> <!-- Added to Mobile -->
   <a href="#contact"  onclick="closeMobileMenu()">Contact</a>
 </div>
 
@@ -766,6 +776,9 @@
       <a href="#programs" class="btn btn-primary">Explore Programs ↓</a>
       <a href="#projects" class="btn btn-green">Our Projects</a>
       <a href="#share"    class="btn btn-outline">Community Stories</a>
+      
+      <!-- ADDED NEW STEM GAMES BUTTON HERE -->
+      <a href="stem-games.html" class="btn btn-outline-cyan">🎮 STEM Education Games</a>
     </div>
     <div class="hero-stats">
       <div class="hero-stat">
@@ -1079,6 +1092,7 @@
         <ul class="footer-links-list">
           <li><a href="#team">Our Team</a></li>
           <li><a href="#share">Community Stories</a></li>
+          <li><a href="stem-games.html">STEM Games</a></li> <!-- Added to Footer -->
           <li><a href="#contact">Contact</a></li>
           <li><a href="admin.html" style="color:var(--c-accent);">Admin Login 🔒</a></li>
         </ul>
@@ -1201,7 +1215,6 @@
         if (Array.isArray(parsed)) console.log(`[MYSTEM] "${k}" → array of ${parsed.length} items`, parsed[0]);
       } catch(e) {}
     });
-
 
     // Hero badge/headline/desc overrides from admin
     const savedBadge = localStorage.getItem('mystem_badge');
