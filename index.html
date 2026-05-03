@@ -139,10 +139,13 @@
     /* ─── HERO ──────────────────────────────────────── */
     #hero { min-height: 100svh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 100px 16px 80px; position: relative; overflow: hidden; }
     @media (min-width: 768px) { #hero { padding: 120px 24px 80px; } }
-    .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 999px; border: 1px solid var(--c-accent); font-family: var(--font-head); font-size: 9px; letter-spacing: .12em; color: var(--c-accent); text-transform: uppercase; margin-bottom: 20px; animation: fade-up .8s ease both; }
+    
+    /* FIXED: Removed text-transform uppercase to allow UniMAP capitalization */
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 999px; border: 1px solid var(--c-accent); font-family: var(--font-head); font-size: 9px; letter-spacing: .12em; color: var(--c-accent); margin-bottom: 20px; animation: fade-up .8s ease both; }
     @media (min-width: 768px) { .hero-badge { font-size: 10px; letter-spacing: .15em; margin-bottom: 28px; } }
     .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c-accent2); box-shadow: var(--glow-green); animation: pulse 2s ease infinite; }
     @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .5; transform: scale(1.4); } }
+    
     .hero-title { font-family: var(--font-head); font-size: clamp(32px, 10vw, 88px); font-weight: 900; line-height: 1.04; letter-spacing: -.02em; margin-bottom: 20px; animation: fade-up .9s .1s ease both; }
     .hero-title .line-accent { color: var(--c-accent); text-shadow: var(--glow-blue); }
     .hero-title .line-green  { color: var(--c-accent2); text-shadow: var(--glow-green); }
@@ -243,7 +246,7 @@
     @media (min-width: 600px) { .event-status { align-self: center; } }
     .status-upcoming { background: #00ff9f18; color: var(--c-accent2); border: 1px solid var(--c-accent2); }
 
-    /* ─── TEAM ──────────────────────────────────────── */
+    /* ─── TEAM (FIXED: SQUARE AVATARS & BULLETPROOF SVG SIZES) ─── */
     #team { background: linear-gradient(180deg, var(--c-bg) 0%, var(--c-surface) 100%); }
     .team-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
     @media (min-width: 480px) { .team-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
@@ -288,6 +291,7 @@
       max-height: 16px !important; 
       stroke: currentColor !important; 
       fill: none !important; 
+      flex-shrink: 0;
     }
     
     .social-btn:hover { border-color: var(--c-accent); background: #00c8ff18; color: var(--c-accent); box-shadow: var(--glow-blue); }
@@ -427,7 +431,7 @@
   <div class="z1">
     <div class="hero-badge">
       <span class="dot"></span>
-      Official STEM Ambassador Club · UniMAP
+      OFFICIAL STEM AMBASSADOR CLUB · UniMAP
     </div>
     <h1 class="hero-title">
       <span class="line-accent">MYSTEM</span><br/>
@@ -643,7 +647,7 @@
   </div>
 </section>
 
-<!-- ═══════════════ TEAM ═══════════════ -->
+<!-- ═══════════════ TEAM (HARDCODED) ═══════════════ -->
 <section id="team" class="section" style="background:var(--c-surface);">
   <div class="container z1">
     <div style="text-align:center;margin-bottom:40px;" class="reveal">
@@ -651,34 +655,34 @@
       <h2 class="section-title">Executive Committee 25/26</h2>
       <div class="divider" style="margin:16px auto 0;"></div>
     </div>
-
-    <!-- 🌟 REPAIRED TEAM GRID 🌟 -->
+    
     <div class="team-grid">
       
       <!-- TEAM MEMBER 1: ANAS -->
       <div class="team-card reveal visible" style="border-color:var(--c-gold);">
         <div class="team-avatar" style="background:linear-gradient(135deg,#ffd16622,#ffd16644);padding:0;">
-          <img src="image_098040.png" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" alt="Anas Zuhairi Bin Zullkeffle">
+          <!-- Using your actual uploaded photo name -->
+          <!-- We add onerror so if the image file isn't uploaded properly, it defaults to a clean emoji instead of breaking layout -->
+          <img src="WhatsApp_Image_2026-05-03_at_23.14.53.jpeg" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" alt="Anas" onerror="this.outerHTML='<span style=\'font-size:35px;\'>👨‍💻</span>'">
         </div>
         <div class="team-name">ANAS ZUHAIRI BIN ZULLKEFFLE</div>
         <div class="team-role">PRESIDENT</div>
         <div class="team-dept">MYSTEM UniMAP</div>
         <div class="team-social">
           <a href="#" target="_blank" class="social-btn" title="Instagram">
-            <svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
           </a>
           <a href="#" target="_blank" class="social-btn" title="LinkedIn">
-            <svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
           </a>
           <a href="#" target="_blank" class="social-btn" title="WhatsApp">
-            <svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
           </a>
         </div>
       </div>
       <!-- END TEAM MEMBER 1 -->
 
     </div>
-
   </div>
 </section>
 
@@ -970,29 +974,10 @@
       });
     }
 
-    // Projects
-    const projects = JSON.parse(localStorage.getItem('mystem_projects'));
-    if (projects && projects.length > 0) {
-      const projectContainer = document.querySelector('.projects-grid');
-      projects.forEach(proj => {
-        const html = `
-          <div class="proj-card reveal visible" style="border-color:var(--c-accent2);">
-            <div class="proj-banner" style="background:linear-gradient(135deg,#041526,#0a3d62);">${proj.icon}</div>
-            <div class="proj-body">
-              <div class="proj-meta">
-                <span class="proj-badge">${proj.badge}</span>
-                <span class="proj-year">${proj.year}</span>
-              </div>
-              <h3 class="proj-title">${proj.title}</h3>
-              <p class="proj-desc">${proj.desc}</p>
-            </div>
-          </div>`;
-        projectContainer.insertAdjacentHTML('afterbegin', html);
-      });
-    }
-
     // Experiences wall
     loadExperiences();
+    
+    /* Javascript Team overrides removed to keep the HTML team structure active! */
   });
 </script>
 </body>
