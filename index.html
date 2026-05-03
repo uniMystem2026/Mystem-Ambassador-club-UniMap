@@ -180,17 +180,26 @@
     @media (min-width: 600px) { .event-status { align-self: center; } }
     .status-upcoming { background: #00ff9f18; color: var(--c-accent2); border: 1px solid var(--c-accent2); }
 
-    /* ─── TEAM (SQUARE AVATARS & SVG SIZES) ─── */
+    /* ─── TEAM (DYNAMIC ONLY) ─── */
     #team { background: linear-gradient(180deg, var(--c-bg) 0%, var(--c-surface) 100%); }
     .team-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
     @media (min-width: 480px) { .team-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
     @media (min-width: 768px) { .team-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
     @media (min-width: 1024px) { .team-grid { grid-template-columns: repeat(4, 1fr); gap: 24px; } }
 
-    .team-card { background: var(--c-panel); border: 1px solid var(--c-border); border-radius: 16px; padding: 20px 14px; text-align: center; transition: transform .3s, border-color .3s, box-shadow .3s; }
+    .team-card {
+      background: var(--c-panel); border: 1px solid var(--c-border);
+      border-radius: 16px; padding: 20px 14px; text-align: center;
+      transition: transform .3s, border-color .3s, box-shadow .3s;
+    }
     .team-card:hover { transform: translateY(-4px); border-color: var(--c-accent); box-shadow: var(--glow-blue); }
     
-    .team-avatar { width: 80px; height: 80px; border-radius: 12px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; font-family: var(--font-head); border: 2px solid var(--c-accent); box-shadow: var(--glow-blue); overflow: hidden; }
+    .team-avatar {
+      width: 80px; height: 80px; border-radius: 12px;
+      margin: 0 auto 12px; display: flex; align-items: center; justify-content: center;
+      font-size: 26px; font-weight: 900; font-family: var(--font-head);
+      border: 2px solid var(--c-accent); box-shadow: var(--glow-blue); overflow: hidden;
+    }
     @media (min-width: 768px) { .team-avatar { width: 100px; height: 100px; font-size: 32px; } }
     
     .team-name   { font-family: var(--font-head); font-size: 11px; font-weight: 700; color: var(--c-white); margin-bottom: 3px; text-transform: uppercase; }
@@ -208,6 +217,7 @@
     .exp-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
     @media (min-width: 600px) { .exp-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (min-width: 900px) { .exp-grid { grid-template-columns: repeat(3, 1fr); } }
+
     .exp-card { background: var(--c-panel); border: 1px solid var(--c-border); border-radius: 16px; overflow: hidden; padding: 18px; transition: transform .3s, border-color .3s, box-shadow .3s; display: flex; flex-direction: column; justify-content: space-between; }
     .exp-card:hover { transform: translateY(-4px); border-color: var(--c-accent); box-shadow: var(--glow-blue); }
     .exp-photo { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 14px; background: var(--c-surface); display: flex; align-items: center; justify-content: center; font-size: 40px; }
@@ -449,31 +459,8 @@
       <div class="divider" style="margin:16px auto 0;"></div>
     </div>
     
+    <!-- Dynamic JS injects into this container -->
     <div class="team-grid" id="team-grid-container">
-      
-      <!-- HARDCODED PRESIDENT -->
-      <div class="team-card reveal visible" style="border-color:var(--c-gold);">
-        <div class="team-avatar" style="background:linear-gradient(135deg,#ffd16622,#ffd16644);padding:0;">
-          <img src="WhatsApp_Image_2026-05-03_at_23.14.53.jpeg" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" alt="Anas" onerror="this.outerHTML='<span style=\'font-size:35px;\'>👨‍💻</span>'">
-        </div>
-        <div class="team-name">ANAS ZUHAIRI BIN ZULLKEFFLE</div>
-        <div class="team-role">PRESIDENT</div>
-        <div class="team-dept">MYSTEM UniMAP</div>
-        <div class="team-social">
-          <!-- Place your actual links here -->
-          <a href="https://www.instagram.com" target="_blank" class="social-btn" title="Instagram">
-            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-          </a>
-          <a href="https://www.linkedin.com" target="_blank" class="social-btn" title="LinkedIn">
-            <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-          </a>
-          <a href="https://wa.me/60123456789" target="_blank" class="social-btn" title="WhatsApp">
-            <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-          </a>
-        </div>
-      </div>
-      <!-- END TEAM MEMBER -->
-
     </div>
   </div>
 </section>
@@ -589,6 +576,57 @@
 
   function loadExperiences() { const experiences = JSON.parse(localStorage.getItem('mystem_experiences')) || []; const container = document.getElementById('experiencesList'); if (experiences.length > 0) { let html = ''; experiences.slice(0, 3).forEach(exp => { let imgHtml = exp.photo ? `<img src="${exp.photo}" class="exp-photo" alt="Experience Photo">` : '<div class="exp-photo" style="background: linear-gradient(135deg, #071e35, #0d3a5e);">🌟</div>'; html += `<div class="exp-card reveal visible">${imgHtml}<div class="exp-text">"${exp.text}"</div><div class="exp-author">— ${exp.name}</div></div>`; }); container.innerHTML = html + container.innerHTML; } }
 
+  /* ── LOAD TEAM FROM LOCALSTORAGE ONLY ── */
+  function loadCommittee() {
+    let committee = JSON.parse(localStorage.getItem('mystem_committee')) || [];
+    const teamContainer = document.getElementById('team-grid-container');
+
+    if (committee.length === 0) {
+        teamContainer.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:var(--c-muted);padding:40px;border:1px dashed var(--c-border);border-radius:16px;">Executive committee will appear here once added via the Admin Dashboard.</p>`;
+        return;
+    }
+
+    const svgIg = `<svg style="width:16px!important;height:16px!important;" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>`;
+    const svgLi = `<svg style="width:16px!important;height:16px!important;" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>`;
+    const svgWa = `<svg style="width:16px!important;height:16px!important;" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>`;
+
+    let allHtml = '';
+
+    committee.forEach(member => {
+      // Logic to assign GOLD color to President, and CYAN to everyone else
+      let isPresident = member.role && member.role.toLowerCase().includes('president');
+      let cardColor = isPresident ? 'var(--c-gold)' : 'var(--c-accent)';
+      let avatarBg = isPresident ? 'linear-gradient(135deg,#ffd16622,#ffd16644)' : 'linear-gradient(135deg,#00c8ff22,#00c8ff44)';
+
+      let socialHtml = '<div class="team-social">';
+      if (member.ig && member.ig.trim() !== '') socialHtml += `<a href="${member.ig}" target="_blank" class="social-btn" title="Instagram">${svgIg}</a>`;
+      if (member.li && member.li.trim() !== '') socialHtml += `<a href="${member.li}" target="_blank" class="social-btn" title="LinkedIn">${svgLi}</a>`;
+      if (member.wa && member.wa.trim() !== '') {
+          let cleanNum = member.wa.replace(/[^0-9]/g, '');
+          if (cleanNum.startsWith('0')) cleanNum = '6' + cleanNum.substring(1);
+          else if (!cleanNum.startsWith('6')) cleanNum = '60' + cleanNum;
+          socialHtml += `<a href="https://wa.me/${cleanNum}" target="_blank" class="social-btn" title="WhatsApp">${svgWa}</a>`;
+      }
+      socialHtml += '</div>';
+
+      let avatarContent = member.photo && member.photo.trim() !== ''
+        ? `<img src="${member.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" alt="${member.name}">`
+        : `<span style="font-size:35px;">👤</span>`;
+
+      allHtml += `
+        <div class="team-card reveal visible" style="border-color:${cardColor};">
+          <div class="team-avatar" style="background:${avatarBg};padding:0;">${avatarContent}</div>
+          <div class="team-name" style="text-transform: uppercase;">${member.name}</div>
+          <div class="team-role" style="text-transform: uppercase;">${member.role}</div>
+          <div class="team-dept">MYSTEM UniMAP</div>
+          ${socialHtml}
+        </div>
+      `;
+    });
+
+    teamContainer.innerHTML = allHtml;
+  }
+
   window.addEventListener('DOMContentLoaded', () => {
     const savedBadge = localStorage.getItem('mystem_badge'); if (savedBadge) document.querySelector('.hero-badge').innerHTML = `<span class="dot"></span> ${savedBadge}`;
     const savedHeadline = localStorage.getItem('mystem_headline'); if (savedHeadline) document.querySelector('.hero-title').innerHTML = `<span class="line-accent">${savedHeadline}</span><br/><span class="line-green" style="font-size:.32em;letter-spacing:.08em;">UNIVERSITI MALAYSIA PERLIS</span>`;
@@ -597,48 +635,8 @@
     const events = JSON.parse(localStorage.getItem('mystem_events'));
     if (events && events.length > 0) { const eventContainer = document.querySelector('.events-list'); events.forEach(ev => { const html = `<div class="event-item reveal visible" style="border-color:var(--c-accent);"><div class="event-item-top"><div class="event-date"><div class="event-day">${ev.day}</div><div class="event-month">${ev.month}</div></div><div class="event-info"><div class="event-type">${ev.type}</div><div class="event-title">${ev.title}</div><div class="event-loc">${ev.loc}</div></div></div><span class="event-status status-${ev.status}">${ev.status}</span></div>`; eventContainer.insertAdjacentHTML('afterbegin', html); }); }
 
-    // APPEND DYNAMIC COMMITTEE MEMBERS (After the hardcoded President)
-    const teamContainer = document.getElementById('team-grid-container');
-    let committee = JSON.parse(localStorage.getItem('mystem_committee')) || [];
-    
-    if (committee.length > 0) {
-      const svgIg = `<svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>`;
-      const svgLi = `<svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>`;
-      const svgWa = `<svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>`;
-
-      let dynamicHtml = '';
-      committee.forEach(member => {
-        let socialHtml = '<div class="team-social">';
-        
-        // Dynamically add the href links based on what was typed in the admin panel!
-        if (member.ig && member.ig.trim() !== '') socialHtml += `<a href="${member.ig}" target="_blank" class="social-btn" title="Instagram">${svgIg}</a>`;
-        if (member.li && member.li.trim() !== '') socialHtml += `<a href="${member.li}" target="_blank" class="social-btn" title="LinkedIn">${svgLi}</a>`;
-        if (member.wa && member.wa.trim() !== '') {
-            let cleanNum = member.wa.replace(/[^0-9]/g, '');
-            if (cleanNum.startsWith('0')) cleanNum = '6' + cleanNum.substring(1); 
-            else if (!cleanNum.startsWith('6')) cleanNum = '60' + cleanNum;
-            socialHtml += `<a href="https://wa.me/${cleanNum}" target="_blank" class="social-btn" title="WhatsApp">${svgWa}</a>`;
-        }
-        socialHtml += '</div>';
-
-        let avatarContent = member.photo && member.photo.trim() !== ''
-          ? `<img src="${member.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" alt="${member.name}">`
-          : `<span style="font-size:35px;">👤</span>`;
-
-        dynamicHtml += `
-          <div class="team-card reveal visible" style="border-color:var(--c-accent);">
-            <div class="team-avatar" style="background:linear-gradient(135deg,#00c8ff22,#00c8ff44);padding:0;">${avatarContent}</div>
-            <div class="team-name" style="text-transform: uppercase;">${member.name}</div>
-            <div class="team-role" style="text-transform: uppercase;">${member.role}</div>
-            <div class="team-dept">MYSTEM UniMAP</div>
-            ${socialHtml}
-          </div>
-        `;
-      });
-      teamContainer.innerHTML += dynamicHtml;
-    }
-
     loadExperiences();
+    loadCommittee(); // Generates all members dynamically from Admin panel
   });
 </script>
 </body>
