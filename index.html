@@ -133,7 +133,6 @@
     }
     .btn-outline:hover { background: #00c8ff14; box-shadow: var(--glow-blue); }
     
-    /* ADDED FOR STEM GAMES BUTTON */
     .btn-outline-cyan {
       background: rgba(0, 200, 255, 0.05); color: var(--c-accent);
       border: 1px solid var(--c-accent);
@@ -448,22 +447,15 @@
     .event-item {
       background: var(--c-panel); border: 1px solid var(--c-border);
       border-radius: 14px; padding: 18px 16px;
-      /* Mobile: stacked layout */
       display: flex; flex-direction: column; gap: 12px;
       transition: border-color .3s, box-shadow .3s;
     }
     .event-item:hover { border-color: var(--c-accent); box-shadow: var(--glow-blue); }
-
     @media (min-width: 600px) {
-      .event-item {
-        display: grid; grid-template-columns: 70px 1fr auto;
-        align-items: center; gap: 20px; padding: 20px 24px;
-      }
+      .event-item { display: grid; grid-template-columns: 70px 1fr auto; align-items: center; gap: 20px; padding: 20px 24px; }
     }
-
     .event-item-top { display: flex; align-items: center; gap: 14px; }
     @media (min-width: 600px) { .event-item-top { display: contents; } }
-
     .event-date {
       text-align: center; padding: 8px 10px;
       background: var(--c-surface); border-radius: 10px;
@@ -485,12 +477,10 @@
     .status-open     { background: #00c8ff18; color: var(--c-accent);  border: 1px solid var(--c-accent); }
     .status-past     { background: #ffffff10; color: var(--c-muted);   border: 1px solid var(--c-border); }
 
-    /* ─── TEAM ──────────────────────────────────────── */
+    /* ─── TEAM (UPDATED FOR SQUARE FORMAT AND SVG LOGOS) ─── */
     #team { background: linear-gradient(180deg, var(--c-bg) 0%, var(--c-surface) 100%); }
     .team-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
     }
     @media (min-width: 480px) { .team-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
     @media (min-width: 768px) { .team-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
@@ -502,8 +492,10 @@
       transition: transform .3s, border-color .3s, box-shadow .3s;
     }
     .team-card:hover { transform: translateY(-4px); border-color: var(--c-accent); box-shadow: var(--glow-blue); }
+    
+    /* UPDATED: Square Avatar with rounded edges */
     .team-avatar {
-      width: 64px; height: 64px; border-radius: 50%;
+      width: 80px; height: 80px; border-radius: 12px;
       margin: 0 auto 12px;
       display: flex; align-items: center; justify-content: center;
       font-size: 26px; font-weight: 900;
@@ -512,28 +504,29 @@
       box-shadow: var(--glow-blue);
       overflow: hidden;
     }
-    @media (min-width: 768px) { .team-avatar { width: 80px; height: 80px; font-size: 32px; } }
-    .team-name   { font-family: var(--font-head); font-size: 11px; font-weight: 700; color: var(--c-white); margin-bottom: 3px; }
+    @media (min-width: 768px) { .team-avatar { width: 100px; height: 100px; font-size: 32px; } }
+    
+    .team-name   { font-family: var(--font-head); font-size: 11px; font-weight: 700; color: var(--c-white); margin-bottom: 3px; text-transform: uppercase; }
     @media (min-width: 768px) { .team-name { font-size: 13px; } }
-    .team-role   { font-size: 11px; color: var(--c-accent); letter-spacing: .04em; margin-bottom: 6px; }
+    .team-role   { font-size: 11px; color: var(--c-accent); letter-spacing: .04em; margin-bottom: 6px; text-transform: uppercase; }
     .team-dept   { font-size: 10px; color: var(--c-muted); }
     .team-social { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
+    
+    /* UPDATED: SVG Social Icons inside the buttons */
     .social-btn {
-      width: 30px; height: 30px; border-radius: 7px;
+      width: 32px; height: 32px; border-radius: 8px;
       background: var(--c-surface); border: 1px solid var(--c-border);
       display: flex; align-items: center; justify-content: center;
-      font-size: 12px; transition: border-color .2s, background .2s;
+      color: var(--c-muted); transition: all .2s ease;
       cursor: pointer; -webkit-tap-highlight-color: transparent;
     }
-    .social-btn:hover { border-color: var(--c-accent); background: #00c8ff18; }
+    .social-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; }
+    /* Ensure fill works perfectly for WhatsApp icon if needed */
+    .social-btn:hover { border-color: var(--c-accent); background: #00c8ff18; color: var(--c-accent); box-shadow: var(--glow-blue); }
 
     /* ─── COMMUNITY EXPERIENCES WALL ───────────────── */
     #experiences-wall { background: var(--c-bg); }
-    .exp-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
+    .exp-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
     @media (min-width: 600px) { .exp-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (min-width: 900px) { .exp-grid { grid-template-columns: repeat(3, 1fr); } }
 
@@ -551,8 +544,7 @@
     #share { background: var(--c-surface); }
     .share-inner {
       background: linear-gradient(135deg, var(--c-panel) 0%, #0a2840 100%);
-      border: 1px solid var(--c-border); border-radius: 20px;
-      padding: 40px 20px;
+      border: 1px solid var(--c-border); border-radius: 20px; padding: 40px 20px;
       text-align: center; position: relative; overflow: hidden;
     }
     @media (min-width: 600px) { .share-inner { padding: 64px 48px; border-radius: 28px; } }
@@ -572,9 +564,7 @@
       width: 100%; padding: 13px 16px; border-radius: 10px;
       background: var(--c-surface); border: 1px solid var(--c-border);
       color: var(--c-text); font-family: var(--font-body); font-size: 14px;
-      outline: none; transition: border-color .2s, box-shadow .2s;
-      /* Prevent iOS zoom on focus (font-size must be ≥16px or use this) */
-      font-size: max(16px, 14px);
+      outline: none; transition: border-color .2s, box-shadow .2s; font-size: max(16px, 14px);
     }
     .form-input:focus { border-color: var(--c-accent); box-shadow: var(--glow-blue); }
     .form-input::placeholder { color: var(--c-muted); }
@@ -586,8 +576,7 @@
 
     .contact-card {
       background: var(--c-panel); border: 1px solid var(--c-border);
-      border-radius: 14px; padding: 18px; display: flex; gap: 14px;
-      align-items: flex-start; margin-bottom: 12px;
+      border-radius: 14px; padding: 18px; display: flex; gap: 14px; align-items: flex-start; margin-bottom: 12px;
       transition: border-color .2s;
     }
     .contact-card:hover { border-color: var(--c-accent); }
@@ -600,63 +589,36 @@
     .contact-info-val   { font-size: 13px; color: var(--c-muted); }
 
     .map-placeholder {
-      background: var(--c-panel); border: 1px solid var(--c-border);
-      border-radius: 16px; height: 220px; overflow: hidden; position: relative;
+      background: var(--c-panel); border: 1px solid var(--c-border); border-radius: 16px; height: 220px; overflow: hidden; position: relative;
       display: flex; align-items: center; justify-content: center;
     }
     @media (min-width: 768px) { .map-placeholder { height: 280px; } }
     .map-grid-lines {
-      position: absolute; inset: 0;
-      background-image:
-        linear-gradient(var(--c-border) 1px, transparent 1px),
-        linear-gradient(90deg, var(--c-border) 1px, transparent 1px);
+      position: absolute; inset: 0; background-image: linear-gradient(var(--c-border) 1px, transparent 1px), linear-gradient(90deg, var(--c-border) 1px, transparent 1px);
       background-size: 30px 30px; opacity: .4;
     }
     .map-pin { position: relative; z-index: 1; text-align: center; }
     .map-pin-icon { font-size: 36px; animation: float 3s ease-in-out infinite; }
-    .map-pin-label {
-      margin-top: 8px; font-family: var(--font-head); font-size: 11px;
-      color: var(--c-accent); letter-spacing: .1em;
-      background: var(--c-panel); padding: 5px 12px; border-radius: 999px;
-      border: 1px solid var(--c-border);
-    }
+    .map-pin-label { margin-top: 8px; font-family: var(--font-head); font-size: 11px; color: var(--c-accent); letter-spacing: .1em; background: var(--c-panel); padding: 5px 12px; border-radius: 999px; border: 1px solid var(--c-border); }
     .social-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
     .social-link {
-      display: flex; align-items: center; gap: 7px;
-      padding: 10px 16px; border-radius: 10px;
-      background: var(--c-panel); border: 1px solid var(--c-border);
-      font-size: 13px; color: var(--c-text);
-      transition: border-color .2s, background .2s;
-      min-height: 44px; -webkit-tap-highlight-color: transparent;
+      display: flex; align-items: center; gap: 7px; padding: 10px 16px; border-radius: 10px;
+      background: var(--c-panel); border: 1px solid var(--c-border); font-size: 13px; color: var(--c-text);
+      transition: border-color .2s, background .2s; min-height: 44px; -webkit-tap-highlight-color: transparent;
     }
     .social-link:hover { border-color: var(--c-accent); background: #00c8ff18; color: var(--c-accent); }
 
-    /* ─── QUICK MESSAGE FORM ─────────────────────────── */
     .quick-msg-form {
-      margin-top: 20px; background: var(--c-panel);
-      border: 1px solid var(--c-border); border-radius: 14px; padding: 20px;
+      margin-top: 20px; background: var(--c-panel); border: 1px solid var(--c-border); border-radius: 14px; padding: 20px;
     }
-    .quick-msg-form-title {
-      font-family: var(--font-head); font-size: 13px; font-weight: 700;
-      color: var(--c-white); margin-bottom: 12px;
-    }
+    .quick-msg-form-title { font-family: var(--font-head); font-size: 13px; font-weight: 700; color: var(--c-white); margin-bottom: 12px; }
 
     /* ─── FOOTER ────────────────────────────────────── */
-    footer {
-      background: var(--c-bg);
-      border-top: 1px solid var(--c-border);
-      padding: 40px 16px 24px;
-      padding-bottom: max(24px, var(--safe-bottom));
-    }
+    footer { background: var(--c-bg); border-top: 1px solid var(--c-border); padding: 40px 16px 24px; padding-bottom: max(24px, var(--safe-bottom)); }
     @media (min-width: 768px) { footer { padding: 48px 24px 32px; } }
     .footer-inner { max-width: 1180px; margin: 0 auto; }
-    .footer-top {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 32px 24px;
-      padding-bottom: 32px; border-bottom: 1px solid var(--c-border);
-    }
-    @media (min-width: 768px) {
-      .footer-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 40px; }
-    }
+    .footer-top { display: grid; grid-template-columns: 1fr 1fr; gap: 32px 24px; padding-bottom: 32px; border-bottom: 1px solid var(--c-border); }
+    @media (min-width: 768px) { .footer-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 40px; } }
     .footer-brand { grid-column: 1 / -1; max-width: 280px; }
     @media (min-width: 768px) { .footer-brand { grid-column: auto; } }
     .footer-brand-name { font-family: var(--font-head); font-size: 16px; font-weight: 900; margin-bottom: 8px; }
@@ -665,38 +627,17 @@
     .footer-links-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
     .footer-links-list a { font-size: 13px; color: var(--c-muted); transition: color .2s; min-height: 28px; display: flex; align-items: center; }
     .footer-links-list a:hover { color: var(--c-accent); }
-    .footer-bottom {
-      display: flex; flex-direction: column; gap: 10px;
-      padding-top: 24px;
-    }
+    .footer-bottom { display: flex; flex-direction: column; gap: 10px; padding-top: 24px; }
     @media (min-width: 600px) { .footer-bottom { flex-direction: row; justify-content: space-between; align-items: center; } }
     .footer-copy  { font-size: 12px; color: var(--c-muted); }
     .footer-badge { display: flex; align-items: center; gap: 6px; font-family: var(--font-head); font-size: 10px; color: var(--c-muted); letter-spacing: .08em; }
     .footer-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c-accent2); box-shadow: var(--glow-green); animation: pulse 2s ease infinite; }
 
     /* ─── Fade-up animation ─────────────────────────── */
-    @keyframes fade-up {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .reveal {
-      opacity: 0; transform: translateY(24px);
-      transition: opacity .6s ease, transform .6s ease;
-    }
+    @keyframes fade-up { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* ─── Pull-to-reveal section separator ──────────── */
-    .section-sep {
-      display: flex; align-items: center; gap: 12px;
-      padding: 0 16px; margin-bottom: 8px;
-    }
-    .section-sep-line { flex: 1; height: 1px; background: var(--c-border); }
-    .section-sep-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c-accent); box-shadow: var(--glow-blue); }
-
-    /* ─── Touch feedback for cards ──────────────────── */
-    .prog-card:active, .proj-card:active, .team-card:active, .exp-card:active, .event-item:active {
-      transform: scale(0.98);
-    }
+    .prog-card:active, .proj-card:active, .team-card:active, .exp-card:active, .event-item:active { transform: scale(0.98); }
   </style>
 </head>
 <body>
@@ -715,8 +656,7 @@
   <a href="#events"   onclick="closeMobileMenu()">Events</a>
   <a href="#team"     onclick="closeMobileMenu()">Team</a>
   <a href="#share"    onclick="closeMobileMenu()">Stories</a>
-  <!-- FIXED: Mobile Menu Link -->
-  <a href="games.html" onclick="window.location.href='games.html'; return false;">STEM Games</a>
+  <a href="stem-games.html" onclick="window.location.href='stem-games.html'; return false;">STEM Games</a>
   <a href="#contact"  onclick="closeMobileMenu()">Contact</a>
 </div>
 
@@ -775,9 +715,7 @@
       <a href="#programs" class="btn btn-primary">Explore Programs ↓</a>
       <a href="#projects" class="btn btn-green">Our Projects</a>
       <a href="#share"    class="btn btn-outline">Community Stories</a>
-      
-      <!-- FIXED: Hero Button -->
-      <a href="games.html" onclick="window.location.href='games.html'; return false;" class="btn btn-outline-cyan">🎮 STEM Education Games</a>
+      <a href="stem-games.html" onclick="window.location.href='stem-games.html'; return false;" class="btn btn-outline-cyan">🎮 STEM Education Games</a>
     </div>
     <div class="hero-stats">
       <div class="hero-stat">
@@ -1091,8 +1029,7 @@
         <ul class="footer-links-list">
           <li><a href="#team">Our Team</a></li>
           <li><a href="#share">Community Stories</a></li>
-          <!-- FIXED: Footer Link -->
-          <li><a href="games.html" onclick="window.location.href='games.html'; return false;">STEM Games</a></li>
+          <li><a href="stem-games.html" onclick="window.location.href='stem-games.html'; return false;">STEM Games</a></li>
           <li><a href="#contact">Contact</a></li>
           <li><a href="admin.html" onclick="window.location.href='admin.html'; return false;" style="color:var(--c-accent);">Admin Login 🔒</a></li>
         </ul>
@@ -1206,16 +1143,6 @@
 
   /* ── Load all dynamic content on DOM ready ── */
   window.addEventListener('DOMContentLoaded', () => {
-    // Debug: log all localStorage keys so you can verify the admin key name
-    console.log('[MYSTEM] localStorage keys:', Object.keys(localStorage));
-    Object.keys(localStorage).forEach(k => {
-      try {
-        const val = localStorage.getItem(k);
-        const parsed = JSON.parse(val);
-        if (Array.isArray(parsed)) console.log(`[MYSTEM] "${k}" → array of ${parsed.length} items`, parsed[0]);
-      } catch(e) {}
-    });
-
     // Hero badge/headline/desc overrides from admin
     const savedBadge = localStorage.getItem('mystem_badge');
     if (savedBadge) document.querySelector('.hero-badge').innerHTML = `<span class="dot"></span> ${savedBadge}`;
@@ -1266,10 +1193,14 @@
       });
     }
 
-    // Committee — try known keys first, then scan all localStorage for committee-like arrays
+    // SVG Icons for the Team Social Links
+    const svgIg = `<svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>`;
+    const svgLi = `<svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>`;
+    const svgWa = `<svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>`;
+
+    // Committee Loading Logic
     let committeeRaw = localStorage.getItem('mystem_committee') || localStorage.getItem('committee');
     if (!committeeRaw) {
-      // Scan every key to find one that looks like a committee array
       Object.keys(localStorage).forEach(k => {
         if (!committeeRaw && (k.toLowerCase().includes('committee') || k.toLowerCase().includes('team') || k.toLowerCase().includes('member'))) {
           committeeRaw = localStorage.getItem(k);
@@ -1286,18 +1217,21 @@
         let socialHtml = '';
         if (member.ig || member.li || member.wa) {
           socialHtml = `<div class="team-social">`;
-          if (member.ig) socialHtml += `<a href="${member.ig}" target="_blank" class="social-btn" title="Instagram">📸</a>`;
-          if (member.li) socialHtml += `<a href="${member.li}" target="_blank" class="social-btn" title="LinkedIn">💼</a>`;
+          if (member.ig) socialHtml += `<a href="${member.ig}" target="_blank" class="social-btn" title="Instagram">${svgIg}</a>`;
+          if (member.li) socialHtml += `<a href="${member.li}" target="_blank" class="social-btn" title="LinkedIn">${svgLi}</a>`;
           if (member.wa) {
             let cleanNum = member.wa.replace(/[^0-9]/g, '');
             if (cleanNum.startsWith('0')) cleanNum = '6' + cleanNum;
-            socialHtml += `<a href="https://wa.me/${cleanNum}" target="_blank" class="social-btn" title="WhatsApp">💬</a>`;
+            socialHtml += `<a href="https://wa.me/${cleanNum}" target="_blank" class="social-btn" title="WhatsApp">${svgWa}</a>`;
           }
           socialHtml += `</div>`;
         }
+        
+        // MODIFIED: Square Border-Radius injected via inline styles to override previous circles
         let avatarContent = member.photo && member.photo.trim() !== ''
-          ? `<img src="${member.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" alt="${member.name}">`
+          ? `<img src="${member.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;" alt="${member.name}">`
           : (member.icon || '👤');
+          
         allHtml += `
           <div class="team-card reveal visible" style="border-color:var(--c-gold);">
             <div class="team-avatar" style="background:linear-gradient(135deg,#ffd16622,#ffd16644);padding:0;">${avatarContent}</div>
