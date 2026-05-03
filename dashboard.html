@@ -28,8 +28,18 @@
     .brand { font-family: var(--font-head); font-weight: 900; font-size: 18px; color: var(--c-white); margin-bottom: 40px; display: flex; align-items: center; gap: 10px;}
     .nav-link { display: block; padding: 12px 16px; color: var(--c-muted); text-decoration: none; border-radius: 8px; margin-bottom: 8px; font-weight: 600; transition: 0.2s; cursor: pointer; }
     .nav-link:hover, .nav-link.active { background: #00c8ff15; color: var(--c-accent); }
-    .logout { margin-top: auto; color: #ff4d4d; border: 1px solid #ff4d4d33; }
+    .logout { margin-top: 12px; color: #ff4d4d; border: 1px solid #ff4d4d33; }
     .logout:hover { background: #ff4d4d15; color: #ff4d4d; }
+
+    /* Export button in sidebar */
+    .sync-btn {
+      display: block; padding: 12px 16px; border-radius: 8px; margin-bottom: 8px;
+      font-weight: 700; cursor: pointer; border: 1px solid #00ff9f66;
+      background: #00ff9f15; color: var(--c-accent2);
+      font-family: var(--font-body); font-size: 14px;
+      transition: 0.2s; text-align: left;
+    }
+    .sync-btn:hover { background: #00ff9f25; box-shadow: 0 0 16px #00ff9f44; }
     
     /* Main Content */
     .main-content { flex: 1; padding: 40px; overflow-y: auto; }
@@ -60,11 +70,95 @@
     .action-btn:hover { background: #ff4d4d; color: var(--c-white); }
     
     .admin-com-photo { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid var(--c-accent); }
+
+    /* ── EXPORT SYNC MODAL ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 999;
+      background: #020b14f5; backdrop-filter: blur(16px);
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--c-panel); border: 1px solid var(--c-accent2);
+      border-radius: 20px; padding: 36px 28px; max-width: 520px; width: 100%;
+      box-shadow: 0 0 50px #00ff9f22; position: relative;
+    }
+    .modal-close {
+      position: absolute; top: 14px; right: 14px;
+      background: var(--c-surface); border: 1px solid var(--c-border);
+      color: var(--c-text); width: 34px; height: 34px; border-radius: 50%;
+      cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center;
+    }
+    .modal-close:hover { border-color: #ff4d4d; color: #ff4d4d; }
+    .key-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+    .key-pill {
+      padding: 8px 12px; border-radius: 8px; font-size: 11px;
+      background: var(--c-surface); border: 1px solid var(--c-border);
+    }
+    .key-pill .kname { color: var(--c-accent); font-family: var(--font-head); font-size: 9px; letter-spacing: .08em; margin-bottom: 2px; }
+    .key-pill .kval { color: var(--c-muted); }
+    .key-pill.found { border-color: var(--c-accent2); }
+    .key-pill.found .kval { color: var(--c-accent2); }
+    #syncCode {
+      width: 100%; height: 100px; padding: 12px; border-radius: 10px;
+      background: var(--c-bg); border: 1px solid var(--c-border);
+      color: var(--c-accent); font-size: 11px; font-family: monospace;
+      resize: none; outline: none; margin-bottom: 12px; cursor: text;
+    }
+    #syncCode:focus { border-color: var(--c-accent2); }
+    .copy-btn {
+      width: 100%; padding: 14px; border-radius: 10px; border: none; cursor: pointer;
+      background: var(--c-accent2); color: var(--c-bg);
+      font-family: var(--font-head); font-weight: 700; font-size: 12px;
+      letter-spacing: .08em; text-transform: uppercase;
+      box-shadow: 0 0 20px #00ff9f66; transition: .2s;
+    }
+    .copy-btn:hover { box-shadow: 0 0 32px #00ff9fcc; transform: translateY(-1px); }
+    .how-to-box {
+      margin-top: 18px; padding: 14px 16px;
+      background: var(--c-surface); border-radius: 10px; border: 1px solid var(--c-border);
+    }
+    .how-to-box .ht-title { font-family: var(--font-head); font-size: 9px; color: var(--c-muted); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px; }
+    .how-to-box ol { padding-left: 16px; font-size: 12px; color: var(--c-muted); line-height: 2; }
+    .how-to-box ol strong { color: var(--c-accent); }
   </style>
 </head>
 <body>
 
-  <!-- SIDEBAR -->
+  <!-- ══ EXPORT SYNC MODAL ══ -->
+  <div class="modal-overlay" id="exportModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeExport()">✕</button>
+      <div style="text-align:center;font-size:36px;margin-bottom:10px;">📱</div>
+      <h3 style="font-family:var(--font-head);font-size:17px;color:#fff;text-align:center;margin-bottom:6px;">Export to Phone</h3>
+      <p style="font-size:12px;color:var(--c-muted);text-align:center;line-height:1.7;margin-bottom:18px;">
+        This code carries all your saved data. Paste it once on any device to sync.
+      </p>
+
+      <!-- Data status pills -->
+      <div class="key-grid" id="keyGrid"></div>
+
+      <!-- The sync code -->
+      <textarea id="syncCode" readonly onclick="this.select()" placeholder="Click 'Generate' to create your sync code..."></textarea>
+
+      <button class="copy-btn" id="copyBtn" onclick="copySyncCode()">📋 Copy Sync Code</button>
+      <div id="copyMsg" style="text-align:center;font-size:12px;color:var(--c-accent2);margin-top:8px;min-height:16px;"></div>
+
+      <div class="how-to-box">
+        <div class="ht-title">How to sync to your phone</div>
+        <ol>
+          <li>Click <strong>Copy Sync Code</strong> above</li>
+          <li>Open the main website on your phone</li>
+          <li>Scroll to the very bottom of the page</li>
+          <li>Tap <strong>"Innovating · Inspiring · Impacting"</strong> <strong style="color:var(--c-accent2)">5 times fast</strong></li>
+          <li>Paste the code → tap <strong>Apply &amp; Sync</strong></li>
+          <li>Page reloads with all your data ✅</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SIDEBAR ══ -->
   <div class="sidebar">
     <div class="brand">M² ADMIN</div>
     <a class="nav-link active" data-target="view-home">Home Highlight</a>
@@ -72,10 +166,14 @@
     <a class="nav-link" data-target="view-projects">Manage Projects</a>
     <a class="nav-link" data-target="view-committee">Committee List</a>
     <a class="nav-link" data-target="view-stories">Community Stories</a>
+
+    <!-- ★ SYNC EXPORT BUTTON ★ -->
+    <button class="sync-btn" onclick="openExport()">📤 Export Sync Code</button>
+
     <a href="index.html" class="nav-link logout">← Back to Site</a>
   </div>
 
-  <!-- MAIN CONTENT AREA -->
+  <!-- ══ MAIN CONTENT AREA ══ -->
   <div class="main-content">
     <div class="header">
       <h1 id="page-title">Edit Main Page Highlight</h1>
@@ -173,7 +271,7 @@
             </div>
             <div class="form-group">
               <label>Upload Member Photo</label>
-              <input type="file" id="comPhoto" accept="image/*" class="form-input" style="padding: 10px; background: transparent; border: 1px dashed var(--c-border); cursor: pointer;" required />
+              <input type="file" id="comPhoto" accept="image/*" style="padding: 10px; background: transparent; border: 1px dashed var(--c-border); cursor: pointer;" required />
             </div>
           </div>
           <h4 style="margin: 10px 0 15px; color: var(--c-white); font-family: var(--font-head); font-size: 14px;">Social Links (Optional)</h4>
@@ -199,7 +297,7 @@
   </div>
 
   <script>
-    /* --- TAB SWITCHING LOGIC --- */
+    /* ── TAB SWITCHING ── */
     const navLinks = document.querySelectorAll('.nav-link:not(.logout)');
     const panels = document.querySelectorAll('.view-panel');
     const pageTitle = document.getElementById('page-title');
@@ -215,100 +313,99 @@
       });
     });
 
-    /* --- LOAD EXISTING HIGHLIGHT DATA --- */
+    /* ── LOAD EXISTING HIGHLIGHT DATA ── */
     window.addEventListener('DOMContentLoaded', () => {
       const savedBadge = localStorage.getItem('mystem_badge');
-      const savedHead = localStorage.getItem('mystem_headline');
-      const savedDesc = localStorage.getItem('mystem_desc');
-
-      if(savedBadge) document.getElementById('badgeText').value = savedBadge;
-      if(savedHead) document.getElementById('headlineText').value = savedHead;
-      if(savedDesc) document.getElementById('subText').value = savedDesc;
+      const savedHead  = localStorage.getItem('mystem_headline');
+      const savedDesc  = localStorage.getItem('mystem_desc');
+      if (savedBadge) document.getElementById('badgeText').value   = savedBadge;
+      if (savedHead)  document.getElementById('headlineText').value = savedHead;
+      if (savedDesc)  document.getElementById('subText').value      = savedDesc;
+      renderAdminTables();
     });
 
-    /* --- RENDER ADMIN LISTS --- */
+    /* ── RENDER ADMIN TABLES ── */
     function renderAdminTables() {
       const events = JSON.parse(localStorage.getItem('mystem_events')) || [];
       const evTable = document.getElementById('table-events');
-      if(events.length === 0) evTable.innerHTML = '<tr><td>No events added yet.</td></tr>';
+      if (events.length === 0) evTable.innerHTML = '<tr><td>No events added yet.</td></tr>';
       else {
         let html = '<tr><th>Title</th><th>Date</th><th>Type</th><th>Action</th></tr>';
         events.forEach((ev, idx) => {
           html += `<tr><td>${ev.title}</td><td>${ev.day} ${ev.month}</td><td>${ev.type}</td>
-                   <td><button class="action-btn" onclick="deleteItem('mystem_events', ${idx})">Delete</button></td></tr>`;
+                   <td><button class="action-btn" onclick="deleteItem('mystem_events',${idx})">Delete</button></td></tr>`;
         });
         evTable.innerHTML = html;
       }
 
       const projects = JSON.parse(localStorage.getItem('mystem_projects')) || [];
       const projTable = document.getElementById('table-projects');
-      if(projects.length === 0) projTable.innerHTML = '<tr><td>No projects added yet.</td></tr>';
+      if (projects.length === 0) projTable.innerHTML = '<tr><td>No projects added yet.</td></tr>';
       else {
         let html = '<tr><th>Project Name</th><th>Year</th><th>Badge</th><th>Action</th></tr>';
         projects.forEach((proj, idx) => {
           html += `<tr><td>${proj.title}</td><td>${proj.year}</td><td>${proj.badge}</td>
-                   <td><button class="action-btn" onclick="deleteItem('mystem_projects', ${idx})">Delete</button></td></tr>`;
+                   <td><button class="action-btn" onclick="deleteItem('mystem_projects',${idx})">Delete</button></td></tr>`;
         });
         projTable.innerHTML = html;
       }
 
       const committee = JSON.parse(localStorage.getItem('mystem_committee')) || [];
       const comTable = document.getElementById('table-committee');
-      if(committee.length === 0) comTable.innerHTML = '<tr><td>No members added yet.</td></tr>';
+      if (committee.length === 0) comTable.innerHTML = '<tr><td>No members added yet.</td></tr>';
       else {
         let html = '<tr><th>Photo</th><th>Name</th><th>Role</th><th>Action</th></tr>';
         committee.forEach((com, idx) => {
           html += `<tr>
                      <td><img src="${com.photo}" class="admin-com-photo" alt="Photo"></td>
                      <td>${com.name}</td><td>${com.role}</td>
-                   <td><button class="action-btn" onclick="deleteItem('mystem_committee', ${idx})">Delete</button></td></tr>`;
+                     <td><button class="action-btn" onclick="deleteItem('mystem_committee',${idx})">Delete</button></td>
+                   </tr>`;
         });
         comTable.innerHTML = html;
       }
 
       const stories = JSON.parse(localStorage.getItem('mystem_experiences')) || [];
       const storyTable = document.getElementById('table-stories');
-      if(stories.length === 0) storyTable.innerHTML = '<tr><td>No stories submitted yet.</td></tr>';
+      if (stories.length === 0) storyTable.innerHTML = '<tr><td>No stories submitted yet.</td></tr>';
       else {
         let html = '<tr><th>Name</th><th>Story Snippet</th><th>Action</th></tr>';
         stories.forEach((story, idx) => {
           let snippet = story.text.length > 50 ? story.text.substring(0, 50) + '...' : story.text;
-          html += `<tr><td>${story.name}</td><td style="font-style: italic;">"${snippet}"</td>
-                   <td><button class="action-btn" onclick="deleteItem('mystem_experiences', ${idx})">Delete</button></td></tr>`;
+          html += `<tr><td>${story.name}</td><td style="font-style:italic;">"${snippet}"</td>
+                   <td><button class="action-btn" onclick="deleteItem('mystem_experiences',${idx})">Delete</button></td></tr>`;
         });
         storyTable.innerHTML = html;
       }
     }
 
-    /* --- DELETE LOGIC --- */
+    /* ── DELETE ── */
     window.deleteItem = function(storageKey, index) {
-      if(confirm("Are you sure you want to delete this?")) {
+      if (confirm("Are you sure you want to delete this?")) {
         let items = JSON.parse(localStorage.getItem(storageKey)) || [];
-        items.splice(index, 1); 
-        localStorage.setItem(storageKey, JSON.stringify(items)); 
-        renderAdminTables(); 
+        items.splice(index, 1);
+        localStorage.setItem(storageKey, JSON.stringify(items));
+        renderAdminTables();
       }
     };
 
-    /* --- SAVE DATA HELPER FUNCTION (WITH ERROR HANDLING) --- */
+    /* ── SAVE HELPER ── */
     function saveToArray(storageKey, newItem, msgId) {
       try {
         let items = JSON.parse(localStorage.getItem(storageKey)) || [];
-        items.unshift(newItem); 
+        items.unshift(newItem);
         localStorage.setItem(storageKey, JSON.stringify(items));
-        
         const msg = document.getElementById(msgId);
         msg.style.display = 'block';
         setTimeout(() => msg.style.display = 'none', 3000);
-        
         renderAdminTables();
       } catch (error) {
         console.error(error);
-        alert("❌ ERROR: Your browser's local memory is full! Please upload a smaller image file, or delete old items first.");
+        alert("❌ ERROR: Storage is full! Upload a smaller image or delete old items first.");
       }
     }
 
-    /* --- ADVANCED IMAGE COMPRESSOR --- */
+    /* ── IMAGE COMPRESSOR ── */
     function compressImage(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -318,36 +415,25 @@
           img.src = event.target.result;
           img.onload = () => {
             const canvas = document.createElement('canvas');
-            const MAX_WIDTH = 400; // Resizes the image so it fits perfectly in memory
-            const MAX_HEIGHT = 400;
-            let width = img.width;
-            let height = img.height;
-
-            if (width > height) {
-              if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
-            } else {
-              if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
-            }
-            
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, width, height);
-            
-            // Compress to JPEG with 70% quality to save massive amounts of space
-            resolve(canvas.toDataURL('image/jpeg', 0.7)); 
+            const MAX = 400;
+            let w = img.width, h = img.height;
+            if (w > h) { if (w > MAX) { h *= MAX / w; w = MAX; } }
+            else       { if (h > MAX) { w *= MAX / h; h = MAX; } }
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL('image/jpeg', 0.7));
           };
         };
         reader.onerror = error => reject(error);
       });
     }
 
-    /* --- FORM SUBMITS --- */
+    /* ── FORM SUBMITS ── */
     document.getElementById('highlightForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      localStorage.setItem('mystem_badge', document.getElementById('badgeText').value);
+      localStorage.setItem('mystem_badge',    document.getElementById('badgeText').value);
       localStorage.setItem('mystem_headline', document.getElementById('headlineText').value);
-      localStorage.setItem('mystem_desc', document.getElementById('subText').value);
+      localStorage.setItem('mystem_desc',     document.getElementById('subText').value);
       const msg = document.getElementById('msg-home');
       msg.style.display = 'block';
       setTimeout(() => msg.style.display = 'none', 3000);
@@ -355,65 +441,137 @@
 
     document.getElementById('eventForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const newEvent = {
-        title: document.getElementById('evTitle').value,
-        day: document.getElementById('evDay').value,
-        month: document.getElementById('evMonth').value,
-        type: document.getElementById('evType').value,
-        loc: document.getElementById('evLoc').value,
+      saveToArray('mystem_events', {
+        title:  document.getElementById('evTitle').value,
+        day:    document.getElementById('evDay').value,
+        month:  document.getElementById('evMonth').value,
+        type:   document.getElementById('evType').value,
+        loc:    document.getElementById('evLoc').value,
         status: document.getElementById('evStatus').value
-      };
-      saveToArray('mystem_events', newEvent, 'msg-event');
+      }, 'msg-event');
       this.reset();
     });
 
     document.getElementById('projectForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const newProj = {
+      saveToArray('mystem_projects', {
         title: document.getElementById('projTitle').value,
-        desc: document.getElementById('projDesc').value,
-        year: document.getElementById('projYear').value,
+        desc:  document.getElementById('projDesc').value,
+        year:  document.getElementById('projYear').value,
         badge: document.getElementById('projBadge').value,
-        icon: document.getElementById('projIcon').value
-      };
-      saveToArray('mystem_projects', newProj, 'msg-project');
+        icon:  document.getElementById('projIcon').value
+      }, 'msg-project');
       this.reset();
     });
 
-    /* THE FIX: Button feedback + Image Compression */
     document.getElementById('committeeForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       const fileInput = document.getElementById('comPhoto');
       const submitBtn = this.querySelector('button[type="submit"]');
-      
-      // Tell the user it's processing the image
       submitBtn.innerText = "Processing Image...";
       submitBtn.style.opacity = "0.7";
-      
       let photoBase64 = '';
-      if (fileInput.files.length > 0) {
-        photoBase64 = await compressImage(fileInput.files[0]); // Shrinks the image!
-      }
-      
-      const newMember = {
-        name: document.getElementById('comName').value,
-        role: document.getElementById('comRole').value,
-        photo: photoBase64, 
-        ig: document.getElementById('comIg').value,   
-        li: document.getElementById('comLi').value,   
-        wa: document.getElementById('comWa').value     
-      };
-      
-      saveToArray('mystem_committee', newMember, 'msg-com');
-      
-      // Reset the form back to normal
+      if (fileInput.files.length > 0) photoBase64 = await compressImage(fileInput.files[0]);
+      saveToArray('mystem_committee', {
+        name:  document.getElementById('comName').value,
+        role:  document.getElementById('comRole').value,
+        photo: photoBase64,
+        ig:    document.getElementById('comIg').value,
+        li:    document.getElementById('comLi').value,
+        wa:    document.getElementById('comWa').value
+      }, 'msg-com');
       this.reset();
       submitBtn.innerText = "Add to Committee List";
       submitBtn.style.opacity = "1";
     });
 
-    // Run table generator on load
-    renderAdminTables();
+    /* ════════════════════════════════════════════
+       ★ EXPORT SYNC CODE SYSTEM ★
+       Packages all localStorage data into a
+       base64 string the phone can import.
+    ════════════════════════════════════════════ */
+    const SYNC_KEYS = [
+      'mystem_committee',
+      'mystem_events',
+      'mystem_projects',
+      'mystem_badge',
+      'mystem_headline',
+      'mystem_desc'
+    ];
+
+    function openExport() {
+      // Build status pills
+      const grid = document.getElementById('keyGrid');
+      grid.innerHTML = SYNC_KEYS.map(k => {
+        const val = localStorage.getItem(k);
+        let preview = 'empty';
+        let found = false;
+        if (val) {
+          found = true;
+          try {
+            const p = JSON.parse(val);
+            preview = Array.isArray(p) ? `${p.length} item${p.length !== 1 ? 's' : ''}` : (val.length > 24 ? val.slice(0,24)+'…' : val);
+          } catch { preview = val.length > 24 ? val.slice(0,24)+'…' : val; }
+        }
+        return `<div class="key-pill ${found ? 'found' : ''}">
+          <div class="kname">${k.replace('mystem_','')}</div>
+          <div class="kval">${preview}</div>
+        </div>`;
+      }).join('');
+
+      // Generate sync code
+      const data = {};
+      let count = 0;
+      SYNC_KEYS.forEach(k => {
+        const v = localStorage.getItem(k);
+        if (v) { data[k] = v; count++; }
+      });
+
+      const ta = document.getElementById('syncCode');
+      const copyBtn = document.getElementById('copyBtn');
+      const copyMsg = document.getElementById('copyMsg');
+      copyMsg.textContent = '';
+
+      if (count === 0) {
+        ta.value = '';
+        ta.placeholder = '⚠️ No data found. Add committee members, events, or projects first.';
+        copyBtn.style.opacity = '0.4';
+        copyBtn.style.pointerEvents = 'none';
+      } else {
+        ta.value = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+        ta.placeholder = '';
+        copyBtn.style.opacity = '1';
+        copyBtn.style.pointerEvents = 'auto';
+      }
+
+      document.getElementById('exportModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeExport() {
+      document.getElementById('exportModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function copySyncCode() {
+      const ta = document.getElementById('syncCode');
+      if (!ta.value) return;
+      navigator.clipboard.writeText(ta.value).then(() => {
+        const msg = document.getElementById('copyMsg');
+        msg.textContent = '✅ Copied! Now go to your phone and tap the footer badge 5 times.';
+        msg.style.color = 'var(--c-accent2)';
+      }).catch(() => {
+        // Fallback for browsers that block clipboard
+        ta.select();
+        document.execCommand('copy');
+        document.getElementById('copyMsg').textContent = '✅ Copied!';
+      });
+    }
+
+    // Close modal if clicking outside
+    document.getElementById('exportModal').addEventListener('click', function(e) {
+      if (e.target === this) closeExport();
+    });
   </script>
 </body>
 </html>
