@@ -92,11 +92,11 @@
             <button class="close-menu" id="closeMenu">✕</button>
         </div>
         <div class="nav-menu">
-            <a href="#" class="nav-item" data-target="collab-requests" style="color:var(--accent-cyan);">Collab Requests</a>
+            <a href="#" class="nav-item active" data-target="collab-requests" style="color:var(--accent-cyan);">Collab Requests</a>
             <a href="#" class="nav-item" data-target="home-highlight">Home Highlight</a>
             <a href="#" class="nav-item" data-target="manage-events">Manage Events</a>
             <a href="#" class="nav-item" data-target="manage-projects">Manage Projects</a>
-            <a href="#" class="nav-item active" data-target="committee-list">Committee List</a>
+            <a href="#" class="nav-item" data-target="committee-list">Committee List</a>
             <a href="#" class="nav-item" data-target="community-stories">Community Stories</a>
             <a href="stem-games.html" class="nav-item">STEM Education Games</a>
         </div>
@@ -109,13 +109,13 @@
         <header class="header">
             <div class="header-left">
                 <button class="hamburger" id="openMenu">☰</button>
-                <h1 id="page-title">Committee List</h1>
+                <h1 id="page-title">Collab Requests</h1>
             </div>
             <div class="user-info">Welcome, Executive Admin</div>
         </header>
 
-        <!-- 0. COLLAB REQUESTS (NEW) -->
-        <section id="collab-requests" class="content-section">
+        <!-- 0. COLLAB REQUESTS -->
+        <section id="collab-requests" class="content-section active">
             <div class="card">
                 <div class="card-header"><div class="card-header-left"><span>🤝</span><h2>Incoming Collaboration Invites</h2></div></div>
                 <div style="overflow-x:auto;">
@@ -158,7 +158,6 @@
                     </table>
                 </div>
             </div>
-            <!-- Add Event Form -->
             <div class="card" id="form-add-event">
                 <div class="card-header white-text"><h2>+ Add New Event</h2></div>
                 <form id="add-event-form">
@@ -183,7 +182,6 @@
                     </table>
                 </div>
             </div>
-            <!-- Add Project Form -->
             <div class="card" id="form-add-project">
                 <div class="card-header white-text"><h2>+ Add New Project</h2></div>
                 <form id="add-project-form">
@@ -195,7 +193,7 @@
         </section>
 
         <!-- 4. COMMITTEE LIST SECTION -->
-        <section id="committee-list" class="content-section active">
+        <section id="committee-list" class="content-section">
             <div class="card">
                 <div class="card-header">
                     <div class="card-header-left"><span>📋</span><h2>Current Committee Members</h2></div>
@@ -210,7 +208,6 @@
                 </div>
             </div>
 
-            <!-- Add Member Form Card -->
             <div class="card">
                 <div class="card-header white-text"><h2>+ Add Committee Member</h2></div>
                 <form id="add-member-form">
@@ -276,7 +273,7 @@
         }
 
         /* ==========================================
-           0. COLLABORATION INVITES (AUTO-REPLY LOGIC)
+           0. COLLABORATION INVITES (AUTO-REPLY + FILE LOGIC)
            ========================================== */
         const inviteTableBody = document.getElementById('invite-table-body');
         function loadAdminInvites() {
@@ -288,11 +285,14 @@
             }
             let html = '';
             invites.forEach((inv, index) => {
+                // If they uploaded a file, show a view attachment link
+                let attachmentHtml = inv.file ? `<br><a href="${inv.file}" download="Invitation_Attachment" target="_blank" style="color:var(--accent-cyan); text-decoration:none; display:inline-block; margin-top:5px; font-weight:bold;">📎 View Attachment</a>` : '';
+
                 html += `
                     <tr>
                         <td><small style="color:var(--text-muted)">${inv.timestamp}</small></td>
                         <td><strong style="color:var(--accent-cyan);">${inv.org}</strong><br><small>${inv.name} | ${inv.email}</small></td>
-                        <td><small><b>Date:</b> ${inv.date}</small><br><small>${inv.details}</small></td>
+                        <td><small><b>Date:</b> ${inv.date}</small><br><small>${inv.details}</small>${attachmentHtml}</td>
                         <td style="text-align: right;">
                             <div class="btn-action-group">
                                 <button class="btn-reply inv-reply" data-index="${index}">REPLY (AUTO-TEMPLATE)</button>

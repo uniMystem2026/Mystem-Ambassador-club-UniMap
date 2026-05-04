@@ -425,7 +425,7 @@
       </div>
     </div>
     <div class="projects-grid" id="project-grid-container">
-      <!-- Default fallback project in case local storage is empty -->
+      <!-- Default fallback project -->
       <div class="proj-card reveal visible" style="border-color:var(--c-accent2);"><div class="proj-banner" style="background:linear-gradient(135deg,#041526,#0a3d62);">🌌</div><div class="proj-body"><div class="proj-meta"><span class="proj-badge">SPICE Arena</span><span class="proj-year">2025</span></div><h3 class="proj-title">AI Horizon 2025 QCI Workshop</h3><p class="proj-desc">A massive workshop at SPICE Arena Penang designed to shape the future with Penang's talent.</p></div></div>
     </div>
   </div>
@@ -498,7 +498,7 @@
   </div>
 </section>
 
-<!-- ═══════════════ INVITE US FORM (UPDATED TO SAVE TO ADMIN) ═══════════════ -->
+<!-- ═══════════════ INVITE US FORM ═══════════════ -->
 <section id="invite" class="section" style="padding-top:0;">
   <div class="container z1">
     <div class="share-inner reveal" style="background: linear-gradient(135deg, #0a2840 0%, var(--c-panel) 100%); border-color:var(--c-accent2);">
@@ -517,6 +517,13 @@
           </div>
           <input type="text" id="invDate" class="form-input" placeholder="Proposed Date & Location" style="margin-top:12px;" required />
           <textarea id="invDetails" class="form-input" rows="4" placeholder="Tell us about your program or event..." style="resize:vertical;margin-top:12px;" required></textarea>
+          
+          <!-- NEW: Optional file upload for Invitation Letter/Poster -->
+          <div style="text-align:left;margin-top:10px;">
+            <label style="color:var(--c-muted);font-size:11px;margin-bottom:6px;display:block;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Upload Invitation Letter / Poster (Optional)</label>
+            <input type="file" id="invFile" class="form-input" accept="image/*,.pdf" style="padding:10px;background:transparent;border:1px dashed var(--c-border);cursor:pointer;" />
+          </div>
+
           <button type="button" class="btn btn-green" style="width:100%;margin-top:14px;" onclick="handleInvite()">Submit Invitation Request →</button>
         </form>
       </div>
@@ -594,21 +601,28 @@
 
   function loadExperiences() { const experiences = JSON.parse(localStorage.getItem('mystem_experiences')) || []; const container = document.getElementById('experiencesList'); if (experiences.length > 0) { let html = ''; experiences.slice(0, 3).forEach(exp => { let imgHtml = exp.photo ? `<img src="${exp.photo}" class="exp-photo" alt="Experience Photo">` : '<div class="exp-photo" style="background: linear-gradient(135deg, #071e35, #0d3a5e);">🌟</div>'; html += `<div class="exp-card reveal visible">${imgHtml}<div class="exp-text">"${exp.text}"</div><div class="exp-author">— ${exp.name}</div></div>`; }); container.innerHTML = html + container.innerHTML; } }
 
-  /* ── UPDATED INVITE FUNCTION (SAVES TO ADMIN) ── */
-  function handleInvite() {
+  /* ── UPDATED INVITE FUNCTION (WITH FILE UPLOAD) ── */
+  async function handleInvite() {
     const org = document.getElementById('invOrg').value;
     const name = document.getElementById('invName').value;
     const email = document.getElementById('invEmail').value;
     const phone = document.getElementById('invPhone').value;
     const date = document.getElementById('invDate').value;
     const details = document.getElementById('invDetails').value;
+    const fileInput = document.getElementById('invFile');
 
     if (!org || !name || !email || !phone || !date || !details) {
       alert('Please fill in all fields to send the invitation.');
       return;
     }
 
-    const newInvite = { org, name, email, phone, date, details, timestamp: new Date().toLocaleString() };
+    let fileBase64 = '';
+    if (fileInput.files.length > 0) {
+      try { fileBase64 = await getBase64(fileInput.files[0]); } 
+      catch (e) { console.error("File upload failed", e); }
+    }
+
+    const newInvite = { org, name, email, phone, date, details, file: fileBase64, timestamp: new Date().toLocaleString() };
     let invites = JSON.parse(localStorage.getItem('mystem_invites')) || [];
     invites.unshift(newInvite);
     localStorage.setItem('mystem_invites', JSON.stringify(invites));
@@ -652,7 +666,7 @@
     const events = JSON.parse(localStorage.getItem('mystem_events'));
     if (events && events.length > 0) { 
         const eventContainer = document.getElementById('events-list-container');
-        eventContainer.innerHTML = ''; // Clear fallback
+        eventContainer.innerHTML = ''; 
         events.forEach(ev => { 
             let day = ev.date.substring(0, 2); let month = ev.date.substring(3, 6);
             const html = `<div class="event-item reveal visible" style="border-color:var(--c-accent);"><div class="event-item-top"><div class="event-date"><div class="event-day">${day}</div><div class="event-month">${month}</div></div><div class="event-info"><div class="event-type">UPCOMING</div><div class="event-title">${ev.title}</div><div class="event-loc">${ev.desc}</div></div></div><span class="event-status status-upcoming">UPCOMING</span></div>`; 
@@ -663,7 +677,7 @@
     const projects = JSON.parse(localStorage.getItem('mystem_projects'));
     if (projects && projects.length > 0) { 
         const projContainer = document.getElementById('project-grid-container');
-        projContainer.innerHTML = ''; // Clear fallback
+        projContainer.innerHTML = ''; 
         projects.forEach(pj => { 
             let img = pj.photo ? `<img src="${pj.photo}" style="width:100%;height:100%;object-fit:cover;">` : '🚀';
             const html = `<div class="proj-card reveal visible" style="border-color:var(--c-accent2);"><div class="proj-banner" style="background:linear-gradient(135deg,#041526,#0a3d62);">${img}</div><div class="proj-body"><div class="proj-meta"><span class="proj-badge">Project</span><span class="proj-year">${pj.date}</span></div><h3 class="proj-title">${pj.title}</h3><p class="proj-desc">${pj.desc}</p></div></div>`; 
