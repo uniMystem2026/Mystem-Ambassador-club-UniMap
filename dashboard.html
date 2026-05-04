@@ -14,7 +14,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
         body { background-color: var(--bg-body); color: var(--text-main); display: flex; min-height: 100vh; overflow-x: hidden; }
         
-        /* Sidebar */
         .sidebar { width: 250px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 20px 0; transition: transform 0.3s ease; z-index: 1000; }
         .logo { font-size: 20px; font-weight: bold; padding: 0 20px 30px; color: var(--text-main); letter-spacing: 1px; display: flex; justify-content: space-between; align-items: center; }
         .close-menu { display: none; background: none; border: none; color: var(--text-muted); font-size: 24px; cursor: pointer; }
@@ -26,7 +25,6 @@
         .btn-back { display: block; padding: 12px 20px; color: var(--accent-red); text-decoration: none; font-size: 14px; border: 1px solid rgba(255, 76, 76, 0.2); border-radius: 8px; text-align: left; transition: background 0.3s; cursor: pointer; background: transparent; width: 100%; }
         .btn-back:hover { background: rgba(255, 76, 76, 0.1); }
 
-        /* Main Content */
         .main-content { flex: 1; padding: 30px 40px; display: flex; flex-direction: column; gap: 20px; width: 100%; overflow-x: hidden; }
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 10px; gap: 15px; }
         .header-left { display: flex; align-items: center; gap: 15px; }
@@ -50,11 +48,13 @@
         tr:last-child td { border-bottom: none; }
         .member-photo, .project-thumb { width: 45px; height: 45px; border-radius: 8px; background-color: var(--bg-input); border: 1px solid var(--accent-cyan); display: inline-block; object-fit: cover; }
         
-        .btn-action-group { display: flex; gap: 5px; justify-content: flex-end; }
+        .btn-action-group { display: flex; gap: 5px; justify-content: flex-end; flex-wrap: wrap; }
         .btn-delete { background: transparent; color: var(--accent-red); border: 1px solid rgba(255, 76, 76, 0.4); padding: 6px 15px; border-radius: 4px; font-size: 11px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; white-space: nowrap; }
         .btn-delete:hover { background: rgba(255, 76, 76, 0.1); }
         .btn-edit { background: transparent; color: var(--accent-cyan); border: 1px solid rgba(0, 210, 255, 0.4); padding: 6px 15px; border-radius: 4px; font-size: 11px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; white-space: nowrap; }
         .btn-edit:hover { background: rgba(0, 210, 255, 0.1); }
+        .btn-reply { background: var(--accent-cyan); color: #000; border: none; padding: 6px 15px; border-radius: 4px; font-size: 11px; font-weight:bold; cursor: pointer; text-transform: uppercase; transition: all 0.2s; white-space: nowrap; }
+        .btn-reply:hover { filter: brightness(1.2); }
         
         .form-group { margin-bottom: 20px; }
         .form-row { display: flex; gap: 20px; margin-bottom: 20px; }
@@ -69,7 +69,6 @@
         .btn-submit, .btn-add-new { display: inline-block; text-decoration: none; text-align: center; background-color: var(--accent-cyan); color: #000000; border: none; padding: 12px 25px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; text-transform: uppercase; margin-top: 10px; transition: background-color 0.2s; }
         .btn-submit:hover, .btn-add-new:hover { background-color: var(--accent-cyan-hover); }
 
-        /* Mobile Adjustments */
         @media (max-width: 768px) {
             .sidebar { position: fixed; left: 0; top: 0; height: 100vh; transform: translateX(-100%); }
             .sidebar.open { transform: translateX(0); box-shadow: 5px 0 15px rgba(0,0,0,0.5); }
@@ -93,10 +92,11 @@
             <button class="close-menu" id="closeMenu">✕</button>
         </div>
         <div class="nav-menu">
+            <a href="#" class="nav-item" data-target="collab-requests" style="color:var(--accent-cyan);">Collab Requests</a>
             <a href="#" class="nav-item" data-target="home-highlight">Home Highlight</a>
             <a href="#" class="nav-item" data-target="manage-events">Manage Events</a>
-            <a href="#" class="nav-item active" data-target="manage-projects">Manage Projects</a>
-            <a href="#" class="nav-item" data-target="committee-list">Committee List</a>
+            <a href="#" class="nav-item" data-target="manage-projects">Manage Projects</a>
+            <a href="#" class="nav-item active" data-target="committee-list">Committee List</a>
             <a href="#" class="nav-item" data-target="community-stories">Community Stories</a>
             <a href="stem-games.html" class="nav-item">STEM Education Games</a>
         </div>
@@ -109,17 +109,30 @@
         <header class="header">
             <div class="header-left">
                 <button class="hamburger" id="openMenu">☰</button>
-                <h1 id="page-title">Manage Projects</h1>
+                <h1 id="page-title">Committee List</h1>
             </div>
             <div class="user-info">Welcome, Executive Admin</div>
         </header>
 
+        <!-- 0. COLLAB REQUESTS (NEW) -->
+        <section id="collab-requests" class="content-section">
+            <div class="card">
+                <div class="card-header"><div class="card-header-left"><span>🤝</span><h2>Incoming Collaboration Invites</h2></div></div>
+                <div style="overflow-x:auto;">
+                    <table>
+                        <thead><tr><th>DATE RECEIVED</th><th>ORGANIZATION</th><th>PROGRAM DETAILS</th><th style="text-align: right; width: 200px;">ACTION</th></tr></thead>
+                        <tbody id="invite-table-body">
+                            <!-- Dynamic Load -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
         <!-- 1. HOME HIGHLIGHT -->
         <section id="home-highlight" class="content-section">
             <div class="card">
-                <div class="card-header">
-                    <div class="card-header-left"><span>🏠</span><h2>Manage Home Highlights</h2></div>
-                </div>
+                <div class="card-header"><div class="card-header-left"><span>🏠</span><h2>Manage Home Highlights</h2></div></div>
                 <div style="overflow-x:auto;">
                     <table>
                         <thead><tr><th style="width: 250px;">HEADLINE</th><th>SUBTITLE</th><th style="text-align: right; width: 150px;">ACTION</th></tr></thead>
@@ -141,32 +154,23 @@
                 <div style="overflow-x:auto;">
                     <table>
                         <thead><tr><th style="width: 80px;">PICTURE</th><th>TITLE & DATE</th><th>DESCRIPTION</th><th style="text-align: right; width: 150px;">ACTION</th></tr></thead>
-                        <tbody id="event-table-body">
-                            <!-- Dynamic JS load here -->
-                        </tbody>
+                        <tbody id="event-table-body"></tbody>
                     </table>
                 </div>
             </div>
-
             <!-- Add Event Form -->
             <div class="card" id="form-add-event">
                 <div class="card-header white-text"><h2>+ Add New Event</h2></div>
                 <form id="add-event-form">
-                    <div class="form-row">
-                        <div class="form-col"><label>Event Title</label><input type="text" id="ev-title" placeholder="e.g. STEM School Outreach"></div>
-                        <div class="form-col"><label>Date</label><input type="text" id="ev-date" placeholder="e.g. 24 AUG 2026"></div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-col"><label>Description / Location</label><textarea id="ev-desc" rows="2" placeholder="e.g. Workshop at Dewan Ilmu..."></textarea></div>
-                        <div class="form-col"><label>Event Picture (Optional)</label><div class="file-upload-wrapper"><input type="file" id="ev-photo" accept="image/*"></div></div>
-                    </div>
+                    <div class="form-row"><div class="form-col"><label>Event Title</label><input type="text" id="ev-title" placeholder="e.g. STEM School Outreach"></div><div class="form-col"><label>Date</label><input type="text" id="ev-date" placeholder="e.g. 24 AUG 2026"></div></div>
+                    <div class="form-row"><div class="form-col"><label>Description / Location</label><textarea id="ev-desc" rows="2" placeholder="e.g. Workshop at Dewan Ilmu..."></textarea></div><div class="form-col"><label>Event Picture (Optional)</label><div class="file-upload-wrapper"><input type="file" id="ev-photo" accept="image/*"></div></div></div>
                     <button type="button" class="btn-submit" id="btn-add-event">ADD EVENT</button>
                 </form>
             </div>
         </section>
 
         <!-- 3. MANAGE PROJECTS -->
-        <section id="manage-projects" class="content-section active">
+        <section id="manage-projects" class="content-section">
             <div class="card">
                 <div class="card-header">
                     <div class="card-header-left"><span>🚀</span><h2>Manage Featured Projects</h2></div>
@@ -175,32 +179,23 @@
                 <div style="overflow-x:auto;">
                     <table>
                         <thead><tr><th style="width: 80px;">PICTURE</th><th>PROJECT TITLE & DATE</th><th>DESCRIPTION</th><th style="text-align: right; width: 150px;">ACTION</th></tr></thead>
-                        <tbody id="project-table-body">
-                            <!-- Dynamic JS load here -->
-                        </tbody>
+                        <tbody id="project-table-body"></tbody>
                     </table>
                 </div>
             </div>
-
             <!-- Add Project Form -->
             <div class="card" id="form-add-project">
                 <div class="card-header white-text"><h2>+ Add New Project</h2></div>
                 <form id="add-project-form">
-                    <div class="form-row">
-                        <div class="form-col"><label>Project Title</label><input type="text" id="pj-title" placeholder="e.g. Autonomous Drone"></div>
-                        <div class="form-col"><label>Date / Year</label><input type="text" id="pj-date" placeholder="e.g. 2026"></div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-col"><label>Description / Category</label><textarea id="pj-desc" rows="2" placeholder="e.g. A robotics initiative..."></textarea></div>
-                        <div class="form-col"><label>Project Picture</label><div class="file-upload-wrapper"><input type="file" id="pj-photo" accept="image/*"></div></div>
-                    </div>
+                    <div class="form-row"><div class="form-col"><label>Project Title</label><input type="text" id="pj-title" placeholder="e.g. Autonomous Drone"></div><div class="form-col"><label>Date / Year</label><input type="text" id="pj-date" placeholder="e.g. 2026"></div></div>
+                    <div class="form-row"><div class="form-col"><label>Description / Category</label><textarea id="pj-desc" rows="2" placeholder="e.g. A robotics initiative..."></textarea></div><div class="form-col"><label>Project Picture</label><div class="file-upload-wrapper"><input type="file" id="pj-photo" accept="image/*"></div></div></div>
                     <button type="button" class="btn-submit" id="btn-add-project">ADD PROJECT</button>
                 </form>
             </div>
         </section>
 
         <!-- 4. COMMITTEE LIST SECTION -->
-        <section id="committee-list" class="content-section">
+        <section id="committee-list" class="content-section active">
             <div class="card">
                 <div class="card-header">
                     <div class="card-header-left"><span>📋</span><h2>Current Committee Members</h2></div>
@@ -210,9 +205,7 @@
                         <thead>
                             <tr><th style="width: 80px;">PHOTO</th><th>NAME</th><th>ROLE</th><th style="text-align: right; width: 150px;">ACTION</th></tr>
                         </thead>
-                        <tbody id="member-table-body">
-                            <!-- Dynamic JS load here -->
-                        </tbody>
+                        <tbody id="member-table-body"></tbody>
                     </table>
                 </div>
             </div>
@@ -222,10 +215,7 @@
                 <div class="card-header white-text"><h2>+ Add Committee Member</h2></div>
                 <form id="add-member-form">
                     <div class="form-group"><label>FULL NAME</label><input type="text" id="input-name" placeholder="Enter full name"></div>
-                    <div class="form-row">
-                        <div class="form-col"><label>ROLE</label><input type="text" id="input-role" placeholder="e.g. President"></div>
-                        <div class="form-col"><label>UPLOAD MEMBER PHOTO</label><div class="file-upload-wrapper"><input type="file" id="input-photo" accept="image/*"></div></div>
-                    </div>
+                    <div class="form-row"><div class="form-col"><label>ROLE</label><input type="text" id="input-role" placeholder="e.g. President"></div><div class="form-col"><label>UPLOAD MEMBER PHOTO</label><div class="file-upload-wrapper"><input type="file" id="input-photo" accept="image/*"></div></div></div>
                     <div class="section-title">Social Links (Optional)</div>
                     <div class="form-row" style="margin-bottom: 10px;">
                         <div class="form-col"><label>INSTAGRAM LINK</label><input type="text" id="input-ig" placeholder="https://instagram.com/..."></div>
@@ -253,12 +243,10 @@
 
     <!-- JavaScript logic -->
     <script>
-        // Mobile Sidebar Toggle
         const sidebar = document.getElementById('sidebar');
         document.getElementById('openMenu').addEventListener('click', () => sidebar.classList.add('open'));
         document.getElementById('closeMenu').addEventListener('click', () => sidebar.classList.remove('open'));
 
-        // Tab Switching
         const navLinks = document.querySelectorAll('.nav-item');
         const contentSections = document.querySelectorAll('.content-section');
         const pageTitle = document.getElementById('page-title');
@@ -280,203 +268,144 @@
             });
         });
 
-        // Image to Base64 helper
         function getBase64(file) {
             return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = error => reject(error);
+                const reader = new FileReader(); reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error);
             });
         }
 
-        // ==========================================
-        // EVENTS LOGIC
-        // ==========================================
+        /* ==========================================
+           0. COLLABORATION INVITES (AUTO-REPLY LOGIC)
+           ========================================== */
+        const inviteTableBody = document.getElementById('invite-table-body');
+        function loadAdminInvites() {
+            if (!inviteTableBody) return;
+            let invites = JSON.parse(localStorage.getItem('mystem_invites')) || [];
+            if(invites.length === 0) {
+                inviteTableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); font-style: italic; padding: 20px;">No collaboration invites received yet.</td></tr>';
+                return;
+            }
+            let html = '';
+            invites.forEach((inv, index) => {
+                html += `
+                    <tr>
+                        <td><small style="color:var(--text-muted)">${inv.timestamp}</small></td>
+                        <td><strong style="color:var(--accent-cyan);">${inv.org}</strong><br><small>${inv.name} | ${inv.email}</small></td>
+                        <td><small><b>Date:</b> ${inv.date}</small><br><small>${inv.details}</small></td>
+                        <td style="text-align: right;">
+                            <div class="btn-action-group">
+                                <button class="btn-reply inv-reply" data-index="${index}">REPLY (AUTO-TEMPLATE)</button>
+                                <button class="btn-delete inv-delete" data-index="${index}">DELETE</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            inviteTableBody.innerHTML = html;
+        }
+
+        /* ==========================================
+           1. EVENTS LOGIC
+           ========================================== */
         const eventTableBody = document.getElementById('event-table-body');
         const btnAddEvent = document.getElementById('btn-add-event');
 
         function loadAdminEvents() {
             if (!eventTableBody) return;
             let events = JSON.parse(localStorage.getItem('mystem_events')) || [];
-            let html = '';
-            
             if(events.length === 0) {
                 eventTableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); font-style: italic; padding: 20px;">No custom events added yet.</td></tr>';
                 return;
             }
-
+            let html = '';
             events.forEach((ev, index) => {
                 let imgHtml = ev.photo ? `<img src="${ev.photo}" class="member-photo">` : `<div class="member-photo" style="display:flex;align-items:center;justify-content:center;font-size:16px;">📅</div>`;
-                html += `
-                    <tr>
-                        <td>${imgHtml}</td>
-                        <td><strong style="color:var(--accent-cyan); text-transform:uppercase;">${ev.title}</strong><br><small style="color:var(--text-muted)">${ev.date}</small></td>
-                        <td>${ev.desc}</td>
-                        <td style="text-align: right;">
-                            <div class="btn-action-group">
-                                <button class="btn-edit ev-edit" data-index="${index}">EDIT</button>
-                                <button class="btn-delete ev-delete" data-index="${index}">DELETE</button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
+                html += `<tr><td>${imgHtml}</td><td><strong style="color:var(--accent-cyan); text-transform:uppercase;">${ev.title}</strong><br><small style="color:var(--text-muted)">${ev.date}</small></td><td>${ev.desc}</td><td style="text-align: right;"><div class="btn-action-group"><button class="btn-edit ev-edit" data-index="${index}">EDIT</button><button class="btn-delete ev-delete" data-index="${index}">DELETE</button></div></td></tr>`;
             });
             eventTableBody.innerHTML = html;
         }
 
         if(btnAddEvent) {
             btnAddEvent.addEventListener('click', async function() {
-                const title = document.getElementById('ev-title').value.trim();
-                const date = document.getElementById('ev-date').value.trim();
-                const desc = document.getElementById('ev-desc').value.trim();
-                const fileInput = document.getElementById('ev-photo');
-
+                const title = document.getElementById('ev-title').value.trim(); const date = document.getElementById('ev-date').value.trim(); const desc = document.getElementById('ev-desc').value.trim(); const fileInput = document.getElementById('ev-photo');
                 if (!title || !date || !desc) { alert('Please fill in Title, Date, and Description.'); return; }
-
-                let photoBase64 = '';
-                if (fileInput.files.length > 0) photoBase64 = await getBase64(fileInput.files[0]);
-
+                let photoBase64 = ''; if (fileInput.files.length > 0) photoBase64 = await getBase64(fileInput.files[0]);
                 let events = JSON.parse(localStorage.getItem('mystem_events')) || [];
-                events.push({ title, date, desc, photo: photoBase64 });
-                localStorage.setItem('mystem_events', JSON.stringify(events));
-
-                document.getElementById('add-event-form').reset();
-                loadAdminEvents();
-                alert("Event added successfully!");
+                events.push({ title, date, desc, photo: photoBase64 }); localStorage.setItem('mystem_events', JSON.stringify(events));
+                document.getElementById('add-event-form').reset(); loadAdminEvents(); alert("Event added successfully!");
             });
         }
 
-        // ==========================================
-        // PROJECTS LOGIC
-        // ==========================================
+        /* ==========================================
+           2. PROJECTS LOGIC
+           ========================================== */
         const projectTableBody = document.getElementById('project-table-body');
         const btnAddProject = document.getElementById('btn-add-project');
 
         function loadAdminProjects() {
             if (!projectTableBody) return;
             let projects = JSON.parse(localStorage.getItem('mystem_projects')) || [];
-            let html = '';
-            
             if(projects.length === 0) {
                 projectTableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); font-style: italic; padding: 20px;">No custom projects added yet.</td></tr>';
                 return;
             }
-
+            let html = '';
             projects.forEach((pj, index) => {
                 let imgHtml = pj.photo ? `<img src="${pj.photo}" class="member-photo">` : `<div class="member-photo" style="display:flex;align-items:center;justify-content:center;font-size:16px;">🚀</div>`;
-                html += `
-                    <tr>
-                        <td>${imgHtml}</td>
-                        <td><strong style="color:var(--accent-cyan); text-transform:uppercase;">${pj.title}</strong><br><small style="color:var(--text-muted)">${pj.date}</small></td>
-                        <td>${pj.desc}</td>
-                        <td style="text-align: right;">
-                            <div class="btn-action-group">
-                                <button class="btn-edit pj-edit" data-index="${index}">EDIT</button>
-                                <button class="btn-delete pj-delete" data-index="${index}">DELETE</button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
+                html += `<tr><td>${imgHtml}</td><td><strong style="color:var(--accent-cyan); text-transform:uppercase;">${pj.title}</strong><br><small style="color:var(--text-muted)">${pj.date}</small></td><td>${pj.desc}</td><td style="text-align: right;"><div class="btn-action-group"><button class="btn-edit pj-edit" data-index="${index}">EDIT</button><button class="btn-delete pj-delete" data-index="${index}">DELETE</button></div></td></tr>`;
             });
             projectTableBody.innerHTML = html;
         }
 
         if(btnAddProject) {
             btnAddProject.addEventListener('click', async function() {
-                const title = document.getElementById('pj-title').value.trim();
-                const date = document.getElementById('pj-date').value.trim();
-                const desc = document.getElementById('pj-desc').value.trim();
-                const fileInput = document.getElementById('pj-photo');
-
+                const title = document.getElementById('pj-title').value.trim(); const date = document.getElementById('pj-date').value.trim(); const desc = document.getElementById('pj-desc').value.trim(); const fileInput = document.getElementById('pj-photo');
                 if (!title || !date || !desc) { alert('Please fill in Title, Date, and Description.'); return; }
-
-                let photoBase64 = '';
-                if (fileInput.files.length > 0) photoBase64 = await getBase64(fileInput.files[0]);
-
+                let photoBase64 = ''; if (fileInput.files.length > 0) photoBase64 = await getBase64(fileInput.files[0]);
                 let projects = JSON.parse(localStorage.getItem('mystem_projects')) || [];
-                projects.push({ title, date, desc, photo: photoBase64 });
-                localStorage.setItem('mystem_projects', JSON.stringify(projects));
-
-                document.getElementById('add-project-form').reset();
-                loadAdminProjects();
-                alert("Project added successfully!");
+                projects.push({ title, date, desc, photo: photoBase64 }); localStorage.setItem('mystem_projects', JSON.stringify(projects));
+                document.getElementById('add-project-form').reset(); loadAdminProjects(); alert("Project added successfully!");
             });
         }
 
-        // ==========================================
-        // COMMITTEE LOGIC
-        // ==========================================
+        /* ==========================================
+           3. COMMITTEE LOGIC
+           ========================================== */
         const memberTableBody = document.getElementById('member-table-body');
         const btnAddMember = document.getElementById('btn-add-member');
 
         function loadAdminCommittee() {
             if (!memberTableBody) return;
             let committee = JSON.parse(localStorage.getItem('mystem_committee')) || [];
-            let html = '';
-            
             if(committee.length === 0) {
                 memberTableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); font-style: italic; padding: 20px;">No custom members added yet.<br><small>(Hardcoded members display on main site only)</small></td></tr>';
                 return;
             }
-
+            let html = '';
             committee.forEach((member, index) => {
                 let imgHtml = member.photo ? `<img src="${member.photo}" class="member-photo">` : `<div class="member-photo" style="display:flex;align-items:center;justify-content:center;font-size:16px;">👤</div>`;
-                html += `
-                    <tr>
-                        <td>${imgHtml}</td>
-                        <td style="text-transform: uppercase;">${member.name}</td>
-                        <td style="text-transform: uppercase;">${member.role}</td>
-                        <td style="text-align: right;">
-                            <div class="btn-action-group">
-                                <button class="btn-edit member-edit" data-index="${index}">EDIT</button>
-                                <button class="btn-delete member-delete" data-index="${index}">DELETE</button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
+                html += `<tr><td>${imgHtml}</td><td style="text-transform: uppercase;">${member.name}</td><td style="text-transform: uppercase;">${member.role}</td><td style="text-align: right;"><div class="btn-action-group"><button class="btn-edit member-edit" data-index="${index}">EDIT</button><button class="btn-delete member-delete" data-index="${index}">DELETE</button></div></td></tr>`;
             });
             memberTableBody.innerHTML = html;
         }
 
         if(btnAddMember) {
             btnAddMember.addEventListener('click', async function() {
-                const inputName = document.getElementById('input-name');
-                const inputRole = document.getElementById('input-role');
-                const inputIg = document.getElementById('input-ig');
-                const inputLinkedin = document.getElementById('input-linkedin');
-                const inputWhatsapp = document.getElementById('input-whatsapp');
-                const fileInput = document.getElementById('input-photo');
-
-                const nameValue = inputName.value.trim();
-                const roleValue = inputRole.value.trim();
-
-                if (nameValue === '' || roleValue === '') {
-                    alert('Please fill in at least the Full Name and Role.');
-                    return;
-                }
-
-                let photoBase64 = '';
-                if (fileInput.files.length > 0) photoBase64 = await getBase64(fileInput.files[0]);
-
-                const newMember = {
-                    name: nameValue, role: roleValue, ig: inputIg.value.trim(),
-                    li: inputLinkedin.value.trim(), wa: inputWhatsapp.value.trim(), photo: photoBase64
-                };
-
+                const inputName = document.getElementById('input-name'); const inputRole = document.getElementById('input-role'); const inputIg = document.getElementById('input-ig'); const inputLinkedin = document.getElementById('input-linkedin'); const inputWhatsapp = document.getElementById('input-whatsapp'); const fileInput = document.getElementById('input-photo');
+                const nameValue = inputName.value.trim(); const roleValue = inputRole.value.trim();
+                if (nameValue === '' || roleValue === '') { alert('Please fill in at least the Full Name and Role.'); return; }
+                let photoBase64 = ''; if (fileInput.files.length > 0) photoBase64 = await getBase64(fileInput.files[0]);
+                const newMember = { name: nameValue, role: roleValue, ig: inputIg.value.trim(), li: inputLinkedin.value.trim(), wa: inputWhatsapp.value.trim(), photo: photoBase64 };
                 let committee = JSON.parse(localStorage.getItem('mystem_committee')) || [];
-                committee.push(newMember);
-                localStorage.setItem('mystem_committee', JSON.stringify(committee));
-
-                document.getElementById('add-member-form').reset();
-                loadAdminCommittee();
-                alert("Member added successfully!");
+                committee.push(newMember); localStorage.setItem('mystem_committee', JSON.stringify(committee));
+                document.getElementById('add-member-form').reset(); loadAdminCommittee(); alert("Member added successfully!");
             });
         }
 
-        // ==========================================
-        // COMMUNITY STORIES LOGIC
-        // ==========================================
+        /* ==========================================
+           4. COMMUNITY STORIES LOGIC
+           ========================================== */
         const storyTableBody = document.getElementById('story-table-body');
         function loadAdminStories() {
             if (!storyTableBody) return;
@@ -488,82 +417,76 @@
             let html = '';
             experiences.forEach((exp, index) => {
                 let snippet = exp.text.length > 80 ? exp.text.substring(0, 80) + '...' : exp.text;
-                html += `
-                    <tr>
-                        <td style="text-transform: uppercase;">${exp.name}</td>
-                        <td style="color: var(--text-muted); font-size: 11px;">Main Site</td>
-                        <td style="font-style: italic;">"${snippet}"</td>
-                        <td style="text-align: right;">
-                            <div class="btn-action-group">
-                                <button class="btn-delete story-delete" data-index="${index}">DELETE</button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
+                html += `<tr><td style="text-transform: uppercase;">${exp.name}</td><td style="color: var(--text-muted); font-size: 11px;">Main Site</td><td style="font-style: italic;">"${snippet}"</td><td style="text-align: right;"><div class="btn-action-group"><button class="btn-delete story-delete" data-index="${index}">DELETE</button></div></td></tr>`;
             });
             storyTableBody.innerHTML = html;
         }
 
-
-        // ==========================================
-        // GLOBAL EDIT/DELETE DELEGATION
-        // ==========================================
+        /* ==========================================
+           GLOBAL DELEGATION (DELETE / EDIT / REPLY)
+           ========================================== */
         document.addEventListener('click', function(e) {
             
             // Delete Logic
             if (e.target.classList.contains('btn-delete')) {
                 const index = e.target.getAttribute('data-index');
                 if(e.target.classList.contains('member-delete')) {
-                    if(confirm("Delete this member?")) {
-                        let data = JSON.parse(localStorage.getItem('mystem_committee')) || [];
-                        data.splice(index, 1); localStorage.setItem('mystem_committee', JSON.stringify(data)); loadAdminCommittee();
-                    }
+                    if(confirm("Delete this member?")) { let data = JSON.parse(localStorage.getItem('mystem_committee')) || []; data.splice(index, 1); localStorage.setItem('mystem_committee', JSON.stringify(data)); loadAdminCommittee(); }
                 }
                 else if(e.target.classList.contains('ev-delete')) {
-                    if(confirm("Delete this event?")) {
-                        let data = JSON.parse(localStorage.getItem('mystem_events')) || [];
-                        data.splice(index, 1); localStorage.setItem('mystem_events', JSON.stringify(data)); loadAdminEvents();
-                    }
+                    if(confirm("Delete this event?")) { let data = JSON.parse(localStorage.getItem('mystem_events')) || []; data.splice(index, 1); localStorage.setItem('mystem_events', JSON.stringify(data)); loadAdminEvents(); }
                 }
                 else if(e.target.classList.contains('pj-delete')) {
-                    if(confirm("Delete this project?")) {
-                        let data = JSON.parse(localStorage.getItem('mystem_projects')) || [];
-                        data.splice(index, 1); localStorage.setItem('mystem_projects', JSON.stringify(data)); loadAdminProjects();
-                    }
+                    if(confirm("Delete this project?")) { let data = JSON.parse(localStorage.getItem('mystem_projects')) || []; data.splice(index, 1); localStorage.setItem('mystem_projects', JSON.stringify(data)); loadAdminProjects(); }
                 }
                 else if(e.target.classList.contains('story-delete')) {
-                    if(confirm("Delete this story?")) {
-                        let data = JSON.parse(localStorage.getItem('mystem_experiences')) || [];
-                        data.splice(index, 1); localStorage.setItem('mystem_experiences', JSON.stringify(data)); loadAdminStories();
-                    }
+                    if(confirm("Delete this story?")) { let data = JSON.parse(localStorage.getItem('mystem_experiences')) || []; data.splice(index, 1); localStorage.setItem('mystem_experiences', JSON.stringify(data)); loadAdminStories(); }
+                }
+                else if(e.target.classList.contains('inv-delete')) {
+                    if(confirm("Delete this collaboration invite?")) { let data = JSON.parse(localStorage.getItem('mystem_invites')) || []; data.splice(index, 1); localStorage.setItem('mystem_invites', JSON.stringify(data)); loadAdminInvites(); }
                 }
             }
 
             // Edit Logic
             if (e.target.classList.contains('btn-edit')) {
                 const index = e.target.getAttribute('data-index');
-                
                 if (e.target.classList.contains('member-edit')) {
-                    let data = JSON.parse(localStorage.getItem('mystem_committee')) || [];
-                    let item = data[index];
+                    let data = JSON.parse(localStorage.getItem('mystem_committee')) || []; let item = data[index];
                     let newName = prompt("Edit Name:", item.name); if (newName !== null) item.name = newName.toUpperCase();
                     let newRole = prompt("Edit Role:", item.role); if (newRole !== null) item.role = newRole.toUpperCase();
                     data[index] = item; localStorage.setItem('mystem_committee', JSON.stringify(data)); loadAdminCommittee();
                 }
                 else if (e.target.classList.contains('ev-edit')) {
-                    let data = JSON.parse(localStorage.getItem('mystem_events')) || [];
-                    let item = data[index];
+                    let data = JSON.parse(localStorage.getItem('mystem_events')) || []; let item = data[index];
                     let newTitle = prompt("Edit Title:", item.title); if (newTitle !== null) item.title = newTitle;
                     let newDesc = prompt("Edit Description:", item.desc); if (newDesc !== null) item.desc = newDesc;
                     data[index] = item; localStorage.setItem('mystem_events', JSON.stringify(data)); loadAdminEvents();
                 }
                 else if (e.target.classList.contains('pj-edit')) {
-                    let data = JSON.parse(localStorage.getItem('mystem_projects')) || [];
-                    let item = data[index];
+                    let data = JSON.parse(localStorage.getItem('mystem_projects')) || []; let item = data[index];
                     let newTitle = prompt("Edit Title:", item.title); if (newTitle !== null) item.title = newTitle;
                     let newDesc = prompt("Edit Description:", item.desc); if (newDesc !== null) item.desc = newDesc;
                     data[index] = item; localStorage.setItem('mystem_projects', JSON.stringify(data)); loadAdminProjects();
                 }
+                else {
+                    const row = e.target.closest('tr');
+                    const firstDataCell = row.cells[1] || row.cells[0]; 
+                    const newValue = prompt("Edit this item:", firstDataCell.innerText);
+                    if (newValue !== null && newValue.trim() !== "") firstDataCell.innerText = newValue;
+                }
+            }
+
+            // Auto-Reply Logic for Invites
+            if (e.target.classList.contains('inv-reply')) {
+                const index = e.target.getAttribute('data-index');
+                let invites = JSON.parse(localStorage.getItem('mystem_invites')) || [];
+                let item = invites[index];
+
+                let subject = encodeURIComponent(`Acknowledgment of Invitation: Collaboration with MYSTEM UniMAP 🚀`);
+                let body = encodeURIComponent(`Dear ${item.name},\n\nThank you for reaching out to the MYSTEM Ambassador Club!\n\nThis is an automated message to confirm that we have successfully received your invitation to collaborate with ${item.org} on ${item.date}.\n\nWe are absolutely thrilled that you thought of us for your upcoming program. Empowering students and communities through hands-on STEM education is at the very core of our mission.\n\nWhat happens next?\nOur executive committee is currently reviewing your proposed date, location, and event details. We are evaluating our availability and matching the best modules for your audience.\n\nPlease expect a follow-up email or a message via WhatsApp (${item.phone}) from one of our committee members within the next 3 to 5 business days. During that time, we will discuss logistics and how we can best proceed with this collaboration.\n\nIf you have any urgent updates in the meantime, please feel free to reply directly to this email.\n\nThank you once again for your initiative. We look forward to the possibility of working together!\n\nWarm regards,\n\nThe Executive Committee\nMYSTEM Ambassador Club\nUniversiti Malaysia Perlis (UniMAP)`);
+                
+                // Open Email Client
+                window.location.href = `mailto:${item.email}?subject=${subject}&body=${body}`;
             }
         });
 
@@ -572,6 +495,7 @@
             loadAdminStories();
             loadAdminEvents();
             loadAdminProjects();
+            loadAdminInvites();
         });
     </script>
 </body>
