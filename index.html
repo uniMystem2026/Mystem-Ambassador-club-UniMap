@@ -187,29 +187,19 @@
     @media (min-width: 768px) { .team-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
     @media (min-width: 1024px) { .team-grid { grid-template-columns: repeat(4, 1fr); gap: 24px; } }
 
-    .team-card {
-      background: var(--c-panel); border: 1px solid var(--c-border);
-      border-radius: 16px; padding: 20px 14px; text-align: center;
-      transition: transform .3s, border-color .3s, box-shadow .3s;
-    }
+    .team-card { background: var(--c-panel); border: 1px solid var(--c-border); border-radius: 16px; padding: 20px 14px; text-align: center; transition: transform .3s, border-color .3s, box-shadow .3s; }
     .team-card:hover { transform: translateY(-4px); border-color: var(--c-accent); box-shadow: var(--glow-blue); }
     
-    .team-avatar {
-      width: 80px; height: 80px; border-radius: 12px;
-      margin: 0 auto 12px; display: flex; align-items: center; justify-content: center;
-      font-size: 26px; font-weight: 900; font-family: var(--font-head);
-      border: 2px solid var(--c-accent); box-shadow: var(--glow-blue); overflow: hidden;
-    }
+    .team-avatar { width: 80px; height: 80px; border-radius: 12px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; font-family: var(--font-head); border: 2px solid var(--c-accent); box-shadow: var(--glow-blue); overflow: hidden; }
     @media (min-width: 768px) { .team-avatar { width: 100px; height: 100px; font-size: 32px; } }
     
     .team-name   { font-family: var(--font-head); font-size: 11px; font-weight: 700; color: var(--c-white); margin-bottom: 3px; text-transform: uppercase; }
     @media (min-width: 768px) { .team-name { font-size: 13px; } }
-    .team-role   { font-size: 11px; letter-spacing: .04em; margin-bottom: 6px; text-transform: uppercase; } /* Color dynamically set by JS */
+    .team-role   { font-size: 11px; letter-spacing: .04em; margin-bottom: 6px; text-transform: uppercase; } 
     .team-dept   { font-size: 10px; color: var(--c-muted); }
     
     .team-social { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
     .social-btn { width: 32px; height: 32px; border-radius: 8px; background: var(--c-surface); border: 1px solid var(--c-border); display: flex; align-items: center; justify-content: center; color: var(--c-muted); transition: all .2s ease; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-
     .social-btn svg { width: 16px !important; height: 16px !important; max-width: 16px !important; max-height: 16px !important; stroke: currentColor !important; fill: none !important; flex-shrink: 0; }
     .social-btn:hover { border-color: var(--c-accent); background: #00c8ff18; color: var(--c-accent); box-shadow: var(--glow-blue); }
 
@@ -459,7 +449,7 @@
       <div class="divider" style="margin:16px auto 0;"></div>
     </div>
     
-    <!-- Dynamic JS ONLY. No more hardcoded duplicate. -->
+    <!-- Dynamic JS injects into this container -->
     <div class="team-grid" id="team-grid-container">
     </div>
 
@@ -577,16 +567,26 @@
 
   function loadExperiences() { const experiences = JSON.parse(localStorage.getItem('mystem_experiences')) || []; const container = document.getElementById('experiencesList'); if (experiences.length > 0) { let html = ''; experiences.slice(0, 3).forEach(exp => { let imgHtml = exp.photo ? `<img src="${exp.photo}" class="exp-photo" alt="Experience Photo">` : '<div class="exp-photo" style="background: linear-gradient(135deg, #071e35, #0d3a5e);">🌟</div>'; html += `<div class="exp-card reveal visible">${imgHtml}<div class="exp-text">"${exp.text}"</div><div class="exp-author">— ${exp.name}</div></div>`; }); container.innerHTML = html + container.innerHTML; } }
 
-  /* ── LOAD DYNAMIC TEAM MEMBERS ── */
+  /* ── LOAD DYNAMIC TEAM MEMBERS WITH GLOBAL FALLBACK ── */
   function loadDynamicCommittee() {
-    let committee = JSON.parse(localStorage.getItem('mystem_committee')) || [];
-    const teamContainer = document.getElementById('team-grid-container');
+    let committee = JSON.parse(localStorage.getItem('mystem_committee'));
 
-    if (committee.length === 0) {
-        teamContainer.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:var(--c-muted);padding:40px;border:1px dashed var(--c-border);border-radius:16px;">Executive committee will appear here once added via the Admin Dashboard on this device.</p>`;
-        return;
+    // This is the global fallback data. If offline memory is empty (like on a phone), 
+    // it will automatically load this array instead!
+    if (!committee || committee.length === 0) {
+        committee = [
+            {
+                name: "ANAS ZUHAIRI BIN ZULLKEFFLE",
+                role: "PRESIDENT",
+                ig: "https://www.instagram.com",
+                li: "https://www.linkedin.com",
+                wa: "60123456789", 
+                photo: "WhatsApp_Image_2026-05-03_at_23.14.53.jpeg" // Make sure this file exists in your repo!
+            }
+        ];
     }
 
+    const teamContainer = document.getElementById('team-grid-container');
     const svgIg = `<svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>`;
     const svgLi = `<svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>`;
     const svgWa = `<svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>`;
@@ -594,7 +594,7 @@
     let allHtml = '';
 
     committee.forEach(member => {
-      // Dynamic Logic: If role contains 'president' or 'presiden', it turns gold!
+      // Logic to assign GOLD color to President
       let roleLower = member.role ? member.role.toLowerCase() : '';
       let isPresident = roleLower.includes('president') || roleLower.includes('presiden');
       
@@ -605,6 +605,7 @@
       if (member.ig && member.ig.trim() !== '') socialHtml += `<a href="${member.ig}" target="_blank" class="social-btn" title="Instagram">${svgIg}</a>`;
       if (member.li && member.li.trim() !== '') socialHtml += `<a href="${member.li}" target="_blank" class="social-btn" title="LinkedIn">${svgLi}</a>`;
       
+      // WhatsApp Formatter Logic
       if (member.wa && member.wa.trim() !== '') {
           let cleanNum = member.wa.replace(/[^0-9]/g, '');
           if (cleanNum.startsWith('0')) cleanNum = '6' + cleanNum.substring(1);
@@ -614,7 +615,7 @@
       socialHtml += '</div>';
 
       let avatarContent = member.photo && member.photo.trim() !== ''
-        ? `<img src="${member.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" alt="${member.name}">`
+        ? `<img src="${member.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" alt="${member.name}" onerror="this.outerHTML='<span style=\\'font-size:35px;\\'>👨‍💻</span>'">`
         : `<span style="font-size:35px;">👤</span>`;
 
       allHtml += `
@@ -628,7 +629,7 @@
       `;
     });
 
-    teamContainer.innerHTML = allHtml; // ONLY loads dynamic ones. Replaces placeholder.
+    teamContainer.innerHTML = allHtml; 
   }
 
   window.addEventListener('DOMContentLoaded', () => {
