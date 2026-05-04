@@ -187,10 +187,19 @@
     @media (min-width: 768px) { .team-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
     @media (min-width: 1024px) { .team-grid { grid-template-columns: repeat(4, 1fr); gap: 24px; } }
 
-    .team-card { background: var(--c-panel); border: 1px solid var(--c-border); border-radius: 16px; padding: 20px 14px; text-align: center; transition: transform .3s, border-color .3s, box-shadow .3s; }
+    .team-card {
+      background: var(--c-panel); border: 1px solid var(--c-border);
+      border-radius: 16px; padding: 20px 14px; text-align: center;
+      transition: transform .3s, border-color .3s, box-shadow .3s;
+    }
     .team-card:hover { transform: translateY(-4px); border-color: var(--c-accent); box-shadow: var(--glow-blue); }
     
-    .team-avatar { width: 80px; height: 80px; border-radius: 12px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; font-family: var(--font-head); border: 2px solid var(--c-accent); box-shadow: var(--glow-blue); overflow: hidden; }
+    .team-avatar {
+      width: 80px; height: 80px; border-radius: 12px;
+      margin: 0 auto 12px; display: flex; align-items: center; justify-content: center;
+      font-size: 26px; font-weight: 900; font-family: var(--font-head);
+      border: 2px solid var(--c-accent); box-shadow: var(--glow-blue); overflow: hidden;
+    }
     @media (min-width: 768px) { .team-avatar { width: 100px; height: 100px; font-size: 32px; } }
     
     .team-name   { font-family: var(--font-head); font-size: 11px; font-weight: 700; color: var(--c-white); margin-bottom: 3px; text-transform: uppercase; }
@@ -229,6 +238,9 @@
     .form-input:focus { border-color: var(--c-accent); box-shadow: var(--glow-blue); }
     .form-input::placeholder { color: var(--c-muted); }
 
+    /* ─── INVITE US SECTION (NEW) ─── */
+    #invite { background: var(--c-surface); padding-top: 0; }
+    
     #contact { background: linear-gradient(180deg, var(--c-surface) 0%, var(--c-bg) 100%); }
     .contact-grid { display: grid; grid-template-columns: 1fr; gap: 32px; align-items: start; }
     @media (min-width: 768px) { .contact-grid { grid-template-columns: 1fr 1fr; gap: 64px; } }
@@ -287,6 +299,7 @@
   <a href="#events"   onclick="closeMobileMenu()">Events</a>
   <a href="#team"     onclick="closeMobileMenu()">Team</a>
   <a href="#share"    onclick="closeMobileMenu()">Stories</a>
+  <a href="#invite"   onclick="closeMobileMenu()" style="color:var(--c-accent2);">Invite Us</a>
   <a href="stem-games.html" onclick="window.location.href='stem-games.html'; return false;">STEM Games</a>
   <a href="#contact"  onclick="closeMobileMenu()">Contact</a>
 </div>
@@ -307,6 +320,7 @@
       <a href="#projects">Projects</a>
       <a href="#events">Events</a>
       <a href="#team">Team</a>
+      <a href="#invite" style="color:var(--c-accent2);">Invite Us</a>
       <a href="#contact">Contact</a>
     </div>
     <div class="nav-cta">
@@ -341,7 +355,7 @@
     </p>
     <div class="hero-buttons">
       <a href="#programs" class="btn btn-primary">Explore Programs ↓</a>
-      <a href="#projects" class="btn btn-green">Our Projects</a>
+      <a href="#invite" class="btn btn-green">Invite Us</a>
       <a href="#share"    class="btn btn-outline">Community Stories</a>
       <a href="stem-games.html" onclick="window.location.href='stem-games.html'; return false;" class="btn btn-outline-cyan">🎮 STEM Education Games</a>
     </div>
@@ -474,6 +488,7 @@
   </div>
 </section>
 
+<!-- ═══════════════ SHARE EXPERIENCE FORM ═══════════════ -->
 <section id="share" class="section">
   <div class="container z1">
     <div class="share-inner reveal">
@@ -492,6 +507,32 @@
           <button type="submit" class="btn btn-primary" style="width:100%;margin-top:14px;">Share Experience →</button>
         </form>
         <p style="font-size:11px;color:var(--c-muted);text-align:center;margin-top:12px;">By submitting, your name, experience, and photo will be displayed publicly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ INVITE US FORM (NEW) ═══════════════ -->
+<section id="invite" class="section" style="padding-top:0;">
+  <div class="container z1">
+    <div class="share-inner reveal" style="background: linear-gradient(135deg, #0a2840 0%, var(--c-panel) 100%); border-color:var(--c-accent2);">
+      <span class="tag" style="color:var(--c-accent2); border-color:var(--c-accent2);">Collaboration</span>
+      <h2 class="share-title">Invite MYSTEM UniMAP</h2>
+      <p class="share-sub">Want us to run a STEM workshop, exhibition, or tech talk at your school, university, or community event? Fill out the form below!</p>
+      <div class="share-form">
+        <form id="inviteForm">
+          <div class="share-row">
+            <input type="text" id="invOrg" class="form-input" placeholder="Organization / School Name" required />
+            <input type="text" id="invName" class="form-input" placeholder="Contact Person Name" required />
+          </div>
+          <div class="share-row" style="margin-top:12px;">
+            <input type="email" id="invEmail" class="form-input" placeholder="Email Address" required />
+            <input type="tel" id="invPhone" class="form-input" placeholder="Phone / WhatsApp Number" required />
+          </div>
+          <input type="text" id="invDate" class="form-input" placeholder="Proposed Date & Location" style="margin-top:12px;" required />
+          <textarea id="invDetails" class="form-input" rows="4" placeholder="Tell us about your program or event..." style="resize:vertical;margin-top:12px;" required></textarea>
+          <button type="button" class="btn btn-green" style="width:100%;margin-top:14px;" onclick="handleInvite()">Send Invitation →</button>
+        </form>
       </div>
     </div>
   </div>
@@ -535,7 +576,7 @@
     <div class="footer-top">
       <div class="footer-brand"><div class="footer-brand-name">MYSTEM UniMAP</div><p class="footer-brand-desc">Official STEM Ambassador Club of Universiti Malaysia Perlis. Building the next generation of innovators, one project at a time.</p></div>
       <div><div class="footer-links-title">Navigate</div><ul class="footer-links-list"><li><a href="#about">About Us</a></li><li><a href="#programs">Programs</a></li><li><a href="#projects">Projects</a></li><li><a href="#events">Events</a></li></ul></div>
-      <div><div class="footer-links-title">Club</div><ul class="footer-links-list"><li><a href="#team">Our Team</a></li><li><a href="#share">Community Stories</a></li><li><a href="stem-games.html" onclick="window.location.href='stem-games.html'; return false;">STEM Games</a></li><li><a href="#contact">Contact</a></li><li><a href="admin.html" onclick="window.location.href='admin.html'; return false;" style="color:var(--c-accent);">Admin Login 🔒</a></li></ul></div>
+      <div><div class="footer-links-title">Club</div><ul class="footer-links-list"><li><a href="#team">Our Team</a></li><li><a href="#share">Community Stories</a></li><li><a href="#invite">Invite Us</a></li><li><a href="stem-games.html" onclick="window.location.href='stem-games.html'; return false;">STEM Games</a></li><li><a href="#contact">Contact</a></li><li><a href="admin.html" onclick="window.location.href='admin.html'; return false;" style="color:var(--c-accent);">Admin Login 🔒</a></li></ul></div>
       <div><div class="footer-links-title">UniMAP</div><ul class="footer-links-list"><li><a href="https://www.unimap.edu.my" target="_blank">UniMAP Official</a></li><li><a href="#">Student Portal</a></li><li><a href="#">Research</a></li><li><a href="#">Industry Links</a></li></ul></div>
     </div>
     <div class="footer-bottom">
@@ -560,6 +601,25 @@
   window.addEventListener('scroll', () => { let current = ''; sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.getAttribute('id'); }); navLinks.forEach(a => { a.style.color = a.getAttribute('href') === '#' + current ? 'var(--c-accent)' : ''; }); }, { passive: true });
 
   function handleContact() { const name = document.getElementById('contactName').value; const email = document.getElementById('contactEmail').value; const message = document.getElementById('contactMessage').value; if (!name || !email || !message) { alert('Please fill in all fields.'); return; } const subject = encodeURIComponent(`Website Inquiry from ${name}`); const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`); window.location.href = `mailto:mystemambassador@unimap.edu.my?subject=${subject}&body=${body}`; }
+
+  function handleInvite() {
+    const org = document.getElementById('invOrg').value;
+    const name = document.getElementById('invName').value;
+    const email = document.getElementById('invEmail').value;
+    const phone = document.getElementById('invPhone').value;
+    const date = document.getElementById('invDate').value;
+    const details = document.getElementById('invDetails').value;
+
+    if (!org || !name || !email || !phone || !date || !details) {
+      alert('Please fill in all fields to send the invitation.');
+      return;
+    }
+
+    const subject = encodeURIComponent(`Program Invitation from ${org}`);
+    const body = encodeURIComponent(`Organization: ${org}\nContact Person: ${name}\nEmail: ${email}\nPhone: ${phone}\nProposed Date & Location: ${date}\n\nProgram Details:\n${details}`);
+    
+    window.location.href = `mailto:mystemambassador@unimap.edu.my?subject=${subject}&body=${body}`;
+  }
 
   function getBase64(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error); }); }
 
@@ -594,7 +654,6 @@
     let allHtml = '';
 
     committee.forEach(member => {
-      // Logic to assign GOLD color to President
       let roleLower = member.role ? member.role.toLowerCase() : '';
       let isPresident = roleLower.includes('president') || roleLower.includes('presiden');
       
@@ -605,7 +664,6 @@
       if (member.ig && member.ig.trim() !== '') socialHtml += `<a href="${member.ig}" target="_blank" class="social-btn" title="Instagram">${svgIg}</a>`;
       if (member.li && member.li.trim() !== '') socialHtml += `<a href="${member.li}" target="_blank" class="social-btn" title="LinkedIn">${svgLi}</a>`;
       
-      // WhatsApp Formatter Logic
       if (member.wa && member.wa.trim() !== '') {
           let cleanNum = member.wa.replace(/[^0-9]/g, '');
           if (cleanNum.startsWith('0')) cleanNum = '6' + cleanNum.substring(1);
