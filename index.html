@@ -187,19 +187,10 @@
     @media (min-width: 768px) { .team-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
     @media (min-width: 1024px) { .team-grid { grid-template-columns: repeat(4, 1fr); gap: 24px; } }
 
-    .team-card {
-      background: var(--c-panel); border: 1px solid var(--c-border);
-      border-radius: 16px; padding: 20px 14px; text-align: center;
-      transition: transform .3s, border-color .3s, box-shadow .3s;
-    }
+    .team-card { background: var(--c-panel); border: 1px solid var(--c-border); border-radius: 16px; padding: 20px 14px; text-align: center; transition: transform .3s, border-color .3s, box-shadow .3s; }
     .team-card:hover { transform: translateY(-4px); border-color: var(--c-accent); box-shadow: var(--glow-blue); }
     
-    .team-avatar {
-      width: 80px; height: 80px; border-radius: 12px;
-      margin: 0 auto 12px; display: flex; align-items: center; justify-content: center;
-      font-size: 26px; font-weight: 900; font-family: var(--font-head);
-      border: 2px solid var(--c-accent); box-shadow: var(--glow-blue); overflow: hidden;
-    }
+    .team-avatar { width: 80px; height: 80px; border-radius: 12px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; font-family: var(--font-head); border: 2px solid var(--c-accent); box-shadow: var(--glow-blue); overflow: hidden; }
     @media (min-width: 768px) { .team-avatar { width: 100px; height: 100px; font-size: 32px; } }
     
     .team-name   { font-family: var(--font-head); font-size: 11px; font-weight: 700; color: var(--c-white); margin-bottom: 3px; text-transform: uppercase; }
@@ -238,7 +229,7 @@
     .form-input:focus { border-color: var(--c-accent); box-shadow: var(--glow-blue); }
     .form-input::placeholder { color: var(--c-muted); }
 
-    /* ─── INVITE US SECTION (NEW) ─── */
+    /* ─── INVITE US SECTION ─── */
     #invite { background: var(--c-surface); padding-top: 0; }
     
     #contact { background: linear-gradient(180deg, var(--c-surface) 0%, var(--c-bg) 100%); }
@@ -433,10 +424,9 @@
         <div class="divider"></div>
       </div>
     </div>
-    <div class="projects-grid">
+    <div class="projects-grid" id="project-grid-container">
+      <!-- Default fallback project in case local storage is empty -->
       <div class="proj-card reveal visible" style="border-color:var(--c-accent2);"><div class="proj-banner" style="background:linear-gradient(135deg,#041526,#0a3d62);">🌌</div><div class="proj-body"><div class="proj-meta"><span class="proj-badge">SPICE Arena</span><span class="proj-year">2025</span></div><h3 class="proj-title">AI Horizon 2025 QCI Workshop</h3><p class="proj-desc">A massive workshop at SPICE Arena Penang designed to shape the future with Penang's talent.</p></div></div>
-      <div class="proj-card reveal visible" style="border-color:var(--c-accent2);"><div class="proj-banner" style="background:linear-gradient(135deg,#041526,#0a3d62);">📟</div><div class="proj-body"><div class="proj-meta"><span class="proj-badge">Hardware</span><span class="proj-year">2025</span></div><h3 class="proj-title">QCI Experience-Based Learning Kit</h3><p class="proj-desc">A custom hardware setup integrating sensors, a camera, and an LCD for interactive quantum AI education.</p></div></div>
-      <div class="proj-card reveal visible" style="border-color:var(--c-accent2);"><div class="proj-banner" style="background:linear-gradient(135deg,#041526,#0a3d62);">🤝</div><div class="proj-body"><div class="proj-meta"><span class="proj-badge">CSR</span><span class="proj-year">2025</span></div><h3 class="proj-title">UniMAP x Yayasan SP Setia</h3><p class="proj-desc">A widespread educational initiative bringing STEM to primary schools across multiple states.</p></div></div>
     </div>
   </div>
 </section>
@@ -450,7 +440,10 @@
         <div class="divider"></div>
       </div>
     </div>
-    <div class="events-list"></div>
+    <div class="events-list" id="events-list-container">
+      <!-- Default fallback event -->
+      <div class="event-item reveal visible" style="border-color:var(--c-accent);"><div class="event-item-top"><div class="event-date"><div class="event-day">24</div><div class="event-month">AUG</div></div><div class="event-info"><div class="event-type">UPCOMING</div><div class="event-title">STEM School Outreach</div><div class="event-loc">Dewan Ilmu</div></div></div><span class="event-status status-upcoming">UPCOMING</span></div>
+    </div>
   </div>
 </section>
 
@@ -462,11 +455,7 @@
       <h2 class="section-title">Executive Committee 25/26</h2>
       <div class="divider" style="margin:16px auto 0;"></div>
     </div>
-    
-    <!-- Dynamic JS injects into this container -->
-    <div class="team-grid" id="team-grid-container">
-    </div>
-
+    <div class="team-grid" id="team-grid-container"></div>
   </div>
 </section>
 
@@ -483,12 +472,10 @@
     <div class="exp-grid" id="experiencesList">
       <div class="exp-card reveal visible"><div class="exp-photo" style="background: linear-gradient(135deg, #071e35, #0d3a5e);">🤖</div><div class="exp-text">"The QCI workshop at SPICE Arena Penang was incredible! We learned so much about quantum models."</div><div class="exp-author">— Workshop Participant</div></div>
       <div class="exp-card reveal visible"><div class="exp-photo" style="background: linear-gradient(135deg, #071e35, #0d3a5e);">🔌</div><div class="exp-text">"Building real hardware prototypes with sensors and displays gave me hands-on experience."</div><div class="exp-author">— Engineering Student</div></div>
-      <div class="exp-card reveal visible"><div class="exp-photo" style="background: linear-gradient(135deg, #071e35, #0d3a5e);">🏫</div><div class="exp-text">"Bringing the TryEngineering program to local schools was a truly rewarding experience for our team."</div><div class="exp-author">— MYSTEM Ambassador</div></div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════ SHARE EXPERIENCE FORM ═══════════════ -->
 <section id="share" class="section">
   <div class="container z1">
     <div class="share-inner reveal">
@@ -506,13 +493,12 @@
           <div style="text-align:left;margin-top:10px;"><label style="color:var(--c-muted);font-size:11px;margin-bottom:6px;display:block;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Upload Photo (Optional)</label><input type="file" id="expPhoto" class="form-input" accept="image/*" style="padding:10px;background:transparent;border:1px dashed var(--c-border);cursor:pointer;" /></div>
           <button type="submit" class="btn btn-primary" style="width:100%;margin-top:14px;">Share Experience →</button>
         </form>
-        <p style="font-size:11px;color:var(--c-muted);text-align:center;margin-top:12px;">By submitting, your name, experience, and photo will be displayed publicly.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════ INVITE US FORM (NEW) ═══════════════ -->
+<!-- ═══════════════ INVITE US FORM (UPDATED TO SAVE TO ADMIN) ═══════════════ -->
 <section id="invite" class="section" style="padding-top:0;">
   <div class="container z1">
     <div class="share-inner reveal" style="background: linear-gradient(135deg, #0a2840 0%, var(--c-panel) 100%); border-color:var(--c-accent2);">
@@ -531,7 +517,7 @@
           </div>
           <input type="text" id="invDate" class="form-input" placeholder="Proposed Date & Location" style="margin-top:12px;" required />
           <textarea id="invDetails" class="form-input" rows="4" placeholder="Tell us about your program or event..." style="resize:vertical;margin-top:12px;" required></textarea>
-          <button type="button" class="btn btn-green" style="width:100%;margin-top:14px;" onclick="handleInvite()">Send Invitation →</button>
+          <button type="button" class="btn btn-green" style="width:100%;margin-top:14px;" onclick="handleInvite()">Submit Invitation Request →</button>
         </form>
       </div>
     </div>
@@ -576,11 +562,11 @@
     <div class="footer-top">
       <div class="footer-brand"><div class="footer-brand-name">MYSTEM UniMAP</div><p class="footer-brand-desc">Official STEM Ambassador Club of Universiti Malaysia Perlis. Building the next generation of innovators, one project at a time.</p></div>
       <div><div class="footer-links-title">Navigate</div><ul class="footer-links-list"><li><a href="#about">About Us</a></li><li><a href="#programs">Programs</a></li><li><a href="#projects">Projects</a></li><li><a href="#events">Events</a></li></ul></div>
-      <div><div class="footer-links-title">Club</div><ul class="footer-links-list"><li><a href="#team">Our Team</a></li><li><a href="#share">Community Stories</a></li><li><a href="#invite">Invite Us</a></li><li><a href="stem-games.html" onclick="window.location.href='stem-games.html'; return false;">STEM Games</a></li><li><a href="#contact">Contact</a></li><li><a href="admin.html" onclick="window.location.href='admin.html'; return false;" style="color:var(--c-accent);">Admin Login 🔒</a></li></ul></div>
+      <div><div class="footer-links-title">Club</div><ul class="footer-links-list"><li><a href="#team">Our Team</a></li><li><a href="#share">Community Stories</a></li><li><a href="#invite">Invite Us</a></li><li><a href="stem-games.html" onclick="window.location.href='stem-games.html'; return false;">STEM Games</a></li><li><a href="admin.html" onclick="window.location.href='admin.html'; return false;" style="color:var(--c-accent);">Admin Login 🔒</a></li></ul></div>
       <div><div class="footer-links-title">UniMAP</div><ul class="footer-links-list"><li><a href="https://www.unimap.edu.my" target="_blank">UniMAP Official</a></li><li><a href="#">Student Portal</a></li><li><a href="#">Research</a></li><li><a href="#">Industry Links</a></li></ul></div>
     </div>
     <div class="footer-bottom">
-      <div class="footer-copy">© 2025 MYSTEM Ambassador Club, Universiti Malaysia Perlis. All rights reserved.</div>
+      <div class="footer-copy">© 2026 MYSTEM Ambassador Club, Universiti Malaysia Perlis. All rights reserved.</div>
       <div class="footer-badge"><div class="footer-dot"></div>Innovating · Inspiring · Impacting</div>
     </div>
   </div>
@@ -602,6 +588,13 @@
 
   function handleContact() { const name = document.getElementById('contactName').value; const email = document.getElementById('contactEmail').value; const message = document.getElementById('contactMessage').value; if (!name || !email || !message) { alert('Please fill in all fields.'); return; } const subject = encodeURIComponent(`Website Inquiry from ${name}`); const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`); window.location.href = `mailto:mystemambassador@unimap.edu.my?subject=${subject}&body=${body}`; }
 
+  function getBase64(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error); }); }
+
+  document.getElementById('experienceForm').addEventListener('submit', async function(e) { e.preventDefault(); const name = document.getElementById('expName').value; const text = document.getElementById('expText').value; const fileInput = document.getElementById('expPhoto'); let photoBase64 = ''; if (fileInput.files.length > 0) { photoBase64 = await getBase64(fileInput.files[0]); } const newExp = { name, text, photo: photoBase64 }; let experiences = JSON.parse(localStorage.getItem('mystem_experiences')) || []; experiences.unshift(newExp); localStorage.setItem('mystem_experiences', JSON.stringify(experiences)); alert('✅ Thank you! Your experience has been posted to the community wall.'); this.reset(); loadExperiences(); });
+
+  function loadExperiences() { const experiences = JSON.parse(localStorage.getItem('mystem_experiences')) || []; const container = document.getElementById('experiencesList'); if (experiences.length > 0) { let html = ''; experiences.slice(0, 3).forEach(exp => { let imgHtml = exp.photo ? `<img src="${exp.photo}" class="exp-photo" alt="Experience Photo">` : '<div class="exp-photo" style="background: linear-gradient(135deg, #071e35, #0d3a5e);">🌟</div>'; html += `<div class="exp-card reveal visible">${imgHtml}<div class="exp-text">"${exp.text}"</div><div class="exp-author">— ${exp.name}</div></div>`; }); container.innerHTML = html + container.innerHTML; } }
+
+  /* ── UPDATED INVITE FUNCTION (SAVES TO ADMIN) ── */
   function handleInvite() {
     const org = document.getElementById('invOrg').value;
     const name = document.getElementById('invName').value;
@@ -615,55 +608,33 @@
       return;
     }
 
-    const subject = encodeURIComponent(`Program Invitation from ${org}`);
-    const body = encodeURIComponent(`Organization: ${org}\nContact Person: ${name}\nEmail: ${email}\nPhone: ${phone}\nProposed Date & Location: ${date}\n\nProgram Details:\n${details}`);
-    
-    window.location.href = `mailto:mystemambassador@unimap.edu.my?subject=${subject}&body=${body}`;
+    const newInvite = { org, name, email, phone, date, details, timestamp: new Date().toLocaleString() };
+    let invites = JSON.parse(localStorage.getItem('mystem_invites')) || [];
+    invites.unshift(newInvite);
+    localStorage.setItem('mystem_invites', JSON.stringify(invites));
+
+    alert('✅ Invitation submitted! Our team will review your request and contact you soon.');
+    document.getElementById('inviteForm').reset();
   }
 
-  function getBase64(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error); }); }
-
-  document.getElementById('experienceForm').addEventListener('submit', async function(e) { e.preventDefault(); const name = document.getElementById('expName').value; const text = document.getElementById('expText').value; const fileInput = document.getElementById('expPhoto'); let photoBase64 = ''; if (fileInput.files.length > 0) { photoBase64 = await getBase64(fileInput.files[0]); } const newExp = { name, text, photo: photoBase64 }; let experiences = JSON.parse(localStorage.getItem('mystem_experiences')) || []; experiences.unshift(newExp); localStorage.setItem('mystem_experiences', JSON.stringify(experiences)); alert('✅ Thank you! Your experience has been posted to the community wall.'); this.reset(); loadExperiences(); });
-
-  function loadExperiences() { const experiences = JSON.parse(localStorage.getItem('mystem_experiences')) || []; const container = document.getElementById('experiencesList'); if (experiences.length > 0) { let html = ''; experiences.slice(0, 3).forEach(exp => { let imgHtml = exp.photo ? `<img src="${exp.photo}" class="exp-photo" alt="Experience Photo">` : '<div class="exp-photo" style="background: linear-gradient(135deg, #071e35, #0d3a5e);">🌟</div>'; html += `<div class="exp-card reveal visible">${imgHtml}<div class="exp-text">"${exp.text}"</div><div class="exp-author">— ${exp.name}</div></div>`; }); container.innerHTML = html + container.innerHTML; } }
-
-  /* ── LOAD DYNAMIC TEAM MEMBERS WITH GLOBAL FALLBACK ── */
   function loadDynamicCommittee() {
     let committee = JSON.parse(localStorage.getItem('mystem_committee'));
-
-    // This is the global fallback data. If offline memory is empty (like on a phone), 
-    // it will automatically load this array instead!
     if (!committee || committee.length === 0) {
-        committee = [
-            {
-                name: "ANAS ZUHAIRI BIN ZULLKEFFLE",
-                role: "PRESIDENT",
-                ig: "https://www.instagram.com",
-                li: "https://www.linkedin.com",
-                wa: "60123456789", 
-                photo: "WhatsApp_Image_2026-05-03_at_23.14.53.jpeg" // Make sure this file exists in your repo!
-            }
-        ];
+        committee = [{ name: "ANAS ZUHAIRI BIN ZULLKEFFLE", role: "PRESIDENT", ig: "https://www.instagram.com", li: "https://www.linkedin.com", wa: "60123456789", photo: "WhatsApp_Image_2026-05-03_at_23.14.53.jpeg" }];
     }
-
     const teamContainer = document.getElementById('team-grid-container');
     const svgIg = `<svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>`;
     const svgLi = `<svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>`;
     const svgWa = `<svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>`;
-
     let allHtml = '';
-
     committee.forEach(member => {
       let roleLower = member.role ? member.role.toLowerCase() : '';
       let isPresident = roleLower.includes('president') || roleLower.includes('presiden');
-      
       let cardColor = isPresident ? 'var(--c-gold)' : 'var(--c-accent)';
       let avatarBg = isPresident ? 'linear-gradient(135deg,#ffd16622,#ffd16644)' : 'linear-gradient(135deg,#00c8ff22,#00c8ff44)';
-
       let socialHtml = '<div class="team-social">';
       if (member.ig && member.ig.trim() !== '') socialHtml += `<a href="${member.ig}" target="_blank" class="social-btn" title="Instagram">${svgIg}</a>`;
       if (member.li && member.li.trim() !== '') socialHtml += `<a href="${member.li}" target="_blank" class="social-btn" title="LinkedIn">${svgLi}</a>`;
-      
       if (member.wa && member.wa.trim() !== '') {
           let cleanNum = member.wa.replace(/[^0-9]/g, '');
           if (cleanNum.startsWith('0')) cleanNum = '6' + cleanNum.substring(1);
@@ -671,23 +642,34 @@
           socialHtml += `<a href="https://wa.me/${cleanNum}" target="_blank" class="social-btn" title="WhatsApp">${svgWa}</a>`;
       }
       socialHtml += '</div>';
-
-      let avatarContent = member.photo && member.photo.trim() !== ''
-        ? `<img src="${member.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" alt="${member.name}" onerror="this.outerHTML='<span style=\\'font-size:35px;\\'>👨‍💻</span>'">`
-        : `<span style="font-size:35px;">👤</span>`;
-
-      allHtml += `
-        <div class="team-card reveal visible" style="border-color:${cardColor};">
-          <div class="team-avatar" style="background:${avatarBg};padding:0;">${avatarContent}</div>
-          <div class="team-name" style="text-transform: uppercase;">${member.name}</div>
-          <div class="team-role" style="text-transform: uppercase; color:${cardColor};">${member.role}</div>
-          <div class="team-dept">MYSTEM UniMAP</div>
-          ${socialHtml}
-        </div>
-      `;
+      let avatarContent = member.photo && member.photo.trim() !== '' ? `<img src="${member.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" alt="${member.name}" onerror="this.outerHTML='<span style=\\'font-size:35px;\\'>👨‍💻</span>'">` : `<span style="font-size:35px;">👤</span>`;
+      allHtml += `<div class="team-card reveal visible" style="border-color:${cardColor};"><div class="team-avatar" style="background:${avatarBg};padding:0;">${avatarContent}</div><div class="team-name" style="text-transform: uppercase;">${member.name}</div><div class="team-role" style="text-transform: uppercase; color:${cardColor};">${member.role}</div><div class="team-dept">MYSTEM UniMAP</div>${socialHtml}</div>`;
     });
-
     teamContainer.innerHTML = allHtml; 
+  }
+
+  function loadDynamicEventsProjects() {
+    const events = JSON.parse(localStorage.getItem('mystem_events'));
+    if (events && events.length > 0) { 
+        const eventContainer = document.getElementById('events-list-container');
+        eventContainer.innerHTML = ''; // Clear fallback
+        events.forEach(ev => { 
+            let day = ev.date.substring(0, 2); let month = ev.date.substring(3, 6);
+            const html = `<div class="event-item reveal visible" style="border-color:var(--c-accent);"><div class="event-item-top"><div class="event-date"><div class="event-day">${day}</div><div class="event-month">${month}</div></div><div class="event-info"><div class="event-type">UPCOMING</div><div class="event-title">${ev.title}</div><div class="event-loc">${ev.desc}</div></div></div><span class="event-status status-upcoming">UPCOMING</span></div>`; 
+            eventContainer.innerHTML += html; 
+        }); 
+    }
+
+    const projects = JSON.parse(localStorage.getItem('mystem_projects'));
+    if (projects && projects.length > 0) { 
+        const projContainer = document.getElementById('project-grid-container');
+        projContainer.innerHTML = ''; // Clear fallback
+        projects.forEach(pj => { 
+            let img = pj.photo ? `<img src="${pj.photo}" style="width:100%;height:100%;object-fit:cover;">` : '🚀';
+            const html = `<div class="proj-card reveal visible" style="border-color:var(--c-accent2);"><div class="proj-banner" style="background:linear-gradient(135deg,#041526,#0a3d62);">${img}</div><div class="proj-body"><div class="proj-meta"><span class="proj-badge">Project</span><span class="proj-year">${pj.date}</span></div><h3 class="proj-title">${pj.title}</h3><p class="proj-desc">${pj.desc}</p></div></div>`; 
+            projContainer.innerHTML += html; 
+        }); 
+    }
   }
 
   window.addEventListener('DOMContentLoaded', () => {
@@ -695,11 +677,9 @@
     const savedHeadline = localStorage.getItem('mystem_headline'); if (savedHeadline) document.querySelector('.hero-title').innerHTML = `<span class="line-accent">${savedHeadline}</span><br/><span class="line-green" style="font-size:.32em;letter-spacing:.08em;">UNIVERSITI MALAYSIA PERLIS</span>`;
     const savedDesc = localStorage.getItem('mystem_desc'); if (savedDesc) document.querySelector('.hero-sub').innerText = savedDesc;
 
-    const events = JSON.parse(localStorage.getItem('mystem_events'));
-    if (events && events.length > 0) { const eventContainer = document.querySelector('.events-list'); events.forEach(ev => { const html = `<div class="event-item reveal visible" style="border-color:var(--c-accent);"><div class="event-item-top"><div class="event-date"><div class="event-day">${ev.day}</div><div class="event-month">${ev.month}</div></div><div class="event-info"><div class="event-type">${ev.type}</div><div class="event-title">${ev.title}</div><div class="event-loc">${ev.loc}</div></div></div><span class="event-status status-${ev.status}">${ev.status}</span></div>`; eventContainer.insertAdjacentHTML('afterbegin', html); }); }
-
     loadExperiences();
     loadDynamicCommittee(); 
+    loadDynamicEventsProjects();
   });
 </script>
 </body>
