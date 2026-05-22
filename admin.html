@@ -221,7 +221,7 @@
                     <div class="form-row" style="margin-bottom: 10px;">
                         <div class="form-col"><label>INSTAGRAM LINK</label><input type="text" id="input-ig" placeholder="https://instagram.com/..."></div>
                         <div class="form-col"><label>LINKEDIN LINK</label><input type="text" id="input-linkedin" placeholder="https://linkedin.com/in/..."></div>
-                        <div class="form-col"><label>WHATSAPP NUMBER</label><input type="text" id="input-whatsapp" placeholder="e.g. 0123456789"></div>
+                        <div class="form-col"><label>WHATSAPP NUMBER</label><input type="text" id="input-whatsapp" placeholder="e.g. 0123456789 or wa.link/..."></div>
                     </div>
                     
                     <button type="button" class="btn-submit" id="btn-add-member">ADD TO COMMITTEE LIST</button>
@@ -275,12 +275,14 @@
             });
         }
 
-        // --- PRE-LOAD DEFAULT COMMITTEE LIST IF EMPTY ---
+        // --- PRE-LOAD FULL COMMITTEE LIST IF MISSING ---
         function initDefaultCommittee() {
             let committee = JSON.parse(localStorage.getItem('mystem_committee'));
-            if (!committee || committee.length === 0) {
+            
+            // If the database has less than 19 members (meaning it's incomplete or only has the 1 member you added), reset it to the full 19 list from the PDF!
+            if (!committee || committee.length < 19) {
                 const defaultList = [
-                    { name: "ANAS ZUHAIRI BIN ZULKEFFLE", role: "PRESIDENT", ig: "", li: "", wa: "", photo: "1.png" },
+                    { name: "ANAS ZUHAIRI BIN ZULLKEFFLE", role: "PRESIDENT", ig: "https://www.instagram.com/hr1sme?igsh=MW5waHZ1bjhuOTd0NQ==", li: "https://tinyurl.com/ANAS-ZUHAIRI", wa: "wa.link/sx2ck1", photo: "1.png" },
                     { name: "NUR SHAZLEEN BINTI ARDANI", role: "VICE PRESIDENT", ig: "", li: "", wa: "", photo: "2.png" },
                     { name: "MUHAMMAD HANNAN BIN ROSLI", role: "SECRETARY", ig: "", li: "", wa: "", photo: "3.png" },
                     { name: "NUR ADLEENA BINTI AHMAD ROSHIDI", role: "VICE SECRETARY", ig: "", li: "", wa: "", photo: "4.png" },
@@ -399,7 +401,7 @@
             }
             let html = '';
             committee.forEach((member, index) => {
-                let imgHtml = member.photo ? `<img src="${member.photo}" class="member-photo">` : `<div class="member-photo" style="display:flex;align-items:center;justify-content:center;font-size:16px;">👤</div>`;
+                let imgHtml = member.photo && member.photo !== '' ? `<img src="${member.photo}" class="member-photo" onerror="this.outerHTML='<div class=\\'member-photo\\' style=\\'display:flex;align-items:center;justify-content:center;font-size:16px;\\'>👤</div>'">` : `<div class="member-photo" style="display:flex;align-items:center;justify-content:center;font-size:16px;">👤</div>`;
                 
                 let socialLinks = [];
                 if (member.ig && member.ig.trim() !== '') socialLinks.push(`<span style="color:var(--accent-cyan);">IG:</span> ${member.ig}`);
@@ -479,7 +481,7 @@
                     let newRole = prompt("Edit Role:", item.role); if (newRole !== null) item.role = newRole.toUpperCase();
                     let newIg = prompt("Edit Instagram Link:", item.ig || ""); if (newIg !== null) item.ig = newIg;
                     let newLi = prompt("Edit LinkedIn Link:", item.li || ""); if (newLi !== null) item.li = newLi;
-                    let newWa = prompt("Edit WhatsApp Number (e.g. 0123456789):", item.wa || ""); if (newWa !== null) item.wa = newWa;
+                    let newWa = prompt("Edit WhatsApp Number (e.g. 0123456789 or wa.link/...):", item.wa || ""); if (newWa !== null) item.wa = newWa;
                     data[index] = item; localStorage.setItem('mystem_committee', JSON.stringify(data)); loadAdminCommittee();
                 }
                 else if (e.target.classList.contains('ev-edit')) {
@@ -506,7 +508,7 @@
         });
 
         document.addEventListener('DOMContentLoaded', () => {
-            initDefaultCommittee(); // Inject PDF data if empty
+            initDefaultCommittee(); // Injects the full PDF list if the database is missing/incomplete
             document.querySelector('[data-target="committee-list"]').click(); // Open committee tab by default
             loadAdminCommittee();
             loadAdminStories();
