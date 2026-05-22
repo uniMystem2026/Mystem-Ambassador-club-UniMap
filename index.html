@@ -180,28 +180,34 @@
     @media (min-width: 600px) { .event-status { align-self: center; } }
     .status-upcoming { background: #00ff9f18; color: var(--c-accent2); border: 1px solid var(--c-accent2); }
 
-    /* ─── TEAM ─── */
-    #team { background: linear-gradient(180deg, var(--c-bg) 0%, var(--c-surface) 100%); }
-    .team-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-    @media (min-width: 480px) { .team-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
-    @media (min-width: 768px) { .team-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
-    @media (min-width: 1024px) { .team-grid { grid-template-columns: repeat(4, 1fr); gap: 24px; } }
+    /* ─── TEAM ORG CHART ─── */
+    #team { background: linear-gradient(180deg, var(--c-bg) 0%, var(--c-surface) 100%); overflow-x: auto; }
+    .org-chart { display: flex; flex-direction: column; align-items: center; padding: 20px 0; min-width: 900px; }
+    
+    .org-level { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; width: 100%; z-index: 2; position: relative; }
+    .org-line-v { width: 2px; height: 30px; background: var(--c-border); }
+    
+    .org-departments { display: flex; justify-content: center; gap: 24px; width: 100%; margin-top: 30px; padding-top: 30px; border-top: 2px solid var(--c-border); position: relative; }
+    .org-departments::before { content: ''; position: absolute; top: -30px; left: 50%; width: 2px; height: 30px; background: var(--c-border); transform: translateX(-50%); }
+    
+    .org-dept { display: flex; flex-direction: column; align-items: center; gap: 12px; flex: 1; min-width: 280px; position: relative; }
+    .org-dept::before { content: ''; position: absolute; top: -30px; left: 50%; width: 2px; height: 30px; background: var(--c-border); transform: translateX(-50%); }
+    
+    .dept-title { font-family: var(--font-head); font-size: 13px; font-weight: 700; color: var(--c-accent); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 10px; text-shadow: var(--glow-blue); background: var(--c-panel); padding: 8px 20px; border-radius: 20px; border: 1px solid var(--c-accent); box-shadow: var(--glow-blue); }
 
-    .team-card { background: var(--c-panel); border: 1px solid var(--c-border); border-radius: 16px; padding: 20px 14px; text-align: center; transition: transform .3s, border-color .3s, box-shadow .3s; }
+    .team-card { background: var(--c-panel); border: 1px solid var(--c-border); border-radius: 16px; padding: 20px 14px; text-align: center; transition: transform .3s, border-color .3s, box-shadow .3s; width: 260px; }
     .team-card:hover { transform: translateY(-4px); border-color: var(--c-accent); box-shadow: var(--glow-blue); }
+    
+    .org-dept .team-card { width: 100%; padding: 14px; }
+    .org-dept .team-avatar { display: none; }
     
     .team-avatar { width: 80px; height: 80px; border-radius: 12px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; font-family: var(--font-head); border: 2px solid var(--c-accent); box-shadow: var(--glow-blue); overflow: hidden; }
     @media (min-width: 768px) { .team-avatar { width: 100px; height: 100px; font-size: 32px; } }
     
     .team-name   { font-family: var(--font-head); font-size: 11px; font-weight: 700; color: var(--c-white); margin-bottom: 3px; text-transform: uppercase; }
     @media (min-width: 768px) { .team-name { font-size: 13px; } }
-    .team-role   { font-size: 11px; letter-spacing: .04em; margin-bottom: 6px; text-transform: uppercase; } 
+    .team-role   { font-size: 11px; letter-spacing: .04em; margin-bottom: 6px; text-transform: uppercase; color: var(--c-accent); } 
     .team-dept   { font-size: 10px; color: var(--c-muted); }
-    
-    .team-social { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
-    .social-btn { width: 32px; height: 32px; border-radius: 8px; background: var(--c-surface); border: 1px solid var(--c-border); display: flex; align-items: center; justify-content: center; color: var(--c-muted); transition: all .2s ease; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-    .social-btn svg { width: 16px !important; height: 16px !important; max-width: 16px !important; max-height: 16px !important; stroke: currentColor !important; fill: none !important; flex-shrink: 0; }
-    .social-btn:hover { border-color: var(--c-accent); background: #00c8ff18; color: var(--c-accent); box-shadow: var(--glow-blue); }
 
     #experiences-wall { background: var(--c-bg); }
     .exp-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
@@ -425,7 +431,6 @@
       </div>
     </div>
     <div class="projects-grid" id="project-grid-container">
-      <!-- Default fallback project -->
       <div class="proj-card reveal visible" style="border-color:var(--c-accent2);"><div class="proj-banner" style="background:linear-gradient(135deg,#041526,#0a3d62);">🌌</div><div class="proj-body"><div class="proj-meta"><span class="proj-badge">SPICE Arena</span><span class="proj-year">2025</span></div><h3 class="proj-title">AI Horizon 2025 QCI Workshop</h3><p class="proj-desc">A massive workshop at SPICE Arena Penang designed to shape the future with Penang's talent.</p></div></div>
     </div>
   </div>
@@ -441,21 +446,95 @@
       </div>
     </div>
     <div class="events-list" id="events-list-container">
-      <!-- Default fallback event -->
       <div class="event-item reveal visible" style="border-color:var(--c-accent);"><div class="event-item-top"><div class="event-date"><div class="event-day">24</div><div class="event-month">AUG</div></div><div class="event-info"><div class="event-type">UPCOMING</div><div class="event-title">STEM School Outreach</div><div class="event-loc">Dewan Ilmu</div></div></div><span class="event-status status-upcoming">UPCOMING</span></div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════ TEAM ═══════════════ -->
-<section id="team" class="section" style="background:var(--c-surface);">
+<section id="team" class="section">
   <div class="container z1">
-    <div style="text-align:center;margin-bottom:40px;" class="reveal">
+    <div style="text-align:center;margin-bottom:60px;" class="reveal">
       <span class="tag">Leadership</span>
-      <h2 class="section-title">Executive Committee 25/26</h2>
+      <h2 class="section-title">MYSTEM Organisation Chart 25/26</h2>
       <div class="divider" style="margin:16px auto 0;"></div>
     </div>
-    <div class="team-grid" id="team-grid-container"></div>
+
+    <div class="org-chart reveal">
+      
+      <div class="org-level">
+        <div class="team-card" style="border-color:var(--c-gold);">
+          <div class="team-avatar" style="background:linear-gradient(135deg,#ffd16622,#ffd16644); border-color:var(--c-gold); box-shadow:var(--glow-gold);">
+            <img src="WhatsApp_Image_2026-05-03_at_23.14.53.jpeg" style="width:100%;height:100%;object-fit:cover;" onerror="this.outerHTML='<span style=\\'font-size:35px;\\'>👤</span>'">
+          </div>
+          <div class="team-name">ANAS ZUHAIRI BIN ZULKEFFLE</div>
+          <div class="team-role" style="color:var(--c-gold);">PRESIDENT</div>
+          <div class="team-dept">MYSTEM UniMAP</div>
+        </div>
+      </div>
+
+      <div class="org-line-v"></div>
+
+      <div class="org-level">
+        <div class="team-card">
+          <div class="team-avatar"><span style="font-size:35px;">👤</span></div>
+          <div class="team-name">NUR SHAZLEEN BINTI ARDANI</div>
+          <div class="team-role">VICE PRESIDENT</div>
+          <div class="team-dept">MYSTEM UniMAP</div>
+        </div>
+      </div>
+
+      <div class="org-line-v"></div>
+
+      <div class="org-level" style="gap: 30px;">
+        <div class="team-card">
+          <div class="team-avatar"><span style="font-size:35px;">👤</span></div>
+          <div class="team-name">MUHAMMAD HANNAN BIN ROSLI</div>
+          <div class="team-role">SECRETARY</div>
+          <div class="team-dept">MYSTEM UniMAP</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar"><span style="font-size:35px;">👤</span></div>
+          <div class="team-name">NUR ADLEENA BINTI AHMAD ROSHIDI</div>
+          <div class="team-role">VICE SECRETARY</div>
+          <div class="team-dept">MYSTEM UniMAP</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar"><span style="font-size:35px;">👤</span></div>
+          <div class="team-name">PRAVEEN SAGARAN</div>
+          <div class="team-role">TREASURER</div>
+          <div class="team-dept">MYSTEM UniMAP</div>
+        </div>
+      </div>
+
+      <div class="org-departments">
+        <div class="org-dept">
+          <div class="dept-title">ACTIVITY EXCO</div>
+          <div class="team-card"><div class="team-name">UMMI SAFIYYAH BINTI MOHAMAD DAUD</div></div>
+          <div class="team-card"><div class="team-name">SITI MAISARAH BINTI ABDUL GHANI</div></div>
+          <div class="team-card"><div class="team-name">NAJWA IMAN TIHANI BINTI ZULKARNAIN</div></div>
+          <div class="team-card"><div class="team-name">MUHAMMAD ADAM DANISH BIN MUHAMMAD ASRUL RAFLIS</div></div>
+        </div>
+
+        <div class="org-dept">
+          <div class="dept-title">MULTIMEDIA EXCO</div>
+          <div class="team-card"><div class="team-name">AHMAD IZRAN BIN MOHD ALHALIK</div></div>
+          <div class="team-card"><div class="team-name">AISSWARYA A/P KUGANESAN</div></div>
+          <div class="team-card"><div class="team-name">SITI NURAZALEA BALQIS BINTI ZULKEFLI</div></div>
+          <div class="team-card"><div class="team-name">MUHAMMAD AQIL AMANI BIN MOHD YUSRI</div></div>
+          <div class="team-card"><div class="team-name">NUR HANIS SHAFIYA</div></div>
+        </div>
+
+        <div class="org-dept">
+          <div class="dept-title">FOOD EXCO</div>
+          <div class="team-card"><div class="team-name">SAILAMBIGAY A/P THIRUNYANAM</div></div>
+          <div class="team-card"><div class="team-name">THASYAPRIYA A/P SIVAKUMAR</div></div>
+          <div class="team-card"><div class="team-name">NURUL SAKINAH BINTI HASRUL NIZAM</div></div>
+          <div class="team-card"><div class="team-name">AISHAH BINTI RAZAK</div></div>
+          <div class="team-card"><div class="team-name">MALINI CHANDRAN</div></div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </section>
 
@@ -498,7 +577,6 @@
   </div>
 </section>
 
-<!-- ═══════════════ INVITE US FORM ═══════════════ -->
 <section id="invite" class="section" style="padding-top:0;">
   <div class="container z1">
     <div class="share-inner reveal" style="background: linear-gradient(135deg, #0a2840 0%, var(--c-panel) 100%); border-color:var(--c-accent2);">
@@ -518,7 +596,6 @@
           <input type="text" id="invDate" class="form-input" placeholder="Proposed Date & Location" style="margin-top:12px;" required />
           <textarea id="invDetails" class="form-input" rows="4" placeholder="Tell us about your program or event..." style="resize:vertical;margin-top:12px;" required></textarea>
           
-          <!-- NEW: Optional file upload for Invitation Letter/Poster -->
           <div style="text-align:left;margin-top:10px;">
             <label style="color:var(--c-muted);font-size:11px;margin-bottom:6px;display:block;font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Upload Invitation Letter / Poster (Optional)</label>
             <input type="file" id="invFile" class="form-input" accept="image/*,.pdf" style="padding:10px;background:transparent;border:1px dashed var(--c-border);cursor:pointer;" />
@@ -601,7 +678,6 @@
 
   function loadExperiences() { const experiences = JSON.parse(localStorage.getItem('mystem_experiences')) || []; const container = document.getElementById('experiencesList'); if (experiences.length > 0) { let html = ''; experiences.slice(0, 3).forEach(exp => { let imgHtml = exp.photo ? `<img src="${exp.photo}" class="exp-photo" alt="Experience Photo">` : '<div class="exp-photo" style="background: linear-gradient(135deg, #071e35, #0d3a5e);">🌟</div>'; html += `<div class="exp-card reveal visible">${imgHtml}<div class="exp-text">"${exp.text}"</div><div class="exp-author">— ${exp.name}</div></div>`; }); container.innerHTML = html + container.innerHTML; } }
 
-  /* ── UPDATED INVITE FUNCTION (WITH FILE UPLOAD) ── */
   async function handleInvite() {
     const org = document.getElementById('invOrg').value;
     const name = document.getElementById('invName').value;
@@ -629,37 +705,6 @@
 
     alert('✅ Invitation submitted! Our team will review your request and contact you soon.');
     document.getElementById('inviteForm').reset();
-  }
-
-  function loadDynamicCommittee() {
-    let committee = JSON.parse(localStorage.getItem('mystem_committee'));
-    if (!committee || committee.length === 0) {
-        committee = [{ name: "ANAS ZUHAIRI BIN ZULLKEFFLE", role: "PRESIDENT", ig: "https://www.instagram.com", li: "https://www.linkedin.com", wa: "60123456789", photo: "WhatsApp_Image_2026-05-03_at_23.14.53.jpeg" }];
-    }
-    const teamContainer = document.getElementById('team-grid-container');
-    const svgIg = `<svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>`;
-    const svgLi = `<svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>`;
-    const svgWa = `<svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>`;
-    let allHtml = '';
-    committee.forEach(member => {
-      let roleLower = member.role ? member.role.toLowerCase() : '';
-      let isPresident = roleLower.includes('president') || roleLower.includes('presiden');
-      let cardColor = isPresident ? 'var(--c-gold)' : 'var(--c-accent)';
-      let avatarBg = isPresident ? 'linear-gradient(135deg,#ffd16622,#ffd16644)' : 'linear-gradient(135deg,#00c8ff22,#00c8ff44)';
-      let socialHtml = '<div class="team-social">';
-      if (member.ig && member.ig.trim() !== '') socialHtml += `<a href="${member.ig}" target="_blank" class="social-btn" title="Instagram">${svgIg}</a>`;
-      if (member.li && member.li.trim() !== '') socialHtml += `<a href="${member.li}" target="_blank" class="social-btn" title="LinkedIn">${svgLi}</a>`;
-      if (member.wa && member.wa.trim() !== '') {
-          let cleanNum = member.wa.replace(/[^0-9]/g, '');
-          if (cleanNum.startsWith('0')) cleanNum = '6' + cleanNum.substring(1);
-          else if (!cleanNum.startsWith('6')) cleanNum = '60' + cleanNum;
-          socialHtml += `<a href="https://wa.me/${cleanNum}" target="_blank" class="social-btn" title="WhatsApp">${svgWa}</a>`;
-      }
-      socialHtml += '</div>';
-      let avatarContent = member.photo && member.photo.trim() !== '' ? `<img src="${member.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" alt="${member.name}" onerror="this.outerHTML='<span style=\\'font-size:35px;\\'>👨‍💻</span>'">` : `<span style="font-size:35px;">👤</span>`;
-      allHtml += `<div class="team-card reveal visible" style="border-color:${cardColor};"><div class="team-avatar" style="background:${avatarBg};padding:0;">${avatarContent}</div><div class="team-name" style="text-transform: uppercase;">${member.name}</div><div class="team-role" style="text-transform: uppercase; color:${cardColor};">${member.role}</div><div class="team-dept">MYSTEM UniMAP</div>${socialHtml}</div>`;
-    });
-    teamContainer.innerHTML = allHtml; 
   }
 
   function loadDynamicEventsProjects() {
@@ -692,7 +737,6 @@
     const savedDesc = localStorage.getItem('mystem_desc'); if (savedDesc) document.querySelector('.hero-sub').innerText = savedDesc;
 
     loadExperiences();
-    loadDynamicCommittee(); 
     loadDynamicEventsProjects();
   });
 </script>
