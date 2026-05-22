@@ -122,8 +122,7 @@
                 <div style="overflow-x:auto;">
                     <table>
                         <thead><tr><th>DATE RECEIVED</th><th>ORGANIZATION</th><th>PROGRAM DETAILS</th><th style="text-align: right; width: 200px;">ACTION</th></tr></thead>
-                        <tbody id="invite-table-body">
-                            </tbody>
+                        <tbody id="invite-table-body"></tbody>
                     </table>
                 </div>
             </div>
@@ -214,7 +213,7 @@
                 <form id="add-member-form">
                     <div class="form-group"><label>FULL NAME</label><input type="text" id="input-name" placeholder="Enter full name"></div>
                     <div class="form-row">
-                        <div class="form-col"><label>ROLE</label><input type="text" id="input-role" placeholder="e.g. President"></div>
+                        <div class="form-col"><label>ROLE</label><input type="text" id="input-role" placeholder="e.g. President, Vice President, Activity Exco"></div>
                         <div class="form-col"><label>UPLOAD MEMBER PHOTO</label><div class="file-upload-wrapper"><input type="file" id="input-photo" accept="image/*"></div></div>
                     </div>
                     
@@ -276,9 +275,35 @@
             });
         }
 
-        /* ==========================================
-           0. COLLABORATION INVITES (AUTO-REPLY + FILE LOGIC)
-           ========================================== */
+        // --- PRE-LOAD DEFAULT COMMITTEE LIST IF EMPTY ---
+        function initDefaultCommittee() {
+            let committee = JSON.parse(localStorage.getItem('mystem_committee'));
+            if (!committee || committee.length === 0) {
+                const defaultList = [
+                    { name: "ANAS ZUHAIRI BIN ZULKEFFLE", role: "PRESIDENT", ig: "", li: "", wa: "", photo: "1.png" },
+                    { name: "NUR SHAZLEEN BINTI ARDANI", role: "VICE PRESIDENT", ig: "", li: "", wa: "", photo: "2.png" },
+                    { name: "MUHAMMAD HANNAN BIN ROSLI", role: "SECRETARY", ig: "", li: "", wa: "", photo: "3.png" },
+                    { name: "NUR ADLEENA BINTI AHMAD ROSHIDI", role: "VICE SECRETARY", ig: "", li: "", wa: "", photo: "4.png" },
+                    { name: "PRAVEEN SAGARAN", role: "TREASURER", ig: "", li: "", wa: "", photo: "5.png" },
+                    { name: "UMMI SAFIYYAH BINTI MOHAMAD DAUD", role: "ACTIVITY EXCO", ig: "", li: "", wa: "", photo: "" },
+                    { name: "SITI MAISARAH BINTI ABDUL GHANI", role: "ACTIVITY EXCO", ig: "", li: "", wa: "", photo: "" },
+                    { name: "NAJWA IMAN TIHANI BINTI ZULKARNAIN", role: "ACTIVITY EXCO", ig: "", li: "", wa: "", photo: "" },
+                    { name: "MUHAMMAD ADAM DANISH BIN MUHAMMAD ASRUL RAFLIS", role: "ACTIVITY EXCO", ig: "", li: "", wa: "", photo: "" },
+                    { name: "AHMAD IZRAN BIN MOHD ALHALIK", role: "MULTIMEDIA EXCO", ig: "", li: "", wa: "", photo: "" },
+                    { name: "AISSWARYA A/P KUGANESAN", role: "MULTIMEDIA EXCO", ig: "", li: "", wa: "", photo: "" },
+                    { name: "SITI NURAZALEA BALQIS BINTI ZULKEFLI", role: "MULTIMEDIA EXCO", ig: "", li: "", wa: "", photo: "" },
+                    { name: "MUHAMMAD AQIL AMANI BIN MOHD YUSRI", role: "MULTIMEDIA EXCO", ig: "", li: "", wa: "", photo: "" },
+                    { name: "NUR HANIS SHAFIYA", role: "MULTIMEDIA EXCO", ig: "", li: "", wa: "", photo: "" },
+                    { name: "SAILAMBIGAY A/P THIRUNYANAM", role: "FOOD EXCO", ig: "", li: "", wa: "", photo: "" },
+                    { name: "THASYAPRIYA A/P SIVAKUMAR", role: "FOOD EXCO", ig: "", li: "", wa: "", photo: "" },
+                    { name: "NURUL SAKINAH BINTI HASRUL NIZAM", role: "FOOD EXCO", ig: "", li: "", wa: "", photo: "" },
+                    { name: "AISHAH BINTI RAZAK", role: "FOOD EXCO", ig: "", li: "", wa: "", photo: "" },
+                    { name: "MALINI CHANDRAN", role: "FOOD EXCO", ig: "", li: "", wa: "", photo: "" }
+                ];
+                localStorage.setItem('mystem_committee', JSON.stringify(defaultList));
+            }
+        }
+
         const inviteTableBody = document.getElementById('invite-table-body');
         function loadAdminInvites() {
             if (!inviteTableBody) return;
@@ -297,7 +322,7 @@
                         <td><small><b>Date:</b> ${inv.date}</small><br><small>${inv.details}</small>${attachmentHtml}</td>
                         <td style="text-align: right;">
                             <div class="btn-action-group">
-                                <button class="btn-reply inv-reply" data-index="${index}">REPLY (AUTO-TEMPLATE)</button>
+                                <button class="btn-reply inv-reply" data-index="${index}">REPLY (AUTO)</button>
                                 <button class="btn-delete inv-delete" data-index="${index}">DELETE</button>
                             </div>
                         </td>
@@ -307,12 +332,8 @@
             inviteTableBody.innerHTML = html;
         }
 
-        /* ==========================================
-           1. EVENTS LOGIC
-           ========================================== */
         const eventTableBody = document.getElementById('event-table-body');
         const btnAddEvent = document.getElementById('btn-add-event');
-
         function loadAdminEvents() {
             if (!eventTableBody) return;
             let events = JSON.parse(localStorage.getItem('mystem_events')) || [];
@@ -339,12 +360,8 @@
             });
         }
 
-        /* ==========================================
-           2. PROJECTS LOGIC
-           ========================================== */
         const projectTableBody = document.getElementById('project-table-body');
         const btnAddProject = document.getElementById('btn-add-project');
-
         function loadAdminProjects() {
             if (!projectTableBody) return;
             let projects = JSON.parse(localStorage.getItem('mystem_projects')) || [];
@@ -371,24 +388,19 @@
             });
         }
 
-        /* ==========================================
-           3. COMMITTEE LOGIC (WITH SOCIAL LINKS)
-           ========================================== */
         const memberTableBody = document.getElementById('member-table-body');
         const btnAddMember = document.getElementById('btn-add-member');
-
         function loadAdminCommittee() {
             if (!memberTableBody) return;
             let committee = JSON.parse(localStorage.getItem('mystem_committee')) || [];
             if(committee.length === 0) {
-                memberTableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); font-style: italic; padding: 20px;">No custom members added yet.<br><small>(Hardcoded members display on main site only)</small></td></tr>';
+                memberTableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); font-style: italic; padding: 20px;">No custom members added yet.</td></tr>';
                 return;
             }
             let html = '';
             committee.forEach((member, index) => {
                 let imgHtml = member.photo ? `<img src="${member.photo}" class="member-photo">` : `<div class="member-photo" style="display:flex;align-items:center;justify-content:center;font-size:16px;">👤</div>`;
                 
-                // Format the social links nicely under the name
                 let socialLinks = [];
                 if (member.ig && member.ig.trim() !== '') socialLinks.push(`<span style="color:var(--accent-cyan);">IG:</span> ${member.ig}`);
                 if (member.li && member.li.trim() !== '') socialLinks.push(`<span style="color:var(--accent-cyan);">LI:</span> ${member.li}`);
@@ -405,7 +417,7 @@
                             <strong style="text-transform: uppercase;">${member.name}</strong>
                             ${socialText}
                         </td>
-                        <td style="text-transform: uppercase;">${member.role}</td>
+                        <td style="text-transform: uppercase; color:var(--accent-cyan); font-weight:600;">${member.role}</td>
                         <td style="text-align: right;">
                             <div class="btn-action-group">
                                 <button class="btn-edit member-edit" data-index="${index}">EDIT</button>
@@ -420,43 +432,19 @@
 
         if(btnAddMember) {
             btnAddMember.addEventListener('click', async function() {
-                const inputName = document.getElementById('input-name'); 
-                const inputRole = document.getElementById('input-role'); 
-                const inputIg = document.getElementById('input-ig'); 
-                const inputLinkedin = document.getElementById('input-linkedin'); 
-                const inputWhatsapp = document.getElementById('input-whatsapp'); 
-                const fileInput = document.getElementById('input-photo');
-                
-                const nameValue = inputName.value.trim(); 
-                const roleValue = inputRole.value.trim();
+                const inputName = document.getElementById('input-name'); const inputRole = document.getElementById('input-role'); const inputIg = document.getElementById('input-ig'); const inputLinkedin = document.getElementById('input-linkedin'); const inputWhatsapp = document.getElementById('input-whatsapp'); const fileInput = document.getElementById('input-photo');
+                const nameValue = inputName.value.trim(); const roleValue = inputRole.value.trim();
                 
                 if (nameValue === '' || roleValue === '') { alert('Please fill in at least the Full Name and Role.'); return; }
+                let photoBase64 = ''; if (fileInput.files.length > 0) photoBase64 = await getBase64(fileInput.files[0]);
                 
-                let photoBase64 = ''; 
-                if (fileInput.files.length > 0) photoBase64 = await getBase64(fileInput.files[0]);
-                
-                const newMember = { 
-                    name: nameValue, 
-                    role: roleValue, 
-                    ig: inputIg.value.trim(), 
-                    li: inputLinkedin.value.trim(), 
-                    wa: inputWhatsapp.value.trim(), 
-                    photo: photoBase64 
-                };
-                
+                const newMember = { name: nameValue, role: roleValue, ig: inputIg.value.trim(), li: inputLinkedin.value.trim(), wa: inputWhatsapp.value.trim(), photo: photoBase64 };
                 let committee = JSON.parse(localStorage.getItem('mystem_committee')) || [];
-                committee.push(newMember); 
-                localStorage.setItem('mystem_committee', JSON.stringify(committee));
-                
-                document.getElementById('add-member-form').reset(); 
-                loadAdminCommittee(); 
-                alert("Member added successfully!");
+                committee.push(newMember); localStorage.setItem('mystem_committee', JSON.stringify(committee));
+                document.getElementById('add-member-form').reset(); loadAdminCommittee(); alert("Member added successfully!");
             });
         }
 
-        /* ==========================================
-           4. COMMUNITY STORIES LOGIC
-           ========================================== */
         const storyTableBody = document.getElementById('story-table-body');
         function loadAdminStories() {
             if (!storyTableBody) return;
@@ -473,58 +461,26 @@
             storyTableBody.innerHTML = html;
         }
 
-        /* ==========================================
-           GLOBAL DELEGATION (DELETE / EDIT / REPLY)
-           ========================================== */
         document.addEventListener('click', function(e) {
-            
-            // Delete Logic
             if (e.target.classList.contains('btn-delete')) {
                 const index = e.target.getAttribute('data-index');
-                if(e.target.classList.contains('member-delete')) {
-                    if(confirm("Delete this member?")) { let data = JSON.parse(localStorage.getItem('mystem_committee')) || []; data.splice(index, 1); localStorage.setItem('mystem_committee', JSON.stringify(data)); loadAdminCommittee(); }
-                }
-                else if(e.target.classList.contains('ev-delete')) {
-                    if(confirm("Delete this event?")) { let data = JSON.parse(localStorage.getItem('mystem_events')) || []; data.splice(index, 1); localStorage.setItem('mystem_events', JSON.stringify(data)); loadAdminEvents(); }
-                }
-                else if(e.target.classList.contains('pj-delete')) {
-                    if(confirm("Delete this project?")) { let data = JSON.parse(localStorage.getItem('mystem_projects')) || []; data.splice(index, 1); localStorage.setItem('mystem_projects', JSON.stringify(data)); loadAdminProjects(); }
-                }
-                else if(e.target.classList.contains('story-delete')) {
-                    if(confirm("Delete this story?")) { let data = JSON.parse(localStorage.getItem('mystem_experiences')) || []; data.splice(index, 1); localStorage.setItem('mystem_experiences', JSON.stringify(data)); loadAdminStories(); }
-                }
-                else if(e.target.classList.contains('inv-delete')) {
-                    if(confirm("Delete this collaboration invite?")) { let data = JSON.parse(localStorage.getItem('mystem_invites')) || []; data.splice(index, 1); localStorage.setItem('mystem_invites', JSON.stringify(data)); loadAdminInvites(); }
-                }
+                if(e.target.classList.contains('member-delete')) { if(confirm("Delete this member?")) { let data = JSON.parse(localStorage.getItem('mystem_committee')) || []; data.splice(index, 1); localStorage.setItem('mystem_committee', JSON.stringify(data)); loadAdminCommittee(); } }
+                else if(e.target.classList.contains('ev-delete')) { if(confirm("Delete this event?")) { let data = JSON.parse(localStorage.getItem('mystem_events')) || []; data.splice(index, 1); localStorage.setItem('mystem_events', JSON.stringify(data)); loadAdminEvents(); } }
+                else if(e.target.classList.contains('pj-delete')) { if(confirm("Delete this project?")) { let data = JSON.parse(localStorage.getItem('mystem_projects')) || []; data.splice(index, 1); localStorage.setItem('mystem_projects', JSON.stringify(data)); loadAdminProjects(); } }
+                else if(e.target.classList.contains('story-delete')) { if(confirm("Delete this story?")) { let data = JSON.parse(localStorage.getItem('mystem_experiences')) || []; data.splice(index, 1); localStorage.setItem('mystem_experiences', JSON.stringify(data)); loadAdminStories(); } }
+                else if(e.target.classList.contains('inv-delete')) { if(confirm("Delete this collaboration invite?")) { let data = JSON.parse(localStorage.getItem('mystem_invites')) || []; data.splice(index, 1); localStorage.setItem('mystem_invites', JSON.stringify(data)); loadAdminInvites(); } }
             }
 
-            // Edit Logic
             if (e.target.classList.contains('btn-edit')) {
                 const index = e.target.getAttribute('data-index');
-                
-                // COMMITTEE EDIT (WITH SOCIAL FIELDS)
                 if (e.target.classList.contains('member-edit')) {
-                    let data = JSON.parse(localStorage.getItem('mystem_committee')) || []; 
-                    let item = data[index];
-                    
-                    let newName = prompt("Edit Name:", item.name); 
-                    if (newName !== null) item.name = newName.toUpperCase();
-                    
-                    let newRole = prompt("Edit Role:", item.role); 
-                    if (newRole !== null) item.role = newRole.toUpperCase();
-                    
-                    let newIg = prompt("Edit Instagram Link:", item.ig || ""); 
-                    if (newIg !== null) item.ig = newIg;
-                    
-                    let newLi = prompt("Edit LinkedIn Link:", item.li || ""); 
-                    if (newLi !== null) item.li = newLi;
-                    
-                    let newWa = prompt("Edit WhatsApp Number (e.g. 0123456789):", item.wa || ""); 
-                    if (newWa !== null) item.wa = newWa;
-                    
-                    data[index] = item; 
-                    localStorage.setItem('mystem_committee', JSON.stringify(data)); 
-                    loadAdminCommittee();
+                    let data = JSON.parse(localStorage.getItem('mystem_committee')) || []; let item = data[index];
+                    let newName = prompt("Edit Name:", item.name); if (newName !== null) item.name = newName.toUpperCase();
+                    let newRole = prompt("Edit Role:", item.role); if (newRole !== null) item.role = newRole.toUpperCase();
+                    let newIg = prompt("Edit Instagram Link:", item.ig || ""); if (newIg !== null) item.ig = newIg;
+                    let newLi = prompt("Edit LinkedIn Link:", item.li || ""); if (newLi !== null) item.li = newLi;
+                    let newWa = prompt("Edit WhatsApp Number (e.g. 0123456789):", item.wa || ""); if (newWa !== null) item.wa = newWa;
+                    data[index] = item; localStorage.setItem('mystem_committee', JSON.stringify(data)); loadAdminCommittee();
                 }
                 else if (e.target.classList.contains('ev-edit')) {
                     let data = JSON.parse(localStorage.getItem('mystem_events')) || []; let item = data[index];
@@ -538,32 +494,20 @@
                     let newDesc = prompt("Edit Description:", item.desc); if (newDesc !== null) item.desc = newDesc;
                     data[index] = item; localStorage.setItem('mystem_projects', JSON.stringify(data)); loadAdminProjects();
                 }
-                else {
-                    const row = e.target.closest('tr');
-                    const firstDataCell = row.cells[1] || row.cells[0]; 
-                    const newValue = prompt("Edit this item:", firstDataCell.innerText);
-                    if (newValue !== null && newValue.trim() !== "") firstDataCell.innerText = newValue;
-                }
             }
 
-            // Auto-Reply Logic for Invites
             if (e.target.classList.contains('inv-reply')) {
                 const index = e.target.getAttribute('data-index');
-                let invites = JSON.parse(localStorage.getItem('mystem_invites')) || [];
-                let item = invites[index];
-
+                let invites = JSON.parse(localStorage.getItem('mystem_invites')) || []; let item = invites[index];
                 let subject = encodeURIComponent(`Acknowledgment of Invitation: Collaboration with MYSTEM UniMAP 🚀`);
                 let body = encodeURIComponent(`Dear ${item.name},\n\nThank you for reaching out to the MYSTEM Ambassador Club!\n\nThis is an automated message to confirm that we have successfully received your invitation to collaborate with ${item.org} on ${item.date}.\n\nWe are absolutely thrilled that you thought of us for your upcoming program. Empowering students and communities through hands-on STEM education is at the very core of our mission.\n\nWhat happens next?\nOur executive committee is currently reviewing your proposed date, location, and event details. We are evaluating our availability and matching the best modules for your audience.\n\nPlease expect a follow-up email or a message via WhatsApp (${item.phone}) from one of our committee members within the next 3 to 5 business days. During that time, we will discuss logistics and how we can best proceed with this collaboration.\n\nIf you have any urgent updates in the meantime, please feel free to reply directly to this email.\n\nThank you once again for your initiative. We look forward to the possibility of working together!\n\nWarm regards,\n\nThe Executive Committee\nMYSTEM Ambassador Club\nUniversiti Malaysia Perlis (UniMAP)`);
-                
-                // Open Email Client
                 window.location.href = `mailto:${item.email}?subject=${subject}&body=${body}`;
             }
         });
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Default select the committee tab on load so you can see changes instantly
-            document.querySelector('[data-target="committee-list"]').click();
-            
+            initDefaultCommittee(); // Inject PDF data if empty
+            document.querySelector('[data-target="committee-list"]').click(); // Open committee tab by default
             loadAdminCommittee();
             loadAdminStories();
             loadAdminEvents();

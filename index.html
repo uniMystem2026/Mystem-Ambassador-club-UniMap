@@ -209,6 +209,11 @@
     .team-role   { font-size: 11px; letter-spacing: .04em; margin-bottom: 6px; text-transform: uppercase; color: var(--c-accent); } 
     .team-dept   { font-size: 10px; color: var(--c-muted); }
 
+    .team-social { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
+    .social-btn { width: 32px; height: 32px; border-radius: 8px; background: var(--c-surface); border: 1px solid var(--c-border); display: flex; align-items: center; justify-content: center; color: var(--c-muted); transition: all .2s ease; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .social-btn svg { width: 16px !important; height: 16px !important; max-width: 16px !important; max-height: 16px !important; stroke: currentColor !important; fill: none !important; flex-shrink: 0; }
+    .social-btn:hover { border-color: var(--c-accent); background: #00c8ff18; color: var(--c-accent); box-shadow: var(--glow-blue); }
+
     #experiences-wall { background: var(--c-bg); }
     .exp-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
     @media (min-width: 600px) { .exp-grid { grid-template-columns: repeat(2, 1fr); } }
@@ -459,90 +464,8 @@
       <div class="divider" style="margin:16px auto 0;"></div>
     </div>
 
-    <div class="org-chart reveal">
-      
-      <div class="org-level">
-        <div class="team-card" style="border-color:var(--c-gold);">
-          <div class="team-avatar" style="background:linear-gradient(135deg,#ffd16622,#ffd16644); border-color:var(--c-gold); box-shadow:var(--glow-gold);">
-            <img src="1.png" style="width:100%;height:100%;object-fit:cover;" onerror="this.outerHTML='<span style=\\'font-size:35px;\\'>👤</span>'">
-          </div>
-          <div class="team-name">ANAS ZUHAIRI BIN ZULKEFFLE</div>
-          <div class="team-role" style="color:var(--c-gold);">PRESIDENT</div>
-          <div class="team-dept">MYSTEM UniMAP</div>
-        </div>
-      </div>
-
-      <div class="org-line-v"></div>
-
-      <div class="org-level">
-        <div class="team-card">
-          <div class="team-avatar">
-            <img src="2.png" style="width:100%;height:100%;object-fit:cover;" onerror="this.outerHTML='<span style=\\'font-size:35px;\\'>👤</span>'">
-          </div>
-          <div class="team-name">NUR SHAZLEEN BINTI ARDANI</div>
-          <div class="team-role">VICE PRESIDENT</div>
-          <div class="team-dept">MYSTEM UniMAP</div>
-        </div>
-      </div>
-
-      <div class="org-line-v"></div>
-
-      <div class="org-level" style="gap: 30px;">
-        <div class="team-card">
-          <div class="team-avatar">
-            <img src="3.png" style="width:100%;height:100%;object-fit:cover;" onerror="this.outerHTML='<span style=\\'font-size:35px;\\'>👤</span>'">
-          </div>
-          <div class="team-name">MUHAMMAD HANNAN BIN ROSLI</div>
-          <div class="team-role">SECRETARY</div>
-          <div class="team-dept">MYSTEM UniMAP</div>
-        </div>
-        <div class="team-card">
-          <div class="team-avatar">
-            <img src="4.png" style="width:100%;height:100%;object-fit:cover;" onerror="this.outerHTML='<span style=\\'font-size:35px;\\'>👤</span>'">
-          </div>
-          <div class="team-name">NUR ADLEENA BINTI AHMAD ROSHIDI</div>
-          <div class="team-role">VICE SECRETARY</div>
-          <div class="team-dept">MYSTEM UniMAP</div>
-        </div>
-        <div class="team-card">
-          <div class="team-avatar">
-            <img src="5.png" style="width:100%;height:100%;object-fit:cover;" onerror="this.outerHTML='<span style=\\'font-size:35px;\\'>👤</span>'">
-          </div>
-          <div class="team-name">PRAVEEN SAGARAN</div>
-          <div class="team-role">TREASURER</div>
-          <div class="team-dept">MYSTEM UniMAP</div>
-        </div>
-      </div>
-
-      <div class="org-departments">
-        <div class="org-dept">
-          <div class="dept-title">ACTIVITY EXCO</div>
-          <div class="team-card"><div class="team-name">UMMI SAFIYYAH BINTI MOHAMAD DAUD</div></div>
-          <div class="team-card"><div class="team-name">SITI MAISARAH BINTI ABDUL GHANI</div></div>
-          <div class="team-card"><div class="team-name">NAJWA IMAN TIHANI BINTI ZULKARNAIN</div></div>
-          <div class="team-card"><div class="team-name">MUHAMMAD ADAM DANISH BIN MUHAMMAD ASRUL RAFLIS</div></div>
-        </div>
-
-        <div class="org-dept">
-          <div class="dept-title">MULTIMEDIA EXCO</div>
-          <div class="team-card"><div class="team-name">AHMAD IZRAN BIN MOHD ALHALIK</div></div>
-          <div class="team-card"><div class="team-name">AISSWARYA A/P KUGANESAN</div></div>
-          <div class="team-card"><div class="team-name">SITI NURAZALEA BALQIS BINTI ZULKEFLI</div></div>
-          <div class="team-card"><div class="team-name">MUHAMMAD AQIL AMANI BIN MOHD YUSRI</div></div>
-          <div class="team-card"><div class="team-name">NUR HANIS SHAFIYA</div></div>
-        </div>
-
-        <div class="org-dept">
-          <div class="dept-title">FOOD EXCO</div>
-          <div class="team-card"><div class="team-name">SAILAMBIGAY A/P THIRUNYANAM</div></div>
-          <div class="team-card"><div class="team-name">THASYAPRIYA A/P SIVAKUMAR</div></div>
-          <div class="team-card"><div class="team-name">NURUL SAKINAH BINTI HASRUL NIZAM</div></div>
-          <div class="team-card"><div class="team-name">AISHAH BINTI RAZAK</div></div>
-          <div class="team-card"><div class="team-name">MALINI CHANDRAN</div></div>
-        </div>
-      </div>
-
-    </div>
+    <div id="org-chart-container" class="org-chart reveal"></div>
+    
   </div>
 </section>
 
@@ -682,6 +605,140 @@
 
   function getBase64(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error); }); }
 
+  // --- PRE-LOAD DEFAULT COMMITTEE LIST IF EMPTY ---
+  function initDefaultCommittee() {
+      let committee = JSON.parse(localStorage.getItem('mystem_committee'));
+      if (!committee || committee.length === 0) {
+          const defaultList = [
+              { name: "ANAS ZUHAIRI BIN ZULKEFFLE", role: "PRESIDENT", ig: "", li: "", wa: "", photo: "1.png" },
+              { name: "NUR SHAZLEEN BINTI ARDANI", role: "VICE PRESIDENT", ig: "", li: "", wa: "", photo: "2.png" },
+              { name: "MUHAMMAD HANNAN BIN ROSLI", role: "SECRETARY", ig: "", li: "", wa: "", photo: "3.png" },
+              { name: "NUR ADLEENA BINTI AHMAD ROSHIDI", role: "VICE SECRETARY", ig: "", li: "", wa: "", photo: "4.png" },
+              { name: "PRAVEEN SAGARAN", role: "TREASURER", ig: "", li: "", wa: "", photo: "5.png" },
+              { name: "UMMI SAFIYYAH BINTI MOHAMAD DAUD", role: "ACTIVITY EXCO", ig: "", li: "", wa: "", photo: "" },
+              { name: "SITI MAISARAH BINTI ABDUL GHANI", role: "ACTIVITY EXCO", ig: "", li: "", wa: "", photo: "" },
+              { name: "NAJWA IMAN TIHANI BINTI ZULKARNAIN", role: "ACTIVITY EXCO", ig: "", li: "", wa: "", photo: "" },
+              { name: "MUHAMMAD ADAM DANISH BIN MUHAMMAD ASRUL RAFLIS", role: "ACTIVITY EXCO", ig: "", li: "", wa: "", photo: "" },
+              { name: "AHMAD IZRAN BIN MOHD ALHALIK", role: "MULTIMEDIA EXCO", ig: "", li: "", wa: "", photo: "" },
+              { name: "AISSWARYA A/P KUGANESAN", role: "MULTIMEDIA EXCO", ig: "", li: "", wa: "", photo: "" },
+              { name: "SITI NURAZALEA BALQIS BINTI ZULKEFLI", role: "MULTIMEDIA EXCO", ig: "", li: "", wa: "", photo: "" },
+              { name: "MUHAMMAD AQIL AMANI BIN MOHD YUSRI", role: "MULTIMEDIA EXCO", ig: "", li: "", wa: "", photo: "" },
+              { name: "NUR HANIS SHAFIYA", role: "MULTIMEDIA EXCO", ig: "", li: "", wa: "", photo: "" },
+              { name: "SAILAMBIGAY A/P THIRUNYANAM", role: "FOOD EXCO", ig: "", li: "", wa: "", photo: "" },
+              { name: "THASYAPRIYA A/P SIVAKUMAR", role: "FOOD EXCO", ig: "", li: "", wa: "", photo: "" },
+              { name: "NURUL SAKINAH BINTI HASRUL NIZAM", role: "FOOD EXCO", ig: "", li: "", wa: "", photo: "" },
+              { name: "AISHAH BINTI RAZAK", role: "FOOD EXCO", ig: "", li: "", wa: "", photo: "" },
+              { name: "MALINI CHANDRAN", role: "FOOD EXCO", ig: "", li: "", wa: "", photo: "" }
+          ];
+          localStorage.setItem('mystem_committee', JSON.stringify(defaultList));
+      }
+  }
+
+  function renderDynamicOrgChart() {
+    let committee = JSON.parse(localStorage.getItem('mystem_committee')) || [];
+    
+    // Group members by role
+    let pres = committee.filter(m => m.role.toUpperCase().includes('PRESIDENT') && !m.role.toUpperCase().includes('VICE'));
+    let vp = committee.filter(m => m.role.toUpperCase().includes('VICE PRESIDENT'));
+    let mgmt = committee.filter(m => m.role.toUpperCase().includes('SECRETARY') || m.role.toUpperCase().includes('TREASURER'));
+    
+    // Group Excos
+    let actExco = committee.filter(m => m.role.toUpperCase().includes('ACTIVITY'));
+    let multiExco = committee.filter(m => m.role.toUpperCase().includes('MULTIMEDIA'));
+    let foodExco = committee.filter(m => m.role.toUpperCase().includes('FOOD'));
+
+    // Reusable Card Generator
+    function makeCard(m, specialColor) {
+      let isPres = specialColor === 'gold';
+      let cardColor = isPres ? 'var(--c-gold)' : 'var(--c-border)';
+      let avatarBg = isPres ? 'linear-gradient(135deg,#ffd16622,#ffd16644)' : 'transparent';
+      let glow = isPres ? 'var(--glow-gold)' : 'none';
+      let roleColor = isPres ? 'var(--c-gold)' : 'var(--c-accent)';
+      
+      let avatarHtml = m.photo && m.photo.trim() !== '' 
+        ? `<img src="${m.photo}" style="width:100%;height:100%;object-fit:cover;" onerror="this.outerHTML='<span style=\\'font-size:35px;\\'>👤</span>'">`
+        : `<span style="font-size:35px;">👤</span>`;
+      
+      // Social Links
+      let socialHtml = '<div class="team-social">';
+      const svgIg = `<svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>`;
+      const svgLi = `<svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>`;
+      const svgWa = `<svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>`;
+      if (m.ig && m.ig.trim() !== '') socialHtml += `<a href="${m.ig}" target="_blank" class="social-btn" title="Instagram">${svgIg}</a>`;
+      if (m.li && m.li.trim() !== '') socialHtml += `<a href="${m.li}" target="_blank" class="social-btn" title="LinkedIn">${svgLi}</a>`;
+      if (m.wa && m.wa.trim() !== '') {
+          let cleanNum = m.wa.replace(/[^0-9]/g, '');
+          if (cleanNum.startsWith('0')) cleanNum = '6' + cleanNum.substring(1);
+          else if (!cleanNum.startsWith('6')) cleanNum = '60' + cleanNum;
+          socialHtml += `<a href="https://wa.me/${cleanNum}" target="_blank" class="social-btn" title="WhatsApp">${svgWa}</a>`;
+      }
+      socialHtml += '</div>';
+
+      return `
+        <div class="team-card" style="border-color:${cardColor};">
+          <div class="team-avatar" style="background:${avatarBg}; border-color:${cardColor}; box-shadow:${glow};">
+            ${avatarHtml}
+          </div>
+          <div class="team-name">${m.name}</div>
+          <div class="team-role" style="color:${roleColor};">${m.role}</div>
+          <div class="team-dept">MYSTEM UniMAP</div>
+          ${(m.ig || m.li || m.wa) ? socialHtml : ''}
+        </div>
+      `;
+    }
+
+    // Build the HTML
+    let html = '';
+
+    // LEVEL 1: PRESIDENT
+    if(pres.length > 0) {
+      html += `<div class="org-level">`;
+      pres.forEach(m => html += makeCard(m, 'gold'));
+      html += `</div><div class="org-line-v"></div>`;
+    }
+
+    // LEVEL 2: VICE PRESIDENT
+    if(vp.length > 0) {
+      html += `<div class="org-level">`;
+      vp.forEach(m => html += makeCard(m));
+      html += `</div><div class="org-line-v"></div>`;
+    }
+
+    // LEVEL 3: MANAGEMENT
+    if(mgmt.length > 0) {
+      html += `<div class="org-level" style="gap: 30px;">`;
+      mgmt.forEach(m => html += makeCard(m));
+      html += `</div>`;
+    }
+
+    // LEVEL 4: EXCOS
+    if(actExco.length > 0 || multiExco.length > 0 || foodExco.length > 0) {
+      html += `<div class="org-departments">`;
+      
+      if(actExco.length > 0) {
+        html += `<div class="org-dept"><div class="dept-title">ACTIVITY EXCO</div>`;
+        actExco.forEach(m => html += makeCard(m));
+        html += `</div>`;
+      }
+      
+      if(multiExco.length > 0) {
+        html += `<div class="org-dept"><div class="dept-title">MULTIMEDIA EXCO</div>`;
+        multiExco.forEach(m => html += makeCard(m));
+        html += `</div>`;
+      }
+      
+      if(foodExco.length > 0) {
+        html += `<div class="org-dept"><div class="dept-title">FOOD EXCO</div>`;
+        foodExco.forEach(m => html += makeCard(m));
+        html += `</div>`;
+      }
+
+      html += `</div>`;
+    }
+
+    document.getElementById('org-chart-container').innerHTML = html;
+  }
+
   document.getElementById('experienceForm').addEventListener('submit', async function(e) { e.preventDefault(); const name = document.getElementById('expName').value; const text = document.getElementById('expText').value; const fileInput = document.getElementById('expPhoto'); let photoBase64 = ''; if (fileInput.files.length > 0) { photoBase64 = await getBase64(fileInput.files[0]); } const newExp = { name, text, photo: photoBase64 }; let experiences = JSON.parse(localStorage.getItem('mystem_experiences')) || []; experiences.unshift(newExp); localStorage.setItem('mystem_experiences', JSON.stringify(experiences)); alert('✅ Thank you! Your experience has been posted to the community wall.'); this.reset(); loadExperiences(); });
 
   function loadExperiences() { const experiences = JSON.parse(localStorage.getItem('mystem_experiences')) || []; const container = document.getElementById('experiencesList'); if (experiences.length > 0) { let html = ''; experiences.slice(0, 3).forEach(exp => { let imgHtml = exp.photo ? `<img src="${exp.photo}" class="exp-photo" alt="Experience Photo">` : '<div class="exp-photo" style="background: linear-gradient(135deg, #071e35, #0d3a5e);">🌟</div>'; html += `<div class="exp-card reveal visible">${imgHtml}<div class="exp-text">"${exp.text}"</div><div class="exp-author">— ${exp.name}</div></div>`; }); container.innerHTML = html + container.innerHTML; } }
@@ -744,6 +801,8 @@
     const savedHeadline = localStorage.getItem('mystem_headline'); if (savedHeadline) document.querySelector('.hero-title').innerHTML = `<span class="line-accent">${savedHeadline}</span><br/><span class="line-green" style="font-size:.32em;letter-spacing:.08em;">UNIVERSITI MALAYSIA PERLIS</span>`;
     const savedDesc = localStorage.getItem('mystem_desc'); if (savedDesc) document.querySelector('.hero-sub').innerText = savedDesc;
 
+    initDefaultCommittee(); // Injects the full PDF list if the database is blank
+    renderDynamicOrgChart(); // Automatically builds the Org Chart reading from the database
     loadExperiences();
     loadDynamicEventsProjects();
   });
