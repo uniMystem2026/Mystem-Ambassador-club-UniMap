@@ -2,10 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>STEM Games | MYSTEM UniMAP</title>
   <link rel="icon" type="image/png" href="WhatsApp_Image_2024-12-02_at_15.29.32-removebg-preview.png" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet" />
+  
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+
   <style>
     :root {
       --c-bg:        #020b14; --c-surface:   #041526; --c-panel:     #071e35;
@@ -15,8 +20,6 @@
       --font-head:   'Orbitron', sans-serif; --font-body:   'Exo 2', sans-serif;
       --glow-blue:   0 0 18px #00c8ff88, 0 0 40px #00c8ff33;
       --glow-green:  0 0 18px #00ff9f88, 0 0 40px #00ff9f33;
-      --safe-top: env(safe-area-inset-top, 0px);
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -42,48 +45,47 @@
     .title { font-family: var(--font-head); font-size: clamp(28px, 6vw, 42px); font-weight: 900; color: var(--c-accent); text-transform: uppercase; letter-spacing: 0.05em; text-shadow: var(--glow-blue); margin-bottom: 12px; }
     .subtitle { color: var(--c-muted); font-size: 15px; }
 
-    /* Single Game Layout */
-    .games-grid { display: flex; justify-content: center; gap: 30px; margin-bottom: 60px; }
+    .games-grid { display: flex; justify-content: center; gap: 30px; margin-bottom: 60px; flex-wrap: wrap; }
     
     .game-card { background: var(--c-panel); border: 2px solid var(--c-border); border-radius: 16px; padding: 30px 20px; text-align: center; width: 100%; max-width: 320px; transition: transform 0.3s, box-shadow 0.3s; }
     .game-card.green { border-color: #004d30; }
+    .game-card.blue { border-color: #003b4d; }
     .game-card.green:hover { transform: translateY(-5px); border-color: var(--c-accent2); box-shadow: var(--glow-green); }
+    .game-card.blue:hover { transform: translateY(-5px); border-color: var(--c-accent); box-shadow: var(--glow-blue); }
     
     .game-icon { font-size: 48px; margin-bottom: 16px; }
     .game-title { font-family: var(--font-head); font-size: 18px; font-weight: 700; color: var(--c-white); margin-bottom: 12px; }
-    
     .game-tags { display: flex; justify-content: center; gap: 8px; margin-bottom: 16px; }
     .tag { padding: 4px 12px; border-radius: 999px; font-family: var(--font-head); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid; }
     .game-card.green .tag { color: var(--c-accent2); border-color: var(--c-accent2); }
-    
+    .game-card.blue .tag { color: var(--c-accent); border-color: var(--c-accent); }
     .game-desc { font-size: 12px; color: var(--c-muted); line-height: 1.6; margin-bottom: 24px; min-height: 60px; }
     
     .btn-play { width: 100%; padding: 14px; border-radius: 10px; font-family: var(--font-head); font-size: 12px; font-weight: 700; text-transform: uppercase; border: none; cursor: pointer; transition: 0.3s; color: var(--c-bg); }
     .btn-play.green { background: var(--c-accent2); box-shadow: var(--glow-green); }
-    .btn-play.green:hover { box-shadow: 0 0 30px #00ff9fcc; transform: scale(1.02); }
+    .btn-play.blue { background: var(--c-accent); box-shadow: var(--glow-blue); }
+    .btn-play:hover { filter: brightness(1.2); transform: scale(1.02); }
 
-    /* Game Terminal UI */
-    #game-terminal { display: none; max-width: 600px; margin: 0 auto 60px; background: #01060a; border: 1px solid var(--c-accent2); border-radius: 16px; padding: 30px; box-shadow: var(--glow-green); text-align: center; }
+    /* Terminals */
+    .terminal-container { display: none; max-width: 700px; margin: 0 auto 60px; background: #01060a; border: 1px solid var(--c-border); border-radius: 16px; padding: 20px; text-align: center; }
     .term-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--c-muted); padding-bottom: 15px; margin-bottom: 25px; }
-    .term-title { font-family: var(--font-head); color: var(--c-accent2); font-size: 16px; text-transform: uppercase; letter-spacing: 0.1em; }
+    .term-title { font-family: var(--font-head); font-size: 16px; text-transform: uppercase; letter-spacing: 0.1em; }
     .term-stats { font-family: var(--font-head); font-size: 14px; color: var(--c-white); display: flex; justify-content: space-around; margin-bottom: 20px; }
-    
     .btn-close-game { background: transparent; border: 1px solid var(--c-accent); color: var(--c-accent); padding: 5px 10px; border-radius: 5px; font-size: 10px; cursor: pointer; font-family: var(--font-head); transition: 0.2s; }
     .btn-close-game:hover { background: rgba(0,200,255,0.2); box-shadow: var(--glow-blue); }
 
-    /* Setup Settings UI */
+    /* Setup UI */
     .btn-time { background: transparent; border: 1px solid var(--c-border); color: var(--c-muted); padding: 12px 20px; border-radius: 8px; font-family: var(--font-head); font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; flex: 1; min-width: 80px;}
-    .btn-time:hover { border-color: var(--c-accent); color: var(--c-accent); }
     .btn-time.active { background: rgba(0, 200, 255, 0.1); border-color: var(--c-accent); color: var(--c-accent); box-shadow: var(--glow-blue); }
-    
     #custom-time { width: 100px; padding: 12px; font-size: 12px; text-align: center; background: var(--c-surface); border: 1px solid var(--c-border); color: var(--c-text); font-family: var(--font-head); border-radius: 8px; outline: none; transition: 0.3s; flex: 1;}
-    #custom-time:focus { border-color: var(--c-accent); box-shadow: var(--glow-blue); }
 
-    /* In-Game UI */
-    #equation { font-family: var(--font-head); font-size: clamp(32px, 8vw, 56px); font-weight: 900; color: var(--c-white); margin-bottom: 30px; letter-spacing: 0.1em; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
-    #answer-input { width: 180px; padding: 15px; font-size: 28px; text-align: center; background: var(--c-surface); border: 2px solid var(--c-border); color: var(--c-accent2); font-family: var(--font-head); border-radius: 10px; outline: none; margin-bottom: 20px; transition: border-color 0.2s; }
-    #answer-input:focus { border-color: var(--c-accent2); box-shadow: var(--glow-green); }
-    #answer-input:disabled { opacity: 0.5; cursor: not-allowed; }
+    /* Math UI */
+    #equation { font-family: var(--font-head); font-size: clamp(32px, 8vw, 56px); font-weight: 900; color: var(--c-white); margin-bottom: 30px; letter-spacing: 0.1em; }
+    #answer-input { width: 180px; padding: 15px; font-size: 28px; text-align: center; background: var(--c-surface); border: 2px solid var(--c-border); color: var(--c-accent2); font-family: var(--font-head); border-radius: 10px; outline: none; margin-bottom: 20px; }
+    
+    /* Gesture Canvas UI */
+    #output_canvas { width: 100%; max-width: 640px; height: auto; background: #041526; border-radius: 12px; border: 2px solid var(--c-accent); box-shadow: var(--glow-blue); display: block; margin: 0 auto; }
+    #gesture-status { font-family: var(--font-head); color: var(--c-accent); font-size: 18px; margin-top: 15px; font-weight: bold; min-height: 25px; }
 
   </style>
 </head>
@@ -105,35 +107,40 @@
     </div>
 
     <div class="games-grid" id="games-menu">
+      
       <div class="game-card green">
         <div class="game-icon">🧮</div>
         <h3 class="game-title">Math Sprint</h3>
-        <div class="game-tags">
-          <span class="tag">Mathematics</span>
-          <span class="tag">Speed</span>
-        </div>
+        <div class="game-tags"><span class="tag">Mathematics</span><span class="tag">Speed</span></div>
         <p class="game-desc">Sharpen your mental arithmetic. Solve as many equations as you can to build a massive high score!</p>
         <button class="btn-play green" onclick="openMathSprintSetup()">PLAY NOW</button>
       </div>
+
+      <div class="game-card blue">
+        <div class="game-icon">🖐️</div>
+        <h3 class="game-title">Gesture Zone</h3>
+        <div class="game-tags"><span class="tag">AI / ML</span><span class="tag">Computer Vision</span></div>
+        <p class="game-desc">Experience real-time AI computer vision. Allow camera access to detect and map your hand gestures dynamically.</p>
+        <button class="btn-play blue" onclick="openGestureZone()">LAUNCH CAMERA</button>
+      </div>
+
     </div>
 
-    <div id="game-terminal" class="z1">
+    <div id="game-terminal" class="terminal-container z1" style="border-color: var(--c-accent2); box-shadow: var(--glow-green);">
       <div class="term-header">
-        <div class="term-title">🧮 Math Sprint Terminal</div>
-        <button class="btn-close-game" onclick="closeGame()">CLOSE SYSTEM</button>
+        <div class="term-title" style="color: var(--c-accent2);">🧮 Math Sprint Terminal</div>
+        <button class="btn-close-game" onclick="closeMathSprint()">CLOSE SYSTEM</button>
       </div>
       
       <div id="setup-area">
-        <h3 style="color: var(--c-white); font-family: var(--font-head); margin-bottom: 10px; font-size: 22px;">Booth Setup</h3>
+        <h3 style="color: var(--c-white); font-family: var(--font-head); margin-bottom: 10px;">Booth Setup</h3>
         <p style="color: var(--c-muted); font-size: 13px; margin-bottom: 25px;">Set the challenge duration before handing the terminal to the player.</p>
-        
         <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 30px;">
           <button class="btn-time active" onclick="selectTime(30, this)">30 SEC</button>
           <button class="btn-time" onclick="selectTime(60, this)">60 SEC</button>
           <button class="btn-time" onclick="selectTime(120, this)">120 SEC</button>
           <input type="number" id="custom-time" placeholder="Custom (s)" oninput="clearTimeButtons()" min="5" max="300" />
         </div>
-
         <button class="btn-play green" style="max-width: 250px; margin: 0 auto;" onclick="prepareGame()">INITIALIZE SYSTEM</button>
       </div>
 
@@ -142,7 +149,6 @@
           <div>SCORE: <span id="score" style="color:var(--c-accent2); font-size: 20px;">0</span></div>
           <div>TIME: <span id="time" style="color:#ff4c4c; font-size: 20px;">30</span>s</div>
         </div>
-        
         <div id="equation">System Ready.</div>
         <input type="number" id="answer-input" disabled autocomplete="off" placeholder="?" />
         <div>
@@ -152,35 +158,45 @@
 
       <div id="result-area" style="display: none;">
         <h3 style="color: #ff4c4c; font-family: var(--font-head); font-size: 32px; margin-bottom: 5px;">TIME'S UP!</h3>
-        <p style="color: var(--c-muted); font-size: 14px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.1em;">Final Score</p>
-        
+        <p style="color: var(--c-muted); font-size: 14px; margin-bottom: 20px; text-transform: uppercase;">Final Score</p>
         <div id="final-score" style="font-size: 72px; font-family: var(--font-head); font-weight: 900; color: var(--c-white); text-shadow: var(--glow-green); margin-bottom: 40px;">0</div>
-        
         <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
           <button class="btn-play" style="max-width: 180px; background: transparent; border: 1px solid var(--c-accent); color: var(--c-accent);" onclick="openMathSprintSetup()">NEW SETUP</button>
           <button class="btn-play green" style="max-width: 180px;" onclick="prepareGame()">PLAY AGAIN</button>
         </div>
       </div>
-
     </div>
+
+    <div id="gesture-terminal" class="terminal-container z1" style="border-color: var(--c-accent); box-shadow: var(--glow-blue);">
+      <div class="term-header">
+        <div class="term-title" style="color: var(--c-accent);">🖐️ Gesture Zone</div>
+        <button class="btn-close-game" onclick="closeGestureZone()">CLOSE CAMERA</button>
+      </div>
+      
+      <p style="color: var(--c-muted); font-size: 13px; margin-bottom: 20px;">
+        Please grant camera permissions. The AI model runs entirely in your browser.
+      </p>
+
+      <div style="position: relative;">
+        <video id="input_video" style="display: none;"></video>
+        <canvas id="output_canvas" width="640" height="480"></canvas>
+      </div>
+      
+      <div id="gesture-status">WAITING FOR CAMERA...</div>
+    </div>
+
   </div>
 
   <script>
-    // System Variables
-    let score = 0;
-    let selectedTime = 30; // Default 30s
-    let timeLeft = 30;
-    let timer;
-    let currentAnswer;
-
-    // DOM Elements
+    /* =======================================
+       1. MATH SPRINT GAME LOGIC
+       ======================================= */
+    let score = 0, selectedTime = 30, timeLeft = 30, timer, currentAnswer;
     const gamesMenu = document.getElementById('games-menu');
     const gameTerminal = document.getElementById('game-terminal');
-    
     const setupArea = document.getElementById('setup-area');
     const gameArea = document.getElementById('game-area');
     const resultArea = document.getElementById('result-area');
-    
     const customTimeInput = document.getElementById('custom-time');
     const scoreDisplay = document.getElementById('score');
     const timeDisplay = document.getElementById('time');
@@ -189,143 +205,166 @@
     const startBtn = document.getElementById('start-btn');
     const finalScoreDisplay = document.getElementById('final-score');
 
-    // 1. Enter the game terminal (Setup Phase)
     function openMathSprintSetup() {
       gamesMenu.style.display = 'none';
       gameTerminal.style.display = 'block';
-      
       setupArea.style.display = 'block';
       gameArea.style.display = 'none';
       resultArea.style.display = 'none';
     }
 
-    // 2. Select pre-defined time
     function selectTime(time, btn) {
       selectedTime = time;
       document.querySelectorAll('.btn-time').forEach(b => b.classList.remove('active'));
       if(btn) btn.classList.add('active');
-      customTimeInput.value = ''; // Clear custom input
+      customTimeInput.value = '';
     }
 
-    // 3. Clear buttons if user types custom time
-    function clearTimeButtons() {
-      document.querySelectorAll('.btn-time').forEach(b => b.classList.remove('active'));
-    }
+    function clearTimeButtons() { document.querySelectorAll('.btn-time').forEach(b => b.classList.remove('active')); }
 
-    // 4. Initialize the game board based on settings
     function prepareGame() {
-      // Check if custom time is provided and valid
       const customVal = parseInt(customTimeInput.value);
-      if(!isNaN(customVal) && customVal > 0) {
-          selectedTime = customVal;
-      }
-
-      // Switch UI
+      if(!isNaN(customVal) && customVal > 0) selectedTime = customVal;
       setupArea.style.display = 'none';
       resultArea.style.display = 'none';
       gameArea.style.display = 'block';
-      
-      // Reset State
-      score = 0;
-      timeLeft = selectedTime;
-      
-      scoreDisplay.innerText = score;
-      timeDisplay.innerText = timeLeft;
+      score = 0; timeLeft = selectedTime;
+      scoreDisplay.innerText = score; timeDisplay.innerText = timeLeft;
       equationDisplay.innerText = "Ready?";
-      answerInput.value = "";
-      answerInput.disabled = true;
-      
-      startBtn.style.display = 'block';
-      startBtn.innerText = "START SPRINT";
+      answerInput.value = ""; answerInput.disabled = true;
+      startBtn.style.display = 'block'; startBtn.innerText = "START SPRINT";
     }
 
-    // 5. Actually start the countdown and math generation
     function startGameLoop() {
-      score = 0;
-      timeLeft = selectedTime; // Reset to configured time
-      
-      scoreDisplay.innerText = score;
-      timeDisplay.innerText = timeLeft;
-      
+      score = 0; timeLeft = selectedTime;
+      scoreDisplay.innerText = score; timeDisplay.innerText = timeLeft;
       startBtn.style.display = 'none';
-      answerInput.disabled = false;
-      answerInput.focus();
-      
+      answerInput.disabled = false; answerInput.focus();
       generateEquation();
-      
       timer = setInterval(() => {
-        timeLeft--;
-        timeDisplay.innerText = timeLeft;
-        
-        if(timeLeft <= 0) {
-          endGame();
-        }
+        timeLeft--; timeDisplay.innerText = timeLeft;
+        if(timeLeft <= 0) endGame();
       }, 1000);
     }
 
-    // 6. Math Logic
     function generateEquation() {
       const ops = ['+', '-', '*'];
       const op = ops[Math.floor(Math.random() * ops.length)];
       let num1, num2;
-
-      if(op === '+') {
-        num1 = Math.floor(Math.random() * 50) + 1;
-        num2 = Math.floor(Math.random() * 50) + 1;
-        currentAnswer = num1 + num2;
-      } else if (op === '-') {
-        num1 = Math.floor(Math.random() * 50) + 20;
-        num2 = Math.floor(Math.random() * 20) + 1;
-        currentAnswer = num1 - num2;
-      } else {
-        num1 = Math.floor(Math.random() * 12) + 2;
-        num2 = Math.floor(Math.random() * 10) + 2;
-        currentAnswer = num1 * num2;
-      }
-
+      if(op === '+') { num1 = Math.floor(Math.random() * 50) + 1; num2 = Math.floor(Math.random() * 50) + 1; currentAnswer = num1 + num2; }
+      else if (op === '-') { num1 = Math.floor(Math.random() * 50) + 20; num2 = Math.floor(Math.random() * 20) + 1; currentAnswer = num1 - num2; }
+      else { num1 = Math.floor(Math.random() * 12) + 2; num2 = Math.floor(Math.random() * 10) + 2; currentAnswer = num1 * num2; }
       equationDisplay.innerText = `${num1} ${op} ${num2}`;
       answerInput.value = "";
     }
 
-    // Auto-check answer on input
     answerInput.addEventListener('input', function(e) {
-      if(parseInt(this.value) === currentAnswer) {
-        score += 10;
-        scoreDisplay.innerText = score;
-        generateEquation();
-      }
+      if(parseInt(this.value) === currentAnswer) { score += 10; scoreDisplay.innerText = score; generateEquation(); }
     });
 
-    // Handle Enter key just in case they hit it
     answerInput.addEventListener('keypress', function(e) {
         if(e.key === 'Enter') {
-            e.preventDefault(); // Prevent accidental form submission behavior
-            if(parseInt(this.value) === currentAnswer) {
-                score += 10;
-                scoreDisplay.innerText = score;
-                generateEquation();
-            } else {
-                this.value = ''; // clear wrong answer on enter
-            }
+            e.preventDefault(); 
+            if(parseInt(this.value) === currentAnswer) { score += 10; scoreDisplay.innerText = score; generateEquation(); } 
+            else { this.value = ''; }
         }
     });
 
-    // 7. Time's Up
     function endGame() {
-      clearInterval(timer);
-      answerInput.disabled = true;
-      
-      gameArea.style.display = 'none';
-      resultArea.style.display = 'block';
-      
+      clearInterval(timer); answerInput.disabled = true;
+      gameArea.style.display = 'none'; resultArea.style.display = 'block';
       finalScoreDisplay.innerText = score;
     }
 
-    // 8. Exit completely back to menu
-    function closeGame() {
+    function closeMathSprint() {
       clearInterval(timer);
       gameTerminal.style.display = 'none';
       gamesMenu.style.display = 'flex';
+    }
+
+
+    /* =======================================
+       2. MEDIAPIPE GESTURE LOGIC
+       ======================================= */
+    const gestureTerminal = document.getElementById('gesture-terminal');
+    const videoElement = document.getElementById('input_video');
+    const canvasElement = document.getElementById('output_canvas');
+    const canvasCtx = canvasElement.getContext('2d');
+    const statusText = document.getElementById('gesture-status');
+    let cameraInstance = null;
+
+    function onResults(results) {
+        // Draw the image and the landmarks
+        canvasCtx.save();
+        canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+        canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+        
+        if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+            statusText.innerText = "HAND DETECTED! 👋";
+            statusText.style.color = "var(--c-accent2)";
+
+            for (const landmarks of results.multiHandLandmarks) {
+                // Cyber-neon hand drawing
+                drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#00ff9f', lineWidth: 3});
+                drawLandmarks(canvasCtx, landmarks, {color: '#00c8ff', lineWidth: 2, radius: 4});
+                
+                // Example Logic: Check if Index Finger is Raised
+                const indexFingerTip = landmarks[8];
+                const indexFingerMCP = landmarks[5];
+                
+                if (indexFingerTip.y < indexFingerMCP.y) {
+                    // Finger is pointing up
+                    // You can trigger custom logic here!
+                }
+            }
+        } else {
+            statusText.innerText = "NO HANDS DETECTED.";
+            statusText.style.color = "var(--c-accent)";
+        }
+        canvasCtx.restore();
+    }
+
+    // Initialize MediaPipe Hands
+    const hands = new Hands({locateFile: (file) => {
+      return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+    }});
+    hands.setOptions({
+      maxNumHands: 2,
+      modelComplexity: 1,
+      minDetectionConfidence: 0.5,
+      minTrackingConfidence: 0.5
+    });
+    hands.onResults(onResults);
+
+    function openGestureZone() {
+        gamesMenu.style.display = 'none';
+        gestureTerminal.style.display = 'block';
+        statusText.innerText = "INITIALIZING CAMERA...";
+
+        // Start Camera
+        if (!cameraInstance) {
+            cameraInstance = new Camera(videoElement, {
+                onFrame: async () => {
+                    await hands.send({image: videoElement});
+                },
+                width: 640,
+                height: 480
+            });
+        }
+        cameraInstance.start();
+    }
+
+    function closeGestureZone() {
+        gestureTerminal.style.display = 'none';
+        gamesMenu.style.display = 'flex';
+        
+        // Stop Camera feed to save resources
+        if (cameraInstance) {
+            cameraInstance.stop();
+            const tracks = videoElement.srcObject?.getTracks();
+            if (tracks) tracks.forEach(track => track.stop());
+        }
+        statusText.innerText = "WAITING FOR CAMERA...";
     }
   </script>
 </body>
