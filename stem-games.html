@@ -15,17 +15,20 @@
     :root {
       --c-bg:        #020b14; --c-surface:   #041526; --c-panel:     #071e35;
       --c-border:    #0d3a5e; --c-accent:    #00c8ff; --c-accent2:   #00ff9f;
-      --c-gold:      #ffd166; --c-text:      #d4eaf7; --c-muted:     #5a8ca8;
+      --c-gold:      #ffd166; --c-red:       #ff4c4c; --c-text:      #d4eaf7; --c-muted: #5a8ca8;
       --c-white:     #ffffff;
       --font-head:   'Orbitron', sans-serif; --font-body:   'Exo 2', sans-serif;
       --glow-blue:   0 0 18px #00c8ff88, 0 0 40px #00c8ff33;
       --glow-green:  0 0 18px #00ff9f88, 0 0 40px #00ff9f33;
+      --glow-gold:   0 0 18px #ffd16688, 0 0 40px #ffd16633;
+      --glow-red:    0 0 18px #ff4c4c88, 0 0 40px #ff4c4c33;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body { background: var(--c-bg); color: var(--c-text); font-family: var(--font-body); font-weight: 300; overflow-x: hidden; }
     a { color: inherit; text-decoration: none; }
+    button { -webkit-tap-highlight-color: transparent; }
     
     body::before { content: ''; position: fixed; inset: 0; z-index: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; }
     body::after { content: ''; position: fixed; inset: 0; z-index: 0; background-image: linear-gradient(var(--c-border) 1px, transparent 1px), linear-gradient(90deg, var(--c-border) 1px, transparent 1px); background-size: 40px 40px; opacity: 0.06; pointer-events: none; }
@@ -45,62 +48,100 @@
     .title { font-family: var(--font-head); font-size: clamp(28px, 6vw, 42px); font-weight: 900; color: var(--c-accent); text-transform: uppercase; letter-spacing: 0.05em; text-shadow: var(--glow-blue); margin-bottom: 12px; }
     .subtitle { color: var(--c-muted); font-size: 15px; }
 
-    .games-grid { display: flex; justify-content: center; gap: 30px; margin-bottom: 60px; flex-wrap: wrap; }
+    .games-grid { display: flex; justify-content: center; gap: 24px; margin-bottom: 60px; flex-wrap: wrap; }
     
-    .game-card { background: var(--c-panel); border: 2px solid var(--c-border); border-radius: 16px; padding: 30px 20px; text-align: center; width: 100%; max-width: 320px; transition: transform 0.3s, box-shadow 0.3s; }
+    .game-card { background: var(--c-panel); border: 2px solid var(--c-border); border-radius: 16px; padding: 30px 20px; text-align: center; width: 100%; max-width: 280px; transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; justify-content: space-between; }
     .game-card.green { border-color: #004d30; }
     .game-card.blue { border-color: #003b4d; }
+    .game-card.gold { border-color: #4d3e00; }
+    .game-card.red { border-color: #4d0000; }
+    
     .game-card.green:hover { transform: translateY(-5px); border-color: var(--c-accent2); box-shadow: var(--glow-green); }
     .game-card.blue:hover { transform: translateY(-5px); border-color: var(--c-accent); box-shadow: var(--glow-blue); }
+    .game-card.gold:hover { transform: translateY(-5px); border-color: var(--c-gold); box-shadow: var(--glow-gold); }
+    .game-card.red:hover { transform: translateY(-5px); border-color: var(--c-red); box-shadow: var(--glow-red); }
     
     .game-icon { font-size: 48px; margin-bottom: 16px; }
-    .game-title { font-family: var(--font-head); font-size: 18px; font-weight: 700; color: var(--c-white); margin-bottom: 12px; }
-    .game-tags { display: flex; justify-content: center; gap: 8px; margin-bottom: 16px; }
-    .tag { padding: 4px 12px; border-radius: 999px; font-family: var(--font-head); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid; }
+    .game-title { font-family: var(--font-head); font-size: 18px; font-weight: 700; color: var(--c-white); margin-bottom: 12px; line-height: 1.2;}
+    .game-tags { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+    .tag { padding: 4px 10px; border-radius: 999px; font-family: var(--font-head); font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid; }
     .game-card.green .tag { color: var(--c-accent2); border-color: var(--c-accent2); }
     .game-card.blue .tag { color: var(--c-accent); border-color: var(--c-accent); }
-    .game-desc { font-size: 12px; color: var(--c-muted); line-height: 1.6; margin-bottom: 24px; min-height: 60px; }
+    .game-card.gold .tag { color: var(--c-gold); border-color: var(--c-gold); }
+    .game-card.red .tag { color: var(--c-red); border-color: var(--c-red); }
+    .game-desc { font-size: 12px; color: var(--c-muted); line-height: 1.6; margin-bottom: 24px; min-height: 70px; }
     
-    .btn-play { width: 100%; padding: 14px; border-radius: 10px; font-family: var(--font-head); font-size: 12px; font-weight: 700; text-transform: uppercase; border: none; cursor: pointer; transition: 0.3s; color: var(--c-bg); }
+    .btn-play { width: 100%; padding: 14px; border-radius: 10px; font-family: var(--font-head); font-size: 12px; font-weight: 700; text-transform: uppercase; border: none; cursor: pointer; transition: 0.3s; color: var(--c-bg); margin-top: auto; }
     .btn-play.green { background: var(--c-accent2); box-shadow: var(--glow-green); }
     .btn-play.blue { background: var(--c-accent); box-shadow: var(--glow-blue); }
+    .btn-play.gold { background: var(--c-gold); box-shadow: var(--glow-gold); }
+    .btn-play.red { background: var(--c-red); box-shadow: var(--glow-red); color: var(--c-white); }
     .btn-play:hover { filter: brightness(1.2); transform: scale(1.02); }
 
     /* Terminals */
-    .terminal-container { display: none; max-width: 700px; margin: 0 auto 60px; background: #01060a; border: 1px solid var(--c-border); border-radius: 16px; padding: 20px; text-align: center; }
-    .term-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--c-muted); padding-bottom: 15px; margin-bottom: 25px; }
+    .terminal-container { display: none; max-width: 800px; margin: 0 auto 60px; background: #01060a; border: 1px solid var(--c-border); border-radius: 16px; padding: 20px; text-align: center; }
+    @media (min-width: 768px) { .terminal-container { padding: 30px; } }
+    .term-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--c-muted); padding-bottom: 15px; margin-bottom: 25px; flex-wrap: wrap; gap: 10px; }
     .term-title { font-family: var(--font-head); font-size: 16px; text-transform: uppercase; letter-spacing: 0.1em; }
-    .term-stats { font-family: var(--font-head); font-size: 14px; color: var(--c-white); display: flex; justify-content: space-around; margin-bottom: 20px; }
-    .btn-close-game { background: transparent; border: 1px solid var(--c-accent); color: var(--c-accent); padding: 5px 10px; border-radius: 5px; font-size: 10px; cursor: pointer; font-family: var(--font-head); transition: 0.2s; }
+    .btn-close-game { background: transparent; border: 1px solid var(--c-accent); color: var(--c-accent); padding: 8px 12px; border-radius: 5px; font-size: 10px; cursor: pointer; font-family: var(--font-head); transition: 0.2s; white-space: nowrap; }
     .btn-close-game:hover { background: rgba(0,200,255,0.2); box-shadow: var(--glow-blue); }
 
-    /* Math UI Setup */
+    /* ─── MATH SPRINT UI ─── */
     .btn-time { background: transparent; border: 1px solid var(--c-border); color: var(--c-muted); padding: 12px 20px; border-radius: 8px; font-family: var(--font-head); font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; flex: 1; min-width: 80px;}
     .btn-time.active { background: rgba(0, 200, 255, 0.1); border-color: var(--c-accent); color: var(--c-accent); box-shadow: var(--glow-blue); }
     #custom-time { width: 100px; padding: 12px; font-size: 12px; text-align: center; background: var(--c-surface); border: 1px solid var(--c-border); color: var(--c-text); font-family: var(--font-head); border-radius: 8px; outline: none; transition: 0.3s; flex: 1;}
-
-    /* Math UI */
+    .term-stats { font-family: var(--font-head); font-size: 14px; color: var(--c-white); display: flex; justify-content: space-around; margin-bottom: 20px; }
     #equation { font-family: var(--font-head); font-size: clamp(32px, 8vw, 56px); font-weight: 900; color: var(--c-white); margin-bottom: 30px; letter-spacing: 0.1em; }
     #answer-input { width: 180px; padding: 15px; font-size: 28px; text-align: center; background: var(--c-surface); border: 2px solid var(--c-border); color: var(--c-accent2); font-family: var(--font-head); border-radius: 10px; outline: none; margin-bottom: 20px; }
-    
-    /* ─── GESTURE ZONE UI ─── */
-    .canvas-wrapper { position: relative; width: 100%; max-width: 640px; aspect-ratio: 4/3; margin: 0 auto 20px; }
-    .canvas-wrapper canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 12px; transform: scaleX(-1); /* Mirror effect */ }
-    
-    /* Output Canvas (Camera + Landmarks) */
-    #output_canvas { z-index: 1; border: 2px solid var(--c-accent); box-shadow: var(--glow-blue); background: #041526; }
-    
-    /* Drawing Canvas (The Ink) */
-    #drawing_canvas { z-index: 2; pointer-events: none; }
 
+    /* ─── AIR WRITING UI ─── */
+    .canvas-wrapper { position: relative; width: 100%; max-width: 640px; aspect-ratio: 4/3; margin: 0 auto 20px; }
+    .canvas-wrapper canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 12px; transform: scaleX(-1); }
+    #output_canvas { z-index: 1; border: 2px solid var(--c-accent); box-shadow: var(--glow-blue); background: #041526; }
+    #drawing_canvas { z-index: 2; pointer-events: none; }
     #gesture-status { font-family: var(--font-head); color: var(--c-accent); font-size: 14px; margin-bottom: 15px; font-weight: bold; min-height: 20px; letter-spacing: 0.05em;}
-    
-    /* Drawing Tools Controls */
     .drawing-tools { display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap;}
     .color-btn { width: 30px; height: 30px; border-radius: 50%; border: 3px solid transparent; cursor: pointer; transition: 0.2s; box-shadow: 0 0 10px rgba(255,255,255,0.1); }
     .color-btn.active { border-color: var(--c-white); transform: scale(1.2); }
     .btn-clear { background: transparent; border: 1px solid #ff4c4c; color: #ff4c4c; padding: 8px 15px; border-radius: 8px; font-family: var(--font-head); font-size: 11px; font-weight: 700; cursor: pointer; transition: 0.2s; }
-    .btn-clear:hover { background: rgba(255, 76, 76, 0.1); box-shadow: 0 0 15px rgba(255, 76, 76, 0.4); }
+
+    /* ─── BLOCK LOGIC UI ─── */
+    .logic-layout { display: grid; grid-template-columns: 1fr; gap: 20px; text-align: left; }
+    @media (min-width: 600px) { .logic-layout { grid-template-columns: 1fr 1fr; } }
+    .logic-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; background: var(--c-border); padding: 4px; border-radius: 12px; aspect-ratio: 1/1; box-shadow: var(--glow-gold); }
+    .logic-cell { background: var(--c-surface); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px; transition: 0.2s; }
+    .cell-player { background: #00c8ff33; box-shadow: inset 0 0 15px var(--c-accent); position: relative; }
+    .cell-player::after { content: '🤖'; }
+    .cell-target { background: #00ff9f33; box-shadow: inset 0 0 15px var(--c-accent2); position: relative; }
+    .cell-target::after { content: '🚩'; }
+    .cell-wall { background: #ff4c4c33; box-shadow: inset 0 0 15px var(--c-red); position: relative; }
+    .cell-wall::after { content: '🧱'; }
+    
+    .logic-controls { display: flex; flex-direction: column; gap: 10px; }
+    .logic-code-area { flex: 1; background: var(--c-surface); border: 1px dashed var(--c-gold); border-radius: 12px; padding: 15px; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 8px; min-height: 150px; }
+    .block-btn { background: var(--c-panel); border: 1px solid var(--c-gold); color: var(--c-gold); border-radius: 6px; padding: 10px; font-family: var(--font-head); font-size: 14px; cursor: pointer; transition: 0.2s; }
+    .block-btn:hover { background: var(--c-gold); color: var(--c-bg); box-shadow: var(--glow-gold); }
+    .code-chip { background: var(--c-gold); color: var(--c-bg); padding: 5px 10px; border-radius: 4px; font-family: var(--font-head); font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 5px; animation: fadeIn 0.2s; }
+    @keyframes fadeIn { from {opacity:0; transform:scale(0.8);} to {opacity:1; transform:scale(1);} }
+
+    /* ─── CIRCUIT BUILDER UI ─── */
+    .circuit-container { position: relative; width: 100%; height: 350px; background: var(--c-surface); border: 1px dashed var(--c-red); border-radius: 16px; margin-bottom: 20px; overflow: hidden; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
+    
+    .component { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: var(--c-panel); border: 1px solid var(--c-border); padding: 15px; border-radius: 12px; user-select: none; }
+    .comp-battery { top: 50px; left: 20px; border-color: var(--c-muted); }
+    .comp-led { top: 50px; right: 20px; border-color: var(--c-muted); transition: 0.3s; }
+    .comp-led.on { border-color: var(--c-accent2); box-shadow: var(--glow-green); background: #00ff9f22; }
+    .comp-led.on .led-bulb { filter: drop-shadow(0 0 15px #00ff9f) brightness(1.5); }
+    
+    .node { width: 18px; height: 18px; border-radius: 50%; background: var(--c-bg); border: 3px solid var(--c-muted); cursor: pointer; transition: 0.2s; position: relative; z-index: 10; }
+    .node:hover { transform: scale(1.3); }
+    .node.selected { border-color: var(--c-accent); box-shadow: var(--glow-blue); transform: scale(1.3); background: var(--c-accent); }
+    .node-pos { border-color: var(--c-red); }
+    .node-neg { border-color: var(--c-accent); }
+    
+    #circuit-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
+    .wire { stroke: var(--c-gold); stroke-width: 4; stroke-linecap: round; filter: drop-shadow(0 0 5px var(--c-gold)); stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawWire 0.5s forwards; }
+    @keyframes drawWire { to { stroke-dashoffset: 0; } }
 
   </style>
 </head>
@@ -127,8 +168,8 @@
         <div class="game-icon">🧮</div>
         <h3 class="game-title">Math Sprint</h3>
         <div class="game-tags"><span class="tag">Mathematics</span><span class="tag">Speed</span></div>
-        <p class="game-desc">Sharpen your mental arithmetic. Solve as many equations as you can to build a massive high score!</p>
-        <button class="btn-play green" onclick="openMathSprintSetup()">PLAY NOW</button>
+        <p class="game-desc">Sharpen your mental arithmetic. Solve equations rapidly to build a massive high score before time runs out!</p>
+        <button class="btn-play green" onclick="openTerminal('game-terminal')">PLAY NOW</button>
       </div>
 
       <div class="game-card blue">
@@ -136,15 +177,32 @@
         <h3 class="game-title">Air Writing Zone</h3>
         <div class="game-tags"><span class="tag">AI / ML</span><span class="tag">Computer Vision</span></div>
         <p class="game-desc">Experience real-time AI computer vision. Pinch your fingers together to write or draw directly in the air!</p>
-        <button class="btn-play blue" onclick="openGestureZone()">LAUNCH CAMERA</button>
+        <button class="btn-play blue" onclick="openTerminal('gesture-terminal'); initGestureCamera();">LAUNCH CAMERA</button>
+      </div>
+
+      <div class="game-card gold">
+        <div class="game-icon">🧱</div>
+        <h3 class="game-title">Logic Blocks</h3>
+        <div class="game-tags"><span class="tag">Programming</span><span class="tag">Algorithms</span></div>
+        <p class="game-desc">Learn the fundamentals of coding. Build a sequence of commands to navigate the robot to the target flag.</p>
+        <button class="btn-play gold" onclick="openTerminal('logic-terminal'); initLogicGame();">BUILD LOGIC</button>
+      </div>
+
+      <div class="game-card red">
+        <div class="game-icon">🔌</div>
+        <h3 class="game-title">Circuit Wiring</h3>
+        <div class="game-tags"><span class="tag">Electronics</span><span class="tag">Physics</span></div>
+        <p class="game-desc">Understand electrical flow. Wire the positive and negative terminals correctly to power up the LED bulb.</p>
+        <button class="btn-play red" onclick="openTerminal('circuit-terminal'); initCircuitGame();">START WIRING</button>
       </div>
 
     </div>
 
+
     <div id="game-terminal" class="terminal-container z1" style="border-color: var(--c-accent2); box-shadow: var(--glow-green);">
       <div class="term-header">
         <div class="term-title" style="color: var(--c-accent2);">🧮 Math Sprint Terminal</div>
-        <button class="btn-close-game" onclick="closeMathSprint()">CLOSE SYSTEM</button>
+        <button class="btn-close-game" onclick="closeTerminal('game-terminal')">CLOSE SYSTEM</button>
       </div>
       
       <div id="setup-area">
@@ -166,9 +224,7 @@
         </div>
         <div id="equation">System Ready.</div>
         <input type="number" id="answer-input" disabled autocomplete="off" placeholder="?" />
-        <div>
-          <button id="start-btn" class="btn-play green" style="max-width: 200px; margin: 0 auto;" onclick="startGameLoop()">START SPRINT</button>
-        </div>
+        <div><button id="start-btn" class="btn-play green" style="max-width: 200px; margin: 0 auto;" onclick="startGameLoop()">START SPRINT</button></div>
       </div>
 
       <div id="result-area" style="display: none;">
@@ -182,20 +238,20 @@
       </div>
     </div>
 
+
     <div id="gesture-terminal" class="terminal-container z1" style="border-color: var(--c-accent); box-shadow: var(--glow-blue);">
       <div class="term-header">
         <div class="term-title" style="color: var(--c-accent);">✍️ Air Writing Zone</div>
         <button class="btn-close-game" onclick="closeGestureZone()">CLOSE CAMERA</button>
       </div>
-      
       <div id="gesture-status">WAITING FOR CAMERA...</div>
-
+      
       <div class="drawing-tools">
           <div class="color-btn active" style="background: #00ff9f; box-shadow: 0 0 10px #00ff9f;" onclick="setPenColor('#00ff9f', this)"></div>
           <div class="color-btn" style="background: #00c8ff; box-shadow: 0 0 10px #00c8ff;" onclick="setPenColor('#00c8ff', this)"></div>
           <div class="color-btn" style="background: #ffd166; box-shadow: 0 0 10px #ffd166;" onclick="setPenColor('#ffd166', this)"></div>
           <div class="color-btn" style="background: #ff4c4c; box-shadow: 0 0 10px #ff4c4c;" onclick="setPenColor('#ff4c4c', this)"></div>
-          <button class="btn-clear" onclick="clearCanvas()">🗑️ CLEAR CANVAS</button>
+          <button class="btn-clear" onclick="clearDrawCanvas()">🗑️ CLEAR CANVAS</button>
       </div>
 
       <div class="canvas-wrapper">
@@ -203,114 +259,168 @@
         <canvas id="output_canvas" width="640" height="480"></canvas>
         <canvas id="drawing_canvas" width="640" height="480"></canvas>
       </div>
+      <p style="color: var(--c-muted); font-size: 11px;">*To draw, bring your thumb and index finger together (pinch). Open your hand to stop.</p>
+    </div>
+
+
+    <div id="logic-terminal" class="terminal-container z1" style="border-color: var(--c-gold); box-shadow: var(--glow-gold); max-width: 800px;">
+      <div class="term-header">
+        <div class="term-title" style="color: var(--c-gold);">🧱 Logic Blocks Compiler</div>
+        <button class="btn-close-game" onclick="closeTerminal('logic-terminal')">CLOSE COMPILER</button>
+      </div>
       
-      <p style="color: var(--c-muted); font-size: 11px;">
-        *To draw, bring your thumb and index finger together (pinch). Open your hand to stop drawing.
-      </p>
+      <div class="logic-layout">
+        <div class="logic-grid" id="logic-grid">
+           </div>
+
+        <div class="logic-controls">
+          <p style="font-size:12px; color:var(--c-muted);">Click commands to build your sequence. Guide the robot (🤖) to the flag (🚩) avoiding walls (🧱).</p>
+          
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+             <button class="block-btn" onclick="addCode('UP')">⬆️ UP</button>
+             <button class="block-btn" onclick="addCode('DOWN')">⬇️ DOWN</button>
+             <button class="block-btn" onclick="addCode('LEFT')">⬅️ LEFT</button>
+             <button class="block-btn" onclick="addCode('RIGHT')">➡️ RIGHT</button>
+          </div>
+
+          <div style="font-family: var(--font-head); font-size: 11px; color: var(--c-gold); margin-top: 10px;">YOUR CODE:</div>
+          <div class="logic-code-area" id="logic-code-area">
+             </div>
+          
+          <div id="logic-msg" style="font-family: var(--font-head); font-size: 14px; font-weight:bold; min-height: 20px;"></div>
+
+          <div style="display: flex; gap: 10px; margin-top: auto;">
+             <button class="btn-play" style="background: transparent; border: 1px solid var(--c-muted); color: var(--c-muted);" onclick="resetLogicGame()">RESET</button>
+             <button class="btn-play gold" id="btn-logic-run" onclick="executeLogic()">▶️ RUN CODE</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="circuit-terminal" class="terminal-container z1" style="border-color: var(--c-red); box-shadow: var(--glow-red);">
+      <div class="term-header">
+        <div class="term-title" style="color: var(--c-red);">🔌 Circuit Wiring Simulator</div>
+        <button class="btn-close-game" onclick="closeTerminal('circuit-terminal')">CLOSE SIMULATOR</button>
+      </div>
+      
+      <p style="color: var(--c-muted); font-size: 13px; margin-bottom: 15px;">Click on a terminal node (◯) on the Battery, then click a node on the LED to wire them together. Match Positive (+) to Positive (+), and Negative (-) to Negative (-).</p>
+      
+      <div class="circuit-container" id="circuit-board">
+         <svg id="circuit-svg"></svg>
+         
+         <div class="component comp-battery" id="comp-bat">
+            <div style="font-family:var(--font-head); font-size:10px; color:var(--c-muted);">9V BATTERY</div>
+            <div style="font-size: 40px;">🔋</div>
+            <div style="display:flex; justify-content:space-between; width: 100px; margin-top: 10px;">
+               <div style="text-align:center;">
+                 <div class="node node-pos" id="n-bat-pos" onclick="handleNodeClick('n-bat-pos', 'pos')"></div>
+                 <div style="font-size:10px; color:var(--c-red); margin-top:4px;">(+)</div>
+               </div>
+               <div style="text-align:center;">
+                 <div class="node node-neg" id="n-bat-neg" onclick="handleNodeClick('n-bat-neg', 'neg')"></div>
+                 <div style="font-size:10px; color:var(--c-accent); margin-top:4px;">(-)</div>
+               </div>
+            </div>
+         </div>
+
+         <div class="component comp-led" id="comp-led">
+            <div style="font-family:var(--font-head); font-size:10px; color:var(--c-muted);">LED BULB</div>
+            <div class="led-bulb" style="font-size: 40px;">💡</div>
+            <div style="display:flex; justify-content:space-between; width: 100px; margin-top: 10px;">
+               <div style="text-align:center;">
+                 <div class="node node-pos" id="n-led-pos" onclick="handleNodeClick('n-led-pos', 'pos')"></div>
+                 <div style="font-size:10px; color:var(--c-red); margin-top:4px;">(+)</div>
+               </div>
+               <div style="text-align:center;">
+                 <div class="node node-neg" id="n-led-neg" onclick="handleNodeClick('n-led-neg', 'neg')"></div>
+                 <div style="font-size:10px; color:var(--c-accent); margin-top:4px;">(-)</div>
+               </div>
+            </div>
+         </div>
+      </div>
+      
+      <div id="circuit-msg" style="font-family: var(--font-head); font-size: 16px; font-weight:bold; min-height: 25px; margin-bottom: 15px; color: var(--c-white);">SYSTEM OFFLINE</div>
+      
+      <button class="btn-play" style="max-width: 200px; background: transparent; border: 1px solid var(--c-muted); color: var(--c-muted);" onclick="resetCircuitGame()">CLEAR WIRES</button>
+
     </div>
 
   </div>
 
-  <script>
-    /* =======================================
-       1. MATH SPRINT GAME LOGIC
-       ======================================= */
-    let score = 0, selectedTime = 30, timeLeft = 30, timer, currentAnswer;
-    const gamesMenu = document.getElementById('games-menu');
-    const gameTerminal = document.getElementById('game-terminal');
-    const setupArea = document.getElementById('setup-area');
-    const gameArea = document.getElementById('game-area');
-    const resultArea = document.getElementById('result-area');
-    const customTimeInput = document.getElementById('custom-time');
-    const scoreDisplay = document.getElementById('score');
-    const timeDisplay = document.getElementById('time');
-    const equationDisplay = document.getElementById('equation');
-    const answerInput = document.getElementById('answer-input');
-    const startBtn = document.getElementById('start-btn');
-    const finalScoreDisplay = document.getElementById('final-score');
 
-    function openMathSprintSetup() {
-      gamesMenu.style.display = 'none';
-      gameTerminal.style.display = 'block';
-      setupArea.style.display = 'block';
-      gameArea.style.display = 'none';
-      resultArea.style.display = 'none';
+  <script>
+    // General Navigation
+    function openTerminal(id) {
+      document.getElementById('games-menu').style.display = 'none';
+      document.getElementById(id).style.display = 'block';
+    }
+    function closeTerminal(id) {
+      document.getElementById(id).style.display = 'none';
+      document.getElementById('games-menu').style.display = 'flex';
     }
 
+    // ─── 1. MATH SPRINT ───
+    let score = 0, selectedTime = 30, timeLeft = 30, timer, currentAnswer;
+    const mathAnswer = document.getElementById('answer-input');
+    
+    function openMathSprintSetup() {
+      openTerminal('game-terminal');
+      document.getElementById('setup-area').style.display = 'block';
+      document.getElementById('game-area').style.display = 'none';
+      document.getElementById('result-area').style.display = 'none';
+    }
     function selectTime(time, btn) {
       selectedTime = time;
       document.querySelectorAll('.btn-time').forEach(b => b.classList.remove('active'));
       if(btn) btn.classList.add('active');
-      customTimeInput.value = '';
+      document.getElementById('custom-time').value = '';
     }
-
     function clearTimeButtons() { document.querySelectorAll('.btn-time').forEach(b => b.classList.remove('active')); }
-
     function prepareGame() {
-      const customVal = parseInt(customTimeInput.value);
+      const customVal = parseInt(document.getElementById('custom-time').value);
       if(!isNaN(customVal) && customVal > 0) selectedTime = customVal;
-      setupArea.style.display = 'none';
-      resultArea.style.display = 'none';
-      gameArea.style.display = 'block';
+      document.getElementById('setup-area').style.display = 'none';
+      document.getElementById('result-area').style.display = 'none';
+      document.getElementById('game-area').style.display = 'block';
       score = 0; timeLeft = selectedTime;
-      scoreDisplay.innerText = score; timeDisplay.innerText = timeLeft;
-      equationDisplay.innerText = "Ready?";
-      answerInput.value = ""; answerInput.disabled = true;
-      startBtn.style.display = 'block'; startBtn.innerText = "START SPRINT";
+      document.getElementById('score').innerText = score; 
+      document.getElementById('time').innerText = timeLeft;
+      document.getElementById('equation').innerText = "Ready?";
+      mathAnswer.value = ""; mathAnswer.disabled = true;
+      document.getElementById('start-btn').style.display = 'block'; 
     }
-
     function startGameLoop() {
       score = 0; timeLeft = selectedTime;
-      scoreDisplay.innerText = score; timeDisplay.innerText = timeLeft;
-      startBtn.style.display = 'none';
-      answerInput.disabled = false; answerInput.focus();
+      document.getElementById('score').innerText = score; document.getElementById('time').innerText = timeLeft;
+      document.getElementById('start-btn').style.display = 'none';
+      mathAnswer.disabled = false; mathAnswer.focus();
       generateEquation();
       timer = setInterval(() => {
-        timeLeft--; timeDisplay.innerText = timeLeft;
-        if(timeLeft <= 0) endGame();
+        timeLeft--; document.getElementById('time').innerText = timeLeft;
+        if(timeLeft <= 0) {
+            clearInterval(timer); mathAnswer.disabled = true;
+            document.getElementById('game-area').style.display = 'none'; 
+            document.getElementById('result-area').style.display = 'block';
+            document.getElementById('final-score').innerText = score;
+        }
       }, 1000);
     }
-
     function generateEquation() {
-      const ops = ['+', '-', '*'];
-      const op = ops[Math.floor(Math.random() * ops.length)];
-      let num1, num2;
-      if(op === '+') { num1 = Math.floor(Math.random() * 50) + 1; num2 = Math.floor(Math.random() * 50) + 1; currentAnswer = num1 + num2; }
-      else if (op === '-') { num1 = Math.floor(Math.random() * 50) + 20; num2 = Math.floor(Math.random() * 20) + 1; currentAnswer = num1 - num2; }
-      else { num1 = Math.floor(Math.random() * 12) + 2; num2 = Math.floor(Math.random() * 10) + 2; currentAnswer = num1 * num2; }
-      equationDisplay.innerText = `${num1} ${op} ${num2}`;
-      answerInput.value = "";
+      const ops = ['+', '-', '*']; const op = ops[Math.floor(Math.random() * ops.length)];
+      let n1, n2;
+      if(op === '+') { n1 = Math.floor(Math.random() * 50)+1; n2 = Math.floor(Math.random() * 50)+1; currentAnswer = n1 + n2; }
+      else if (op === '-') { n1 = Math.floor(Math.random() * 50)+20; n2 = Math.floor(Math.random() * 20)+1; currentAnswer = n1 - n2; }
+      else { n1 = Math.floor(Math.random() * 12)+2; n2 = Math.floor(Math.random() * 10)+2; currentAnswer = n1 * n2; }
+      document.getElementById('equation').innerText = `${n1} ${op} ${n2}`;
+      mathAnswer.value = "";
     }
-
-    answerInput.addEventListener('input', function(e) {
-      if(parseInt(this.value) === currentAnswer) { score += 10; scoreDisplay.innerText = score; generateEquation(); }
-    });
-
-    answerInput.addEventListener('keypress', function(e) {
-        if(e.key === 'Enter') {
-            e.preventDefault(); 
-            if(parseInt(this.value) === currentAnswer) { score += 10; scoreDisplay.innerText = score; generateEquation(); } 
-            else { this.value = ''; }
-        }
-    });
-
-    function endGame() {
-      clearInterval(timer); answerInput.disabled = true;
-      gameArea.style.display = 'none'; resultArea.style.display = 'block';
-      finalScoreDisplay.innerText = score;
-    }
-
-    function closeMathSprint() {
-      clearInterval(timer);
-      gameTerminal.style.display = 'none';
-      gamesMenu.style.display = 'flex';
-    }
+    mathAnswer.addEventListener('input', function(e) { if(parseInt(this.value) === currentAnswer) { score += 10; document.getElementById('score').innerText = score; generateEquation(); } });
+    mathAnswer.addEventListener('keypress', function(e) { if(e.key === 'Enter') { e.preventDefault(); if(parseInt(this.value) === currentAnswer) { score+=10; document.getElementById('score').innerText=score; generateEquation(); } else { this.value = ''; } } });
+    function closeMathSprint() { clearInterval(timer); closeTerminal('game-terminal'); }
 
 
-    /* =======================================
-       2. AIR WRITING GESTURE LOGIC
-       ======================================= */
-    const gestureTerminal = document.getElementById('gesture-terminal');
+    // ─── 2. AIR WRITING ZONE ───
     const videoElement = document.getElementById('input_video');
     const canvasElement = document.getElementById('output_canvas');
     const drawingCanvas = document.getElementById('drawing_canvas');
@@ -318,141 +428,248 @@
     const drawingCtx = drawingCanvas.getContext('2d');
     const statusText = document.getElementById('gesture-status');
     let cameraInstance = null;
-
-    // Drawing States
-    let isDrawing = false;
-    let lastX = 0, lastY = 0;
-    let penColor = '#00ff9f'; // Default green
+    let isDrawing = false; let lastX = 0, lastY = 0; let penColor = '#00ff9f';
 
     function setPenColor(color, btn) {
         penColor = color;
         document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
         if(btn) btn.classList.add('active');
     }
-
-    function clearCanvas() {
-        drawingCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
-    }
+    function clearDrawCanvas() { drawingCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height); }
 
     function onResults(results) {
-        // Draw the camera feed onto the output canvas
-        canvasCtx.save();
-        canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+        canvasCtx.save(); canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
         canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
         
         if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-            const landmarks = results.multiHandLandmarks[0]; // Primary hand tracking
-
-            // Draw subtle AI hand wireframe
+            const landmarks = results.multiHandLandmarks[0];
             drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: 'rgba(255, 255, 255, 0.4)', lineWidth: 1});
             drawLandmarks(canvasCtx, landmarks, {color: 'rgba(0, 200, 255, 0.6)', lineWidth: 1, radius: 2});
             
-            // Get Index Finger and Thumb tips
-            const indexTip = landmarks[8];
-            const thumbTip = landmarks[4];
-            
-            // Calculate pinch distance (Euclidean formula)
-            const dx = indexTip.x - thumbTip.x;
-            const dy = indexTip.y - thumbTip.y;
+            const indexTip = landmarks[8]; const thumbTip = landmarks[4];
+            const dx = indexTip.x - thumbTip.x; const dy = indexTip.y - thumbTip.y;
             const distance = Math.sqrt(dx*dx + dy*dy);
 
-            // Convert Normalized coordinates to Canvas pixels
-            const px = indexTip.x * drawingCanvas.width;
-            const py = indexTip.y * drawingCanvas.height;
+            const px = indexTip.x * drawingCanvas.width; const py = indexTip.y * drawingCanvas.height;
 
-            // Threshold for Pinch (approx 0.05 normalized distance)
             if (distance < 0.06) {
-                statusText.innerText = "✍️ DRAWING";
-                statusText.style.color = penColor;
-
-                // Drawing logic onto the persistent drawingCtx
-                if (!isDrawing) {
-                    isDrawing = true;
-                    lastX = px;
-                    lastY = py;
-                } else {
-                    drawingCtx.beginPath();
-                    drawingCtx.moveTo(lastX, lastY);
-                    drawingCtx.lineTo(px, py);
-                    drawingCtx.strokeStyle = penColor;
-                    drawingCtx.lineWidth = 5;
-                    drawingCtx.lineCap = 'round';
-                    drawingCtx.lineJoin = 'round';
-                    drawingCtx.stroke();
-                    lastX = px;
-                    lastY = py;
+                statusText.innerText = "✍️ DRAWING"; statusText.style.color = penColor;
+                if (!isDrawing) { isDrawing = true; lastX = px; lastY = py; } 
+                else {
+                    drawingCtx.beginPath(); drawingCtx.moveTo(lastX, lastY); drawingCtx.lineTo(px, py);
+                    drawingCtx.strokeStyle = penColor; drawingCtx.lineWidth = 5; drawingCtx.lineCap = 'round'; drawingCtx.lineJoin = 'round'; drawingCtx.stroke();
+                    lastX = px; lastY = py;
                 }
-                
-                // Draw a solid circle on the video canvas to show active pen
-                canvasCtx.beginPath();
-                canvasCtx.arc(px, py, 8, 0, 2 * Math.PI);
-                canvasCtx.fillStyle = penColor;
-                canvasCtx.fill();
-
+                canvasCtx.beginPath(); canvasCtx.arc(px, py, 8, 0, 2 * Math.PI); canvasCtx.fillStyle = penColor; canvasCtx.fill();
             } else {
-                statusText.innerText = "🖐️ HOVERING (Pinch to Draw)";
-                statusText.style.color = "var(--c-accent)";
-                isDrawing = false; // Pen up
-
-                // Draw a hollow circle to show where the pen is hovering
-                canvasCtx.beginPath();
-                canvasCtx.arc(px, py, 6, 0, 2 * Math.PI);
-                canvasCtx.strokeStyle = "white";
-                canvasCtx.lineWidth = 2;
-                canvasCtx.stroke();
+                statusText.innerText = "🖐️ HOVERING (Pinch to Draw)"; statusText.style.color = "var(--c-accent)"; isDrawing = false;
+                canvasCtx.beginPath(); canvasCtx.arc(px, py, 6, 0, 2 * Math.PI); canvasCtx.strokeStyle = "white"; canvasCtx.lineWidth = 2; canvasCtx.stroke();
             }
-
-        } else {
-            statusText.innerText = "NO HANDS DETECTED.";
-            statusText.style.color = "var(--c-muted)";
-            isDrawing = false;
-        }
+        } else { statusText.innerText = "NO HANDS DETECTED."; statusText.style.color = "var(--c-muted)"; isDrawing = false; }
         canvasCtx.restore();
     }
 
-    // Initialize MediaPipe Hands
-    const hands = new Hands({locateFile: (file) => {
-      return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
-    }});
-    hands.setOptions({
-      maxNumHands: 1, // Restrict to 1 hand for better drawing performance
-      modelComplexity: 1,
-      minDetectionConfidence: 0.6, // Slightly higher to avoid accidental glitches
-      minTrackingConfidence: 0.6
-    });
+    const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
+    hands.setOptions({ maxNumHands: 1, modelComplexity: 1, minDetectionConfidence: 0.6, minTrackingConfidence: 0.6 });
     hands.onResults(onResults);
 
-    function openGestureZone() {
-        gamesMenu.style.display = 'none';
-        gestureTerminal.style.display = 'block';
-        statusText.innerText = "INITIALIZING AI VISION...";
-        clearCanvas(); // clear ink when opening
-
-        // Start Camera
-        if (!cameraInstance) {
-            cameraInstance = new Camera(videoElement, {
-                onFrame: async () => {
-                    await hands.send({image: videoElement});
-                },
-                width: 640,
-                height: 480
-            });
-        }
+    function initGestureCamera() {
+        statusText.innerText = "INITIALIZING AI VISION..."; clearDrawCanvas();
+        if (!cameraInstance) { cameraInstance = new Camera(videoElement, { onFrame: async () => { await hands.send({image: videoElement}); }, width: 640, height: 480 }); }
         cameraInstance.start();
     }
-
     function closeGestureZone() {
-        gestureTerminal.style.display = 'none';
-        gamesMenu.style.display = 'flex';
-        
-        // Stop Camera feed to save computer resources
-        if (cameraInstance) {
-            cameraInstance.stop();
-            const tracks = videoElement.srcObject?.getTracks();
-            if (tracks) tracks.forEach(track => track.stop());
-        }
+        closeTerminal('gesture-terminal');
+        if (cameraInstance) { cameraInstance.stop(); const tracks = videoElement.srcObject?.getTracks(); if (tracks) tracks.forEach(track => track.stop()); }
         statusText.innerText = "WAITING FOR CAMERA...";
     }
+
+
+    // ─── 3. LOGIC BLOCKS ───
+    const GRID_SIZE = 5;
+    let logicPlayer = {x: 0, y: 0};
+    let logicTarget = {x: 4, y: 4};
+    let logicWalls = [{x: 2, y: 0}, {x: 2, y: 1}, {x: 2, y: 3}, {x: 2, y: 4}];
+    let logicCode = [];
+    let isLogicRunning = false;
+
+    function drawLogicGrid() {
+        const grid = document.getElementById('logic-grid');
+        grid.innerHTML = '';
+        for(let y=0; y<GRID_SIZE; y++){
+            for(let x=0; x<GRID_SIZE; x++){
+                let div = document.createElement('div');
+                div.className = 'logic-cell';
+                if(x === logicPlayer.x && y === logicPlayer.y) div.classList.add('cell-player');
+                else if(x === logicTarget.x && y === logicTarget.y) div.classList.add('cell-target');
+                else if(logicWalls.some(w => w.x === x && w.y === y)) div.classList.add('cell-wall');
+                grid.appendChild(div);
+            }
+        }
+    }
+    function addCode(cmd) {
+        if(isLogicRunning) return;
+        if(logicCode.length > 15) { alert("Memory limit reached!"); return; }
+        logicCode.push(cmd);
+        renderCodeArea();
+    }
+    function renderCodeArea() {
+        const area = document.getElementById('logic-code-area');
+        area.innerHTML = '';
+        logicCode.forEach((cmd, idx) => {
+            let symbol = cmd === 'UP' ? '⬆️' : cmd === 'DOWN' ? '⬇️' : cmd === 'LEFT' ? '⬅️' : '➡️';
+            area.innerHTML += `<div class="code-chip">${symbol} ${cmd}</div>`;
+        });
+    }
+    function initLogicGame() { resetLogicGame(); }
+    function resetLogicGame() {
+        isLogicRunning = false;
+        logicPlayer = {x: 0, y: 0};
+        logicCode = [];
+        renderCodeArea(); drawLogicGrid();
+        let msg = document.getElementById('logic-msg');
+        msg.innerText = ""; msg.style.color = "var(--c-white)";
+        document.getElementById('btn-logic-run').disabled = false;
+    }
+    function executeLogic() {
+        if(logicCode.length === 0 || isLogicRunning) return;
+        isLogicRunning = true;
+        document.getElementById('btn-logic-run').disabled = true;
+        document.getElementById('logic-msg').innerText = "EXECUTING...";
+        document.getElementById('logic-msg').style.color = "var(--c-gold)";
+        
+        let i = 0;
+        let execTimer = setInterval(() => {
+            if(i >= logicCode.length) {
+                clearInterval(execTimer);
+                if(logicPlayer.x === logicTarget.x && logicPlayer.y === logicTarget.y) {
+                    document.getElementById('logic-msg').innerText = "✅ SUCCESS! Target Reached.";
+                    document.getElementById('logic-msg').style.color = "var(--c-accent2)";
+                } else {
+                    document.getElementById('logic-msg').innerText = "❌ FAILED. Out of commands.";
+                    document.getElementById('logic-msg').style.color = "var(--c-red)";
+                }
+                isLogicRunning = false;
+                return;
+            }
+            
+            let cmd = logicCode[i];
+            let nx = logicPlayer.x, ny = logicPlayer.y;
+            if(cmd === 'UP') ny--;
+            if(cmd === 'DOWN') ny++;
+            if(cmd === 'LEFT') nx--;
+            if(cmd === 'RIGHT') nx++;
+
+            // Wall/Boundary check
+            if(nx >= 0 && nx < GRID_SIZE && ny >= 0 && ny < GRID_SIZE && !logicWalls.some(w => w.x === nx && w.y === ny)) {
+                logicPlayer.x = nx; logicPlayer.y = ny;
+            } else {
+                // Crash
+                clearInterval(execTimer);
+                document.getElementById('logic-msg').innerText = "💥 CRASH DETECTED. Code Terminated.";
+                document.getElementById('logic-msg').style.color = "var(--c-red)";
+                isLogicRunning = false;
+            }
+            drawLogicGrid();
+            i++;
+        }, 500);
+    }
+
+
+    // ─── 4. CIRCUIT BUILDER ───
+    let selectedCircuitNode = null;
+    let circuitConnections = []; // stores {from, to, type}
+
+    function initCircuitGame() { resetCircuitGame(); }
+    
+    function resetCircuitGame() {
+        selectedCircuitNode = null;
+        circuitConnections = [];
+        document.getElementById('circuit-svg').innerHTML = '';
+        document.querySelectorAll('.node').forEach(n => n.classList.remove('selected'));
+        document.getElementById('comp-led').classList.remove('on');
+        document.getElementById('circuit-msg').innerText = "SYSTEM OFFLINE";
+        document.getElementById('circuit-msg').style.color = "var(--c-white)";
+    }
+
+    function handleNodeClick(nodeId, type) {
+        const nodeElem = document.getElementById(nodeId);
+        
+        if(!selectedCircuitNode) {
+            // First click
+            selectedCircuitNode = { id: nodeId, type: type, elem: nodeElem };
+            nodeElem.classList.add('selected');
+        } else {
+            // Second click
+            if(selectedCircuitNode.id === nodeId) {
+                // Deselect if same
+                nodeElem.classList.remove('selected');
+                selectedCircuitNode = null;
+                return;
+            }
+            
+            // Draw wire
+            drawWire(selectedCircuitNode.elem, nodeElem);
+            
+            // Save connection logical state
+            circuitConnections.push({
+                n1: selectedCircuitNode.id,
+                n2: nodeId
+            });
+            
+            // Cleanup UI
+            document.querySelectorAll('.node').forEach(n => n.classList.remove('selected'));
+            selectedCircuitNode = null;
+            
+            checkCircuitCompletion();
+        }
+    }
+
+    function drawWire(elem1, elem2) {
+        const svg = document.getElementById('circuit-svg');
+        const svgRect = svg.getBoundingClientRect();
+        const r1 = elem1.getBoundingClientRect();
+        const r2 = elem2.getBoundingClientRect();
+        
+        // Calculate centers relative to SVG
+        const x1 = r1.left + r1.width/2 - svgRect.left;
+        const y1 = r1.top + r1.height/2 - svgRect.top;
+        const x2 = r2.left + r2.width/2 - svgRect.left;
+        const y2 = r2.top + r2.height/2 - svgRect.top;
+        
+        let line = document.createElementNS('http://www.w3.org/2000/svg','line');
+        line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+        line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+        line.setAttribute('class', 'wire');
+        svg.appendChild(line);
+    }
+
+    function checkCircuitCompletion() {
+        // We need bat-pos connected to led-pos AND bat-neg to led-neg
+        let hasPos = false; let hasNeg = false;
+        
+        circuitConnections.forEach(c => {
+            if( (c.n1 === 'n-bat-pos' && c.n2 === 'n-led-pos') || (c.n2 === 'n-bat-pos' && c.n1 === 'n-led-pos') ) hasPos = true;
+            if( (c.n1 === 'n-bat-neg' && c.n2 === 'n-led-neg') || (c.n2 === 'n-bat-neg' && c.n1 === 'n-led-neg') ) hasNeg = true;
+        });
+
+        // Check for short circuit (Pos to Neg)
+        let shortCircuit = circuitConnections.some(c => 
+            (c.n1.includes('-pos') && c.n2.includes('-neg')) || 
+            (c.n1.includes('-neg') && c.n2.includes('-pos'))
+        );
+
+        if(shortCircuit) {
+            document.getElementById('circuit-msg').innerText = "⚠️ SHORT CIRCUIT! DANGER!";
+            document.getElementById('circuit-msg').style.color = "var(--c-red)";
+            document.getElementById('comp-led').classList.remove('on');
+        } else if (hasPos && hasNeg) {
+            document.getElementById('circuit-msg').innerText = "✅ POWER FLOWING. SYSTEM ONLINE.";
+            document.getElementById('circuit-msg').style.color = "var(--c-accent2)";
+            document.getElementById('comp-led').classList.add('on');
+        }
+    }
+
   </script>
 </body>
 </html>
