@@ -74,7 +74,7 @@
     .btn-close-game { background: transparent; border: 1px solid var(--c-accent); color: var(--c-accent); padding: 5px 10px; border-radius: 5px; font-size: 10px; cursor: pointer; font-family: var(--font-head); transition: 0.2s; }
     .btn-close-game:hover { background: rgba(0,200,255,0.2); box-shadow: var(--glow-blue); }
 
-    /* Setup UI */
+    /* Math UI Setup */
     .btn-time { background: transparent; border: 1px solid var(--c-border); color: var(--c-muted); padding: 12px 20px; border-radius: 8px; font-family: var(--font-head); font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; flex: 1; min-width: 80px;}
     .btn-time.active { background: rgba(0, 200, 255, 0.1); border-color: var(--c-accent); color: var(--c-accent); box-shadow: var(--glow-blue); }
     #custom-time { width: 100px; padding: 12px; font-size: 12px; text-align: center; background: var(--c-surface); border: 1px solid var(--c-border); color: var(--c-text); font-family: var(--font-head); border-radius: 8px; outline: none; transition: 0.3s; flex: 1;}
@@ -83,9 +83,24 @@
     #equation { font-family: var(--font-head); font-size: clamp(32px, 8vw, 56px); font-weight: 900; color: var(--c-white); margin-bottom: 30px; letter-spacing: 0.1em; }
     #answer-input { width: 180px; padding: 15px; font-size: 28px; text-align: center; background: var(--c-surface); border: 2px solid var(--c-border); color: var(--c-accent2); font-family: var(--font-head); border-radius: 10px; outline: none; margin-bottom: 20px; }
     
-    /* Gesture Canvas UI */
-    #output_canvas { width: 100%; max-width: 640px; height: auto; background: #041526; border-radius: 12px; border: 2px solid var(--c-accent); box-shadow: var(--glow-blue); display: block; margin: 0 auto; }
-    #gesture-status { font-family: var(--font-head); color: var(--c-accent); font-size: 18px; margin-top: 15px; font-weight: bold; min-height: 25px; }
+    /* ─── GESTURE ZONE UI ─── */
+    .canvas-wrapper { position: relative; width: 100%; max-width: 640px; aspect-ratio: 4/3; margin: 0 auto 20px; }
+    .canvas-wrapper canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 12px; transform: scaleX(-1); /* Mirror effect */ }
+    
+    /* Output Canvas (Camera + Landmarks) */
+    #output_canvas { z-index: 1; border: 2px solid var(--c-accent); box-shadow: var(--glow-blue); background: #041526; }
+    
+    /* Drawing Canvas (The Ink) */
+    #drawing_canvas { z-index: 2; pointer-events: none; }
+
+    #gesture-status { font-family: var(--font-head); color: var(--c-accent); font-size: 14px; margin-bottom: 15px; font-weight: bold; min-height: 20px; letter-spacing: 0.05em;}
+    
+    /* Drawing Tools Controls */
+    .drawing-tools { display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap;}
+    .color-btn { width: 30px; height: 30px; border-radius: 50%; border: 3px solid transparent; cursor: pointer; transition: 0.2s; box-shadow: 0 0 10px rgba(255,255,255,0.1); }
+    .color-btn.active { border-color: var(--c-white); transform: scale(1.2); }
+    .btn-clear { background: transparent; border: 1px solid #ff4c4c; color: #ff4c4c; padding: 8px 15px; border-radius: 8px; font-family: var(--font-head); font-size: 11px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+    .btn-clear:hover { background: rgba(255, 76, 76, 0.1); box-shadow: 0 0 15px rgba(255, 76, 76, 0.4); }
 
   </style>
 </head>
@@ -117,10 +132,10 @@
       </div>
 
       <div class="game-card blue">
-        <div class="game-icon">🖐️</div>
-        <h3 class="game-title">Gesture Zone</h3>
+        <div class="game-icon">✍️</div>
+        <h3 class="game-title">Air Writing Zone</h3>
         <div class="game-tags"><span class="tag">AI / ML</span><span class="tag">Computer Vision</span></div>
-        <p class="game-desc">Experience real-time AI computer vision. Allow camera access to detect and map your hand gestures dynamically.</p>
+        <p class="game-desc">Experience real-time AI computer vision. Pinch your fingers together to write or draw directly in the air!</p>
         <button class="btn-play blue" onclick="openGestureZone()">LAUNCH CAMERA</button>
       </div>
 
@@ -169,20 +184,29 @@
 
     <div id="gesture-terminal" class="terminal-container z1" style="border-color: var(--c-accent); box-shadow: var(--glow-blue);">
       <div class="term-header">
-        <div class="term-title" style="color: var(--c-accent);">🖐️ Gesture Zone</div>
+        <div class="term-title" style="color: var(--c-accent);">✍️ Air Writing Zone</div>
         <button class="btn-close-game" onclick="closeGestureZone()">CLOSE CAMERA</button>
       </div>
       
-      <p style="color: var(--c-muted); font-size: 13px; margin-bottom: 20px;">
-        Please grant camera permissions. The AI model runs entirely in your browser.
-      </p>
+      <div id="gesture-status">WAITING FOR CAMERA...</div>
 
-      <div style="position: relative;">
+      <div class="drawing-tools">
+          <div class="color-btn active" style="background: #00ff9f; box-shadow: 0 0 10px #00ff9f;" onclick="setPenColor('#00ff9f', this)"></div>
+          <div class="color-btn" style="background: #00c8ff; box-shadow: 0 0 10px #00c8ff;" onclick="setPenColor('#00c8ff', this)"></div>
+          <div class="color-btn" style="background: #ffd166; box-shadow: 0 0 10px #ffd166;" onclick="setPenColor('#ffd166', this)"></div>
+          <div class="color-btn" style="background: #ff4c4c; box-shadow: 0 0 10px #ff4c4c;" onclick="setPenColor('#ff4c4c', this)"></div>
+          <button class="btn-clear" onclick="clearCanvas()">🗑️ CLEAR CANVAS</button>
+      </div>
+
+      <div class="canvas-wrapper">
         <video id="input_video" style="display: none;"></video>
         <canvas id="output_canvas" width="640" height="480"></canvas>
+        <canvas id="drawing_canvas" width="640" height="480"></canvas>
       </div>
       
-      <div id="gesture-status">WAITING FOR CAMERA...</div>
+      <p style="color: var(--c-muted); font-size: 11px;">
+        *To draw, bring your thumb and index finger together (pinch). Open your hand to stop drawing.
+      </p>
     </div>
 
   </div>
@@ -284,42 +308,104 @@
 
 
     /* =======================================
-       2. MEDIAPIPE GESTURE LOGIC
+       2. AIR WRITING GESTURE LOGIC
        ======================================= */
     const gestureTerminal = document.getElementById('gesture-terminal');
     const videoElement = document.getElementById('input_video');
     const canvasElement = document.getElementById('output_canvas');
+    const drawingCanvas = document.getElementById('drawing_canvas');
     const canvasCtx = canvasElement.getContext('2d');
+    const drawingCtx = drawingCanvas.getContext('2d');
     const statusText = document.getElementById('gesture-status');
     let cameraInstance = null;
 
+    // Drawing States
+    let isDrawing = false;
+    let lastX = 0, lastY = 0;
+    let penColor = '#00ff9f'; // Default green
+
+    function setPenColor(color, btn) {
+        penColor = color;
+        document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+        if(btn) btn.classList.add('active');
+    }
+
+    function clearCanvas() {
+        drawingCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+    }
+
     function onResults(results) {
-        // Draw the image and the landmarks
+        // Draw the camera feed onto the output canvas
         canvasCtx.save();
         canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
         canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
         
         if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-            statusText.innerText = "HAND DETECTED! 👋";
-            statusText.style.color = "var(--c-accent2)";
+            const landmarks = results.multiHandLandmarks[0]; // Primary hand tracking
 
-            for (const landmarks of results.multiHandLandmarks) {
-                // Cyber-neon hand drawing
-                drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#00ff9f', lineWidth: 3});
-                drawLandmarks(canvasCtx, landmarks, {color: '#00c8ff', lineWidth: 2, radius: 4});
-                
-                // Example Logic: Check if Index Finger is Raised
-                const indexFingerTip = landmarks[8];
-                const indexFingerMCP = landmarks[5];
-                
-                if (indexFingerTip.y < indexFingerMCP.y) {
-                    // Finger is pointing up
-                    // You can trigger custom logic here!
+            // Draw subtle AI hand wireframe
+            drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: 'rgba(255, 255, 255, 0.4)', lineWidth: 1});
+            drawLandmarks(canvasCtx, landmarks, {color: 'rgba(0, 200, 255, 0.6)', lineWidth: 1, radius: 2});
+            
+            // Get Index Finger and Thumb tips
+            const indexTip = landmarks[8];
+            const thumbTip = landmarks[4];
+            
+            // Calculate pinch distance (Euclidean formula)
+            const dx = indexTip.x - thumbTip.x;
+            const dy = indexTip.y - thumbTip.y;
+            const distance = Math.sqrt(dx*dx + dy*dy);
+
+            // Convert Normalized coordinates to Canvas pixels
+            const px = indexTip.x * drawingCanvas.width;
+            const py = indexTip.y * drawingCanvas.height;
+
+            // Threshold for Pinch (approx 0.05 normalized distance)
+            if (distance < 0.06) {
+                statusText.innerText = "✍️ DRAWING";
+                statusText.style.color = penColor;
+
+                // Drawing logic onto the persistent drawingCtx
+                if (!isDrawing) {
+                    isDrawing = true;
+                    lastX = px;
+                    lastY = py;
+                } else {
+                    drawingCtx.beginPath();
+                    drawingCtx.moveTo(lastX, lastY);
+                    drawingCtx.lineTo(px, py);
+                    drawingCtx.strokeStyle = penColor;
+                    drawingCtx.lineWidth = 5;
+                    drawingCtx.lineCap = 'round';
+                    drawingCtx.lineJoin = 'round';
+                    drawingCtx.stroke();
+                    lastX = px;
+                    lastY = py;
                 }
+                
+                // Draw a solid circle on the video canvas to show active pen
+                canvasCtx.beginPath();
+                canvasCtx.arc(px, py, 8, 0, 2 * Math.PI);
+                canvasCtx.fillStyle = penColor;
+                canvasCtx.fill();
+
+            } else {
+                statusText.innerText = "🖐️ HOVERING (Pinch to Draw)";
+                statusText.style.color = "var(--c-accent)";
+                isDrawing = false; // Pen up
+
+                // Draw a hollow circle to show where the pen is hovering
+                canvasCtx.beginPath();
+                canvasCtx.arc(px, py, 6, 0, 2 * Math.PI);
+                canvasCtx.strokeStyle = "white";
+                canvasCtx.lineWidth = 2;
+                canvasCtx.stroke();
             }
+
         } else {
             statusText.innerText = "NO HANDS DETECTED.";
-            statusText.style.color = "var(--c-accent)";
+            statusText.style.color = "var(--c-muted)";
+            isDrawing = false;
         }
         canvasCtx.restore();
     }
@@ -329,17 +415,18 @@
       return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
     }});
     hands.setOptions({
-      maxNumHands: 2,
+      maxNumHands: 1, // Restrict to 1 hand for better drawing performance
       modelComplexity: 1,
-      minDetectionConfidence: 0.5,
-      minTrackingConfidence: 0.5
+      minDetectionConfidence: 0.6, // Slightly higher to avoid accidental glitches
+      minTrackingConfidence: 0.6
     });
     hands.onResults(onResults);
 
     function openGestureZone() {
         gamesMenu.style.display = 'none';
         gestureTerminal.style.display = 'block';
-        statusText.innerText = "INITIALIZING CAMERA...";
+        statusText.innerText = "INITIALIZING AI VISION...";
+        clearCanvas(); // clear ink when opening
 
         // Start Camera
         if (!cameraInstance) {
@@ -358,7 +445,7 @@
         gestureTerminal.style.display = 'none';
         gamesMenu.style.display = 'flex';
         
-        // Stop Camera feed to save resources
+        // Stop Camera feed to save computer resources
         if (cameraInstance) {
             cameraInstance.stop();
             const tracks = videoElement.srcObject?.getTracks();
