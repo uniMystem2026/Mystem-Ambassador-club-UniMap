@@ -6,13 +6,13 @@
   <title>STEM Games | MYSTEM UniMAP</title>
   <link rel="icon" type="image/png" href="WhatsApp_Image_2024-12-02_at_15.29.32-removebg-preview.png" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet" />
-  
+
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
 
   <style>
-    :root {
+    :root{
       --c-bg:#020b14;--c-surface:#041526;--c-panel:#071e35;
       --c-border:#0d3a5e;--c-accent:#00c8ff;--c-accent2:#00ff9f;
       --c-gold:#ffd166;--c-red:#ff4c4c;--c-text:#d4eaf7;--c-muted:#5a8ca8;
@@ -25,9 +25,9 @@
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html{scroll-behavior:smooth;}
-    body{background:var(--c-bg);color:var(--c-text);font-family:var(--font-body);font-weight:300;overflow-x:hidden;}
+    body{background:var(--c-bg);color:var(--c-text);font-family:var(--font-body);font-weight:300;overflow-x:hidden;min-height:100vh;}
     a{color:inherit;text-decoration:none;}
-    button{-webkit-tap-highlight-color:transparent;}
+    button{-webkit-tap-highlight-color:transparent;font-family:inherit;}
     body::before{content:'';position:fixed;inset:0;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;}
     body::after{content:'';position:fixed;inset:0;z-index:0;background-image:linear-gradient(var(--c-border) 1px,transparent 1px),linear-gradient(90deg,var(--c-border) 1px,transparent 1px);background-size:40px 40px;opacity:0.06;pointer-events:none;}
     .z1{position:relative;z-index:1;}
@@ -45,8 +45,8 @@
     .title{font-family:var(--font-head);font-size:clamp(28px,6vw,42px);font-weight:900;color:var(--c-accent);text-transform:uppercase;letter-spacing:0.05em;text-shadow:var(--glow-blue);margin-bottom:12px;}
     .subtitle{color:var(--c-muted);font-size:15px;}
 
-    .games-grid{display:flex;justify-content:center;gap:24px;margin-bottom:60px;flex-wrap:wrap;}
-    .game-card{background:var(--c-panel);border:2px solid var(--c-border);border-radius:16px;padding:30px 20px;text-align:center;width:100%;max-width:280px;transition:transform 0.3s,box-shadow 0.3s;display:flex;flex-direction:column;justify-content:space-between;}
+    .games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px;margin-bottom:60px;max-width:1180px;}
+    .game-card{background:var(--c-panel);border:2px solid var(--c-border);border-radius:16px;padding:30px 20px;text-align:center;transition:transform 0.3s,box-shadow 0.3s;display:flex;flex-direction:column;justify-content:space-between;}
     .game-card.green{border-color:#004d30;}.game-card.blue{border-color:#003b4d;}.game-card.gold{border-color:#4d3e00;}.game-card.red{border-color:#4d0000;}
     .game-card.green:hover{transform:translateY(-5px);border-color:var(--c-accent2);box-shadow:var(--glow-green);}
     .game-card.blue:hover{transform:translateY(-5px);border-color:var(--c-accent);box-shadow:var(--glow-blue);}
@@ -67,6 +67,7 @@
     .btn-play.gold{background:var(--c-gold);box-shadow:var(--glow-gold);}
     .btn-play.red{background:var(--c-red);box-shadow:var(--glow-red);color:var(--c-white);}
     .btn-play:hover{filter:brightness(1.2);transform:scale(1.02);}
+    .btn-play:disabled{opacity:.4;cursor:not-allowed;filter:none;transform:none;}
 
     .terminal-container{display:none;max-width:860px;margin:0 auto 60px;background:#01060a;border:1px solid var(--c-border);border-radius:16px;padding:20px;text-align:center;}
     @media(min-width:768px){.terminal-container{padding:30px;}}
@@ -76,20 +77,22 @@
     .btn-close-game:hover{background:rgba(0,200,255,0.2);box-shadow:var(--glow-blue);}
 
     /* ── MATH SPRINT ── */
-    .btn-time{background:transparent;border:1px solid var(--c-border);color:var(--c-muted);padding:12px 20px;border-radius:8px;font-family:var(--font-head);font-size:12px;font-weight:700;cursor:pointer;transition:0.3s;flex:1;min-width:80px;}
+    .seg{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:18px;}
+    .seg-btn{background:transparent;border:1px solid var(--c-border);color:var(--c-muted);padding:10px 16px;border-radius:8px;font-family:var(--font-head);font-size:11px;font-weight:700;cursor:pointer;transition:0.3s;}
+    .seg-btn.active{background:rgba(0,255,159,0.1);border-color:var(--c-accent2);color:var(--c-accent2);box-shadow:var(--glow-green);}
+    .btn-time{background:transparent;border:1px solid var(--c-border);color:var(--c-muted);padding:12px 20px;border-radius:8px;font-family:var(--font-head);font-size:12px;font-weight:700;cursor:pointer;transition:0.3s;}
     .btn-time.active{background:rgba(0,200,255,0.1);border-color:var(--c-accent);color:var(--c-accent);box-shadow:var(--glow-blue);}
-    #custom-time{width:100px;padding:12px;font-size:12px;text-align:center;background:var(--c-surface);border:1px solid var(--c-border);color:var(--c-text);font-family:var(--font-head);border-radius:8px;outline:none;transition:0.3s;flex:1;}
-    .term-stats{font-family:var(--font-head);font-size:14px;color:var(--c-white);display:flex;justify-content:space-around;margin-bottom:20px;}
-    #equation{font-family:var(--font-head);font-size:clamp(32px,8vw,56px);font-weight:900;color:var(--c-white);margin-bottom:20px;letter-spacing:0.1em;}
-    #answer-input{width:180px;padding:15px;font-size:28px;text-align:center;background:var(--c-surface);border:2px solid var(--c-border);color:var(--c-accent2);font-family:var(--font-head);border-radius:10px;outline:none;margin-bottom:20px;}
-    /* Multiple choice buttons for easy mode */
-    .choice-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:360px;margin:0 auto 20px;}
-    .choice-btn{padding:20px;border-radius:12px;font-family:var(--font-head);font-size:22px;font-weight:700;background:var(--c-panel);border:2px solid var(--c-border);color:var(--c-white);cursor:pointer;transition:0.2s;}
-    .choice-btn:hover{border-color:var(--c-accent2);background:rgba(0,255,159,0.1);transform:scale(1.05);}
+    #custom-time{width:120px;padding:12px;font-size:12px;text-align:center;background:var(--c-surface);border:1px solid var(--c-border);color:var(--c-text);font-family:var(--font-head);border-radius:8px;outline:none;}
+    .setup-label{font-family:var(--font-head);font-size:11px;color:var(--c-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;}
+    .term-stats{font-family:var(--font-head);font-size:14px;color:var(--c-white);display:flex;justify-content:space-around;margin-bottom:20px;flex-wrap:wrap;gap:8px;}
+    #equation{font-family:var(--font-head);font-size:clamp(30px,8vw,52px);font-weight:900;color:var(--c-white);margin-bottom:16px;letter-spacing:0.08em;}
+    .choice-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:380px;margin:0 auto 20px;}
+    .choice-btn{padding:22px;border-radius:12px;font-family:var(--font-head);font-size:22px;font-weight:700;background:var(--c-panel);border:2px solid var(--c-border);color:var(--c-white);cursor:pointer;transition:0.15s;}
+    .choice-btn:hover{border-color:var(--c-accent2);background:rgba(0,255,159,0.1);transform:scale(1.04);}
     .choice-btn.correct{border-color:var(--c-accent2);background:rgba(0,255,159,0.25);animation:pulse-green 0.4s;}
     .choice-btn.wrong{border-color:var(--c-red);background:rgba(255,76,76,0.2);animation:shake 0.3s;}
     @keyframes pulse-green{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
-    @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}}
+    @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
     .streak-bar{height:6px;background:var(--c-border);border-radius:3px;margin-bottom:16px;overflow:hidden;}
     .streak-fill{height:100%;background:linear-gradient(90deg,var(--c-accent2),var(--c-gold));border-radius:3px;transition:width 0.3s;}
 
@@ -99,32 +102,40 @@
     #output_canvas{z-index:1;border:2px solid var(--c-accent);box-shadow:var(--glow-blue);background:#041526;}
     #drawing_canvas{z-index:2;pointer-events:none;}
     #gesture-status{font-family:var(--font-head);color:var(--c-accent);font-size:14px;margin-bottom:15px;font-weight:bold;min-height:20px;letter-spacing:0.05em;}
-    .drawing-tools{display:flex;justify-content:center;align-items:center;gap:15px;margin-bottom:15px;flex-wrap:wrap;}
+    .drawing-tools{display:flex;justify-content:center;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap;}
     .color-btn{width:30px;height:30px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:0.2s;box-shadow:0 0 10px rgba(255,255,255,0.1);}
     .color-btn.active{border-color:var(--c-white);transform:scale(1.2);}
     .btn-clear{background:transparent;border:1px solid #ff4c4c;color:#ff4c4c;padding:8px 15px;border-radius:8px;font-family:var(--font-head);font-size:11px;font-weight:700;cursor:pointer;transition:0.2s;}
+    .btn-clear:hover{background:rgba(255,76,76,.15);}
+    .air-challenge{font-family:var(--font-head);font-size:13px;color:var(--c-gold);margin-bottom:12px;min-height:20px;}
+    .size-slider{accent-color:var(--c-accent);width:90px;}
 
     /* ── LOGIC BLOCKS ── */
-    /* NEW LAYOUT: top = grid, bottom = controls */
     .logic-layout-new{display:flex;flex-direction:column;gap:16px;text-align:left;}
     .logic-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;background:var(--c-border);padding:4px;border-radius:12px;box-shadow:var(--glow-gold);max-width:300px;margin:0 auto;}
-    .logic-cell{background:var(--c-surface);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;min-height:50px;transition:0.2s;}
+    .logic-cell{background:var(--c-surface);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;min-height:50px;transition:0.25s ease;}
     .cell-player{background:#00c8ff33;box-shadow:inset 0 0 15px var(--c-accent);position:relative;}
     .cell-player::after{content:'🤖';}
     .cell-target{background:#00ff9f33;box-shadow:inset 0 0 15px var(--c-accent2);position:relative;}
     .cell-target::after{content:'🚩';}
     .cell-wall{background:#ff4c4c33;box-shadow:inset 0 0 15px var(--c-red);position:relative;}
     .cell-wall::after{content:'🧱';}
+    .cell-trail{background:#ffd16622;}
     .logic-bottom{display:flex;flex-direction:column;gap:12px;}
     .logic-cmd-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
-    .block-btn{background:var(--c-panel);border:1px solid var(--c-gold);color:var(--c-gold);border-radius:8px;padding:12px 16px;font-family:var(--font-head);font-size:16px;cursor:pointer;transition:0.2s;min-width:70px;}
+    .block-btn{background:var(--c-panel);border:1px solid var(--c-gold);color:var(--c-gold);border-radius:8px;padding:12px 14px;font-family:var(--font-head);font-size:15px;cursor:pointer;transition:0.2s;min-width:62px;}
     .block-btn:hover{background:var(--c-gold);color:var(--c-bg);box-shadow:var(--glow-gold);}
+    .block-btn.loop{border-color:var(--c-accent);color:var(--c-accent);}
+    .block-btn.loop:hover{background:var(--c-accent);color:var(--c-bg);box-shadow:var(--glow-blue);}
     .logic-code-area{background:var(--c-surface);border:1px dashed var(--c-gold);border-radius:12px;padding:12px;display:flex;flex-wrap:wrap;align-content:flex-start;gap:8px;min-height:70px;}
     .code-chip{background:var(--c-gold);color:var(--c-bg);padding:5px 12px;border-radius:4px;font-family:var(--font-head);font-size:13px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer;animation:fadeIn 0.2s;}
+    .code-chip.loop-chip{background:var(--c-accent);}
     .code-chip:hover{background:#ff4c4c;color:#fff;}
+    .code-chip.active-exec{outline:2px solid var(--c-white);transform:scale(1.1);}
     @keyframes fadeIn{from{opacity:0;transform:scale(0.8);}to{opacity:1;transform:scale(1);}}
-    .logic-run-row{display:flex;gap:10px;justify-content:center;}
-    #logic-level-info{font-family:var(--font-head);font-size:11px;color:var(--c-gold);text-align:center;margin-bottom:4px;}
+    .logic-run-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+    #logic-level-info{font-family:var(--font-head);font-size:11px;color:var(--c-gold);text-align:center;}
+    #logic-stars{text-align:center;font-size:18px;min-height:22px;letter-spacing:3px;}
 
     /* ── CIRCUIT BUILDER ── */
     .circuit-tabs{display:flex;gap:0;margin-bottom:20px;border:1px solid var(--c-border);border-radius:10px;overflow:hidden;}
@@ -150,6 +161,7 @@
     .circuit-info-box{background:var(--c-panel);border:1px solid var(--c-border);border-radius:10px;padding:12px;margin-bottom:12px;text-align:left;}
     .circuit-info-box h4{font-family:var(--font-head);font-size:12px;color:var(--c-red);margin-bottom:6px;}
     .circuit-info-box p{font-size:11px;color:var(--c-muted);line-height:1.6;}
+    .circuit-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
   </style>
 </head>
 <body>
@@ -174,36 +186,34 @@
       <div class="game-icon">🧮</div>
       <h3 class="game-title">Math Sprint</h3>
       <div class="game-tags"><span class="tag">Mathematics</span><span class="tag">Speed</span></div>
-      <p class="game-desc">Tap the correct answer! Solve fun maths questions with multiple choice — build your streak and beat the clock!</p>
-      <button class="btn-play green" onclick="openTerminal('game-terminal')">PLAY NOW</button>
+      <p class="game-desc">Tap the correct answer! Pick a difficulty, build a combo, and beat the clock. +, −, ×, ÷ — how high can you score?</p>
+      <button class="btn-play green" onclick="openMathSprintSetup()">PLAY NOW</button>
     </div>
     <div class="game-card blue">
       <div class="game-icon">✍️</div>
       <h3 class="game-title">Air Writing Zone</h3>
       <div class="game-tags"><span class="tag">AI / ML</span><span class="tag">Computer Vision</span></div>
-      <p class="game-desc">Experience real-time AI computer vision. Pinch your fingers together to write or draw directly in the air!</p>
+      <p class="game-desc">Real-time AI hand tracking. Pinch your fingers to write in the air — free draw, or take the "trace the number" challenge!</p>
       <button class="btn-play blue" onclick="openTerminal('gesture-terminal'); initGestureCamera();">LAUNCH CAMERA</button>
     </div>
     <div class="game-card gold">
       <div class="game-icon">🧱</div>
       <h3 class="game-title">Logic Blocks</h3>
       <div class="game-tags"><span class="tag">Programming</span><span class="tag">Algorithms</span></div>
-      <p class="game-desc">Learn to code by building sequences. Guide the robot 🤖 to the flag 🚩 while dodging walls — 5 levels of challenge!</p>
+      <p class="game-desc">Code by building sequences. Use the LOOP block to repeat moves, guide the robot 🤖 to the flag 🚩, and earn 3 stars across 6 levels!</p>
       <button class="btn-play gold" onclick="openTerminal('logic-terminal'); initLogicGame();">BUILD LOGIC</button>
     </div>
     <div class="game-card red">
       <div class="game-icon">🔌</div>
       <h3 class="game-title">Circuit Wiring</h3>
       <div class="game-tags"><span class="tag">Electronics</span><span class="tag">Physics</span></div>
-      <p class="game-desc">Wire circuits correctly! Compare how Series and Parallel circuits work — light up the LEDs to see the difference!</p>
+      <p class="game-desc">Wire circuits correctly! Compare Series vs Parallel, undo mistakes, and light up the LEDs to see the difference.</p>
       <button class="btn-play red" onclick="openTerminal('circuit-terminal'); initCircuitGame();">START WIRING</button>
     </div>
   </div>
 
 
-  <!-- ══════════════════════════════════════════════
-       GAME 1: MATH SPRINT (Easy Multiple Choice)
-  ══════════════════════════════════════════════ -->
+  <!-- ════════ GAME 1: MATH SPRINT ════════ -->
   <div id="game-terminal" class="terminal-container z1" style="border-color:var(--c-accent2);box-shadow:var(--glow-green);">
     <div class="term-header">
       <div class="term-title" style="color:var(--c-accent2);">🧮 Math Sprint Terminal</div>
@@ -212,24 +222,35 @@
 
     <div id="setup-area">
       <h3 style="color:var(--c-white);font-family:var(--font-head);margin-bottom:10px;">Booth Setup</h3>
-      <p style="color:var(--c-muted);font-size:13px;margin-bottom:25px;">Set the challenge duration before handing the terminal to the player.</p>
-      <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-bottom:30px;">
+      <p style="color:var(--c-muted);font-size:13px;margin-bottom:22px;">Pick difficulty and duration, then hand the terminal to the player.</p>
+
+      <div class="setup-label">Difficulty</div>
+      <div class="seg" id="diff-seg">
+        <button class="seg-btn active" onclick="selectDiff('easy',this)">EASY · +−×</button>
+        <button class="seg-btn" onclick="selectDiff('medium',this)">MEDIUM · +−×÷</button>
+        <button class="seg-btn" onclick="selectDiff('hard',this)">HARD · big +−×÷</button>
+      </div>
+
+      <div class="setup-label">Duration</div>
+      <div class="seg" style="margin-bottom:30px;">
         <button class="btn-time active" onclick="selectTime(30,this)">30 SEC</button>
         <button class="btn-time" onclick="selectTime(60,this)">60 SEC</button>
         <button class="btn-time" onclick="selectTime(120,this)">120 SEC</button>
         <input type="number" id="custom-time" placeholder="Custom (s)" oninput="clearTimeButtons()" min="5" max="300" />
       </div>
+
       <button class="btn-play green" style="max-width:250px;margin:0 auto;" onclick="prepareGame()">INITIALIZE SYSTEM</button>
+      <p id="hi-line" style="color:var(--c-gold);font-family:var(--font-head);font-size:12px;margin-top:18px;"></p>
     </div>
 
     <div id="game-area" style="display:none;">
       <div class="term-stats">
         <div>SCORE: <span id="score" style="color:var(--c-accent2);font-size:20px;">0</span></div>
-        <div>STREAK 🔥 <span id="streak-count" style="color:var(--c-gold);font-size:20px;">0</span></div>
+        <div>COMBO 🔥 <span id="streak-count" style="color:var(--c-gold);font-size:20px;">0</span></div>
         <div>TIME: <span id="time" style="color:#ff4c4c;font-size:20px;">30</span>s</div>
       </div>
       <div class="streak-bar"><div class="streak-fill" id="streak-fill" style="width:0%"></div></div>
-      <div id="equation" style="font-family:var(--font-head);font-size:clamp(28px,7vw,48px);font-weight:900;color:var(--c-white);margin-bottom:20px;">Ready?</div>
+      <div id="equation">Ready?</div>
       <div id="feedback-msg" style="font-family:var(--font-head);font-size:16px;min-height:24px;margin-bottom:10px;transition:0.2s;"></div>
       <div class="choice-grid" id="choice-grid"></div>
       <div><button id="start-btn" class="btn-play green" style="max-width:200px;margin:0 auto;" onclick="startGameLoop()">START SPRINT</button></div>
@@ -239,7 +260,8 @@
       <h3 style="color:#ff4c4c;font-family:var(--font-head);font-size:32px;margin-bottom:5px;">TIME'S UP!</h3>
       <p style="color:var(--c-muted);font-size:14px;margin-bottom:20px;text-transform:uppercase;">Final Score</p>
       <div id="final-score" style="font-size:72px;font-family:var(--font-head);font-weight:900;color:var(--c-white);text-shadow:var(--glow-green);margin-bottom:10px;">0</div>
-      <div id="final-streak" style="font-family:var(--font-head);font-size:16px;color:var(--c-gold);margin-bottom:30px;"></div>
+      <div id="final-streak" style="font-family:var(--font-head);font-size:16px;color:var(--c-gold);margin-bottom:8px;"></div>
+      <div id="final-hi" style="font-family:var(--font-head);font-size:13px;color:var(--c-accent);margin-bottom:26px;"></div>
       <div style="display:flex;justify-content:center;gap:15px;flex-wrap:wrap;">
         <button class="btn-play" style="max-width:180px;background:transparent;border:1px solid var(--c-accent);color:var(--c-accent);" onclick="openMathSprintSetup()">NEW SETUP</button>
         <button class="btn-play green" style="max-width:180px;" onclick="prepareGame()">PLAY AGAIN</button>
@@ -248,34 +270,36 @@
   </div>
 
 
-  <!-- ══════════════════════════════════════════════
-       GAME 2: AIR WRITING ZONE
-  ══════════════════════════════════════════════ -->
+  <!-- ════════ GAME 2: AIR WRITING ════════ -->
   <div id="gesture-terminal" class="terminal-container z1" style="border-color:var(--c-accent);box-shadow:var(--glow-blue);">
     <div class="term-header">
       <div class="term-title" style="color:var(--c-accent);">✍️ Air Writing Zone</div>
       <button class="btn-close-game" onclick="closeGestureZone()">CLOSE CAMERA</button>
     </div>
     <div id="gesture-status">WAITING FOR CAMERA...</div>
+    <div class="air-challenge" id="air-challenge"></div>
     <div class="drawing-tools">
       <div class="color-btn active" style="background:#00ff9f;box-shadow:0 0 10px #00ff9f;" onclick="setPenColor('#00ff9f',this)"></div>
       <div class="color-btn" style="background:#00c8ff;box-shadow:0 0 10px #00c8ff;" onclick="setPenColor('#00c8ff',this)"></div>
       <div class="color-btn" style="background:#ffd166;box-shadow:0 0 10px #ffd166;" onclick="setPenColor('#ffd166',this)"></div>
       <div class="color-btn" style="background:#ff4c4c;box-shadow:0 0 10px #ff4c4c;" onclick="setPenColor('#ff4c4c',this)"></div>
-      <button class="btn-clear" onclick="clearDrawCanvas()">🗑️ CLEAR CANVAS</button>
+      <input type="range" class="size-slider" min="3" max="16" value="6" oninput="penSize=+this.value" title="Pen thickness" />
+      <button class="btn-clear" onclick="clearDrawCanvas()">🗑️ CLEAR</button>
+    </div>
+    <div class="drawing-tools" style="margin-bottom:14px;">
+      <button class="btn-clear" style="border-color:var(--c-accent2);color:var(--c-accent2);" onclick="newAirChallenge()">🎯 NEW CHALLENGE</button>
+      <button class="btn-clear" style="border-color:var(--c-muted);color:var(--c-muted);" onclick="clearAirChallenge()">FREE DRAW</button>
     </div>
     <div class="canvas-wrapper">
       <video id="input_video" style="display:none;"></video>
       <canvas id="output_canvas" width="640" height="480"></canvas>
       <canvas id="drawing_canvas" width="640" height="480"></canvas>
     </div>
-    <p style="color:var(--c-muted);font-size:11px;">*Pinch thumb + index finger together to draw. Open hand to stop.</p>
+    <p style="color:var(--c-muted);font-size:11px;">*Pinch thumb + index finger together to draw. Open your hand to stop.</p>
   </div>
 
 
-  <!-- ══════════════════════════════════════════════
-       GAME 3: LOGIC BLOCKS (New Layout)
-  ══════════════════════════════════════════════ -->
+  <!-- ════════ GAME 3: LOGIC BLOCKS ════════ -->
   <div id="logic-terminal" class="terminal-container z1" style="border-color:var(--c-gold);box-shadow:var(--glow-gold);max-width:600px;">
     <div class="term-header">
       <div class="term-title" style="color:var(--c-gold);">🧱 Logic Blocks Compiler</div>
@@ -283,49 +307,49 @@
     </div>
 
     <div class="logic-layout-new">
-      <!-- TOP: map + info -->
-      <div id="logic-level-info">LEVEL 1 / 5 — Guide the robot to the flag!</div>
+      <div id="logic-level-info">LEVEL 1 / 6 — Guide the robot to the flag!</div>
+      <div id="logic-stars"></div>
       <div class="logic-grid" id="logic-grid"></div>
 
-      <!-- MIDDLE: hint -->
-      <p style="font-size:11px;color:var(--c-muted);text-align:center;">Tap commands to build your sequence. Tap a chip to delete it.</p>
+      <p style="font-size:11px;color:var(--c-muted);text-align:center;">Tap moves to build a sequence. Tap LOOP to repeat the last move. Tap a chip to delete it.</p>
 
-      <!-- BOTTOM: controls -->
       <div class="logic-bottom">
         <div class="logic-cmd-row">
-          <button class="block-btn" onclick="addCode('UP')">⬆️</button>
-          <button class="block-btn" onclick="addCode('DOWN')">⬇️</button>
-          <button class="block-btn" onclick="addCode('LEFT')">⬅️</button>
-          <button class="block-btn" onclick="addCode('RIGHT')">➡️</button>
+          <button class="block-btn" onclick="addCode('UP')" aria-label="up">⬆️</button>
+          <button class="block-btn" onclick="addCode('DOWN')" aria-label="down">⬇️</button>
+          <button class="block-btn" onclick="addCode('LEFT')" aria-label="left">⬅️</button>
+          <button class="block-btn" onclick="addCode('RIGHT')" aria-label="right">➡️</button>
+          <button class="block-btn loop" onclick="addLoop()" aria-label="loop">🔁 LOOP</button>
         </div>
-        <div style="font-family:var(--font-head);font-size:10px;color:var(--c-gold);">YOUR CODE SEQUENCE:</div>
+        <div style="font-family:var(--font-head);font-size:10px;color:var(--c-gold);">YOUR CODE SEQUENCE: <span id="logic-count" style="color:var(--c-muted);">(0 blocks)</span></div>
         <div class="logic-code-area" id="logic-code-area"></div>
         <div id="logic-msg" style="font-family:var(--font-head);font-size:14px;font-weight:bold;min-height:22px;text-align:center;"></div>
         <div class="logic-run-row">
-          <button class="btn-play" style="max-width:130px;background:transparent;border:1px solid var(--c-muted);color:var(--c-muted);" onclick="resetLogicGame()">🔄 RESET</button>
-          <button class="btn-play gold" style="max-width:160px;" id="btn-logic-run" onclick="executeLogic()">▶️ RUN CODE</button>
+          <button class="btn-play" style="max-width:120px;background:transparent;border:1px solid var(--c-muted);color:var(--c-muted);" onclick="resetLogicGame()">🔄 RESET</button>
+          <button class="btn-play gold" style="max-width:150px;" id="btn-logic-run" onclick="executeLogic()">▶️ RUN CODE</button>
+        </div>
+        <div class="logic-run-row">
+          <button class="btn-play" style="max-width:120px;background:transparent;border:1px solid var(--c-accent);color:var(--c-accent);" id="btn-prev-lvl" onclick="changeLevel(-1)">◀ PREV</button>
+          <button class="btn-play" style="max-width:120px;background:transparent;border:1px solid var(--c-accent);color:var(--c-accent);" id="btn-next-lvl" onclick="changeLevel(1)">NEXT ▶</button>
         </div>
       </div>
     </div>
   </div>
 
 
-  <!-- ══════════════════════════════════════════════
-       GAME 4: CIRCUIT WIRING (Series + Parallel)
-  ══════════════════════════════════════════════ -->
+  <!-- ════════ GAME 4: CIRCUIT WIRING ════════ -->
   <div id="circuit-terminal" class="terminal-container z1" style="border-color:var(--c-red);box-shadow:var(--glow-red);max-width:860px;">
     <div class="term-header">
       <div class="term-title" style="color:var(--c-red);">🔌 Circuit Wiring Simulator</div>
       <button class="btn-close-game" onclick="closeTerminal('circuit-terminal')">CLOSE SIMULATOR</button>
     </div>
 
-    <!-- Tabs -->
     <div class="circuit-tabs">
       <button class="circuit-tab active" onclick="switchCircuitTab('series')">⚡ SERIES CIRCUIT</button>
       <button class="circuit-tab" onclick="switchCircuitTab('parallel')">⚡ PARALLEL CIRCUIT</button>
     </div>
 
-    <!-- SERIES PANEL -->
+    <!-- SERIES -->
     <div id="panel-series" class="circuit-panel active">
       <div class="circuit-info-box">
         <h4>📚 SERIES CIRCUIT</h4>
@@ -335,43 +359,43 @@
         <div class="legend-item"><div class="legend-dot" style="border-color:var(--c-red);background:rgba(255,76,76,0.3);"></div>Positive (+)</div>
         <div class="legend-item"><div class="legend-dot" style="border-color:var(--c-accent);background:rgba(0,200,255,0.3);"></div>Negative (−)</div>
       </div>
-      <p style="color:var(--c-muted);font-size:12px;margin-bottom:12px;">Click a Battery terminal → then click an LED terminal to wire them. Complete the full loop: Battery(+) → LED1(+) → LED1(−) → LED2(+) → LED2(−) → Battery(−)</p>
+      <p style="color:var(--c-muted);font-size:12px;margin-bottom:12px;">Tap a terminal, then tap the one to wire it to. Loop: Battery(+) → LED1(+) → LED1(−) → LED2(+) → LED2(−) → Battery(−)</p>
       <div class="circuit-container" id="circuit-board-series">
         <svg class="circuit-svg" id="circuit-svg-series"></svg>
-        <!-- Battery -->
         <div class="component" id="s-comp-bat" style="top:110px;left:20px;">
           <div style="font-family:var(--font-head);font-size:9px;color:var(--c-muted);">9V BATTERY</div>
           <div style="font-size:36px;">🔋</div>
           <div style="display:flex;justify-content:space-between;width:90px;margin-top:8px;">
-            <div style="text-align:center;"><div class="node node-pos" id="s-bat-pos" onclick="handleSNode('s-bat-pos','pos','series')"></div><div style="font-size:9px;color:var(--c-red);margin-top:3px;">(+)</div></div>
-            <div style="text-align:center;"><div class="node node-neg" id="s-bat-neg" onclick="handleSNode('s-bat-neg','neg','series')"></div><div style="font-size:9px;color:var(--c-accent);margin-top:3px;">(−)</div></div>
+            <div style="text-align:center;"><div class="node node-pos" id="s-bat-pos" onclick="handleSNode('s-bat-pos')"></div><div style="font-size:9px;color:var(--c-red);margin-top:3px;">(+)</div></div>
+            <div style="text-align:center;"><div class="node node-neg" id="s-bat-neg" onclick="handleSNode('s-bat-neg')"></div><div style="font-size:9px;color:var(--c-accent);margin-top:3px;">(−)</div></div>
           </div>
         </div>
-        <!-- LED 1 -->
         <div class="component comp-led" id="s-comp-led1" style="top:40px;left:50%;transform:translateX(-50%);">
           <div style="font-family:var(--font-head);font-size:9px;color:var(--c-muted);">LED 1</div>
           <div class="led-bulb" style="font-size:32px;">💡</div>
           <div style="display:flex;justify-content:space-between;width:90px;margin-top:8px;">
-            <div style="text-align:center;"><div class="node node-pos" id="s-led1-pos" onclick="handleSNode('s-led1-pos','pos','series')"></div><div style="font-size:9px;color:var(--c-red);margin-top:3px;">(+)</div></div>
-            <div style="text-align:center;"><div class="node node-neg" id="s-led1-neg" onclick="handleSNode('s-led1-neg','neg','series')"></div><div style="font-size:9px;color:var(--c-accent);margin-top:3px;">(−)</div></div>
+            <div style="text-align:center;"><div class="node node-pos" id="s-led1-pos" onclick="handleSNode('s-led1-pos')"></div><div style="font-size:9px;color:var(--c-red);margin-top:3px;">(+)</div></div>
+            <div style="text-align:center;"><div class="node node-neg" id="s-led1-neg" onclick="handleSNode('s-led1-neg')"></div><div style="font-size:9px;color:var(--c-accent);margin-top:3px;">(−)</div></div>
           </div>
         </div>
-        <!-- LED 2 -->
         <div class="component comp-led" id="s-comp-led2" style="top:160px;right:20px;">
           <div style="font-family:var(--font-head);font-size:9px;color:var(--c-muted);">LED 2</div>
           <div class="led-bulb" style="font-size:32px;">💡</div>
           <div style="display:flex;justify-content:space-between;width:90px;margin-top:8px;">
-            <div style="text-align:center;"><div class="node node-pos" id="s-led2-pos" onclick="handleSNode('s-led2-pos','pos','series')"></div><div style="font-size:9px;color:var(--c-red);margin-top:3px;">(+)</div></div>
-            <div style="text-align:center;"><div class="node node-neg" id="s-led2-neg" onclick="handleSNode('s-led2-neg','neg','series')"></div><div style="font-size:9px;color:var(--c-accent);margin-top:3px;">(−)</div></div>
+            <div style="text-align:center;"><div class="node node-pos" id="s-led2-pos" onclick="handleSNode('s-led2-pos')"></div><div style="font-size:9px;color:var(--c-red);margin-top:3px;">(+)</div></div>
+            <div style="text-align:center;"><div class="node node-neg" id="s-led2-neg" onclick="handleSNode('s-led2-neg')"></div><div style="font-size:9px;color:var(--c-accent);margin-top:3px;">(−)</div></div>
           </div>
         </div>
       </div>
       <div id="circuit-msg-series" style="font-family:var(--font-head);font-size:15px;font-weight:bold;min-height:24px;margin-bottom:12px;color:var(--c-white);">SYSTEM OFFLINE — Wire the full loop!</div>
       <div id="series-progress" style="font-family:var(--font-head);font-size:11px;color:var(--c-muted);margin-bottom:12px;"></div>
-      <button class="btn-play" style="max-width:180px;background:transparent;border:1px solid var(--c-muted);color:var(--c-muted);" onclick="resetSeriesCircuit()">CLEAR WIRES</button>
+      <div class="circuit-btns">
+        <button class="btn-play" style="max-width:160px;background:transparent;border:1px solid var(--c-gold);color:var(--c-gold);" onclick="undoSeriesWire()">↩️ UNDO WIRE</button>
+        <button class="btn-play" style="max-width:160px;background:transparent;border:1px solid var(--c-muted);color:var(--c-muted);" onclick="resetSeriesCircuit()">CLEAR ALL</button>
+      </div>
     </div>
 
-    <!-- PARALLEL PANEL -->
+    <!-- PARALLEL -->
     <div id="panel-parallel" class="circuit-panel">
       <div class="circuit-info-box">
         <h4>📚 PARALLEL CIRCUIT</h4>
@@ -381,40 +405,40 @@
         <div class="legend-item"><div class="legend-dot" style="border-color:var(--c-red);background:rgba(255,76,76,0.3);"></div>Positive (+)</div>
         <div class="legend-item"><div class="legend-dot" style="border-color:var(--c-accent);background:rgba(0,200,255,0.3);"></div>Negative (−)</div>
       </div>
-      <p style="color:var(--c-muted);font-size:12px;margin-bottom:12px;">Wire both LEDs in parallel: Battery(+) connects to LED1(+) AND LED2(+). Battery(−) connects to LED1(−) AND LED2(−).</p>
+      <p style="color:var(--c-muted);font-size:12px;margin-bottom:12px;">Battery(+) connects to LED1(+) AND LED2(+). Battery(−) connects to LED1(−) AND LED2(−).</p>
       <div class="circuit-container" id="circuit-board-parallel">
         <svg class="circuit-svg" id="circuit-svg-parallel"></svg>
-        <!-- Battery -->
         <div class="component" id="p-comp-bat" style="top:110px;left:20px;">
           <div style="font-family:var(--font-head);font-size:9px;color:var(--c-muted);">9V BATTERY</div>
           <div style="font-size:36px;">🔋</div>
           <div style="display:flex;justify-content:space-between;width:90px;margin-top:8px;">
-            <div style="text-align:center;"><div class="node node-pos" id="p-bat-pos" onclick="handlePNode('p-bat-pos','pos')"></div><div style="font-size:9px;color:var(--c-red);margin-top:3px;">(+)</div></div>
-            <div style="text-align:center;"><div class="node node-neg" id="p-bat-neg" onclick="handlePNode('p-bat-neg','neg')"></div><div style="font-size:9px;color:var(--c-accent);margin-top:3px;">(−)</div></div>
+            <div style="text-align:center;"><div class="node node-pos" id="p-bat-pos" onclick="handlePNode('p-bat-pos')"></div><div style="font-size:9px;color:var(--c-red);margin-top:3px;">(+)</div></div>
+            <div style="text-align:center;"><div class="node node-neg" id="p-bat-neg" onclick="handlePNode('p-bat-neg')"></div><div style="font-size:9px;color:var(--c-accent);margin-top:3px;">(−)</div></div>
           </div>
         </div>
-        <!-- LED 1 -->
         <div class="component comp-led" id="p-comp-led1" style="top:50px;right:20px;">
           <div style="font-family:var(--font-head);font-size:9px;color:var(--c-muted);">LED 1</div>
           <div class="led-bulb" style="font-size:32px;">💡</div>
           <div style="display:flex;justify-content:space-between;width:90px;margin-top:8px;">
-            <div style="text-align:center;"><div class="node node-pos" id="p-led1-pos" onclick="handlePNode('p-led1-pos','pos')"></div><div style="font-size:9px;color:var(--c-red);margin-top:3px;">(+)</div></div>
-            <div style="text-align:center;"><div class="node node-neg" id="p-led1-neg" onclick="handlePNode('p-led1-neg','neg')"></div><div style="font-size:9px;color:var(--c-accent);margin-top:3px;">(−)</div></div>
+            <div style="text-align:center;"><div class="node node-pos" id="p-led1-pos" onclick="handlePNode('p-led1-pos')"></div><div style="font-size:9px;color:var(--c-red);margin-top:3px;">(+)</div></div>
+            <div style="text-align:center;"><div class="node node-neg" id="p-led1-neg" onclick="handlePNode('p-led1-neg')"></div><div style="font-size:9px;color:var(--c-accent);margin-top:3px;">(−)</div></div>
           </div>
         </div>
-        <!-- LED 2 -->
         <div class="component comp-led" id="p-comp-led2" style="top:170px;right:20px;">
           <div style="font-family:var(--font-head);font-size:9px;color:var(--c-muted);">LED 2</div>
           <div class="led-bulb" style="font-size:32px;">💡</div>
           <div style="display:flex;justify-content:space-between;width:90px;margin-top:8px;">
-            <div style="text-align:center;"><div class="node node-pos" id="p-led2-pos" onclick="handlePNode('p-led2-pos','pos')"></div><div style="font-size:9px;color:var(--c-red);margin-top:3px;">(+)</div></div>
-            <div style="text-align:center;"><div class="node node-neg" id="p-led2-neg" onclick="handlePNode('p-led2-neg','neg')"></div><div style="font-size:9px;color:var(--c-accent);margin-top:3px;">(−)</div></div>
+            <div style="text-align:center;"><div class="node node-pos" id="p-led2-pos" onclick="handlePNode('p-led2-pos')"></div><div style="font-size:9px;color:var(--c-red);margin-top:3px;">(+)</div></div>
+            <div style="text-align:center;"><div class="node node-neg" id="p-led2-neg" onclick="handlePNode('p-led2-neg')"></div><div style="font-size:9px;color:var(--c-accent);margin-top:3px;">(−)</div></div>
           </div>
         </div>
       </div>
       <div id="circuit-msg-parallel" style="font-family:var(--font-head);font-size:15px;font-weight:bold;min-height:24px;margin-bottom:12px;color:var(--c-white);">SYSTEM OFFLINE — Wire both branches!</div>
       <div id="parallel-progress" style="font-family:var(--font-head);font-size:11px;color:var(--c-muted);margin-bottom:12px;"></div>
-      <button class="btn-play" style="max-width:180px;background:transparent;border:1px solid var(--c-muted);color:var(--c-muted);" onclick="resetParallelCircuit()">CLEAR WIRES</button>
+      <div class="circuit-btns">
+        <button class="btn-play" style="max-width:160px;background:transparent;border:1px solid var(--c-gold);color:var(--c-gold);" onclick="undoParallelWire()">↩️ UNDO WIRE</button>
+        <button class="btn-play" style="max-width:160px;background:transparent;border:1px solid var(--c-muted);color:var(--c-muted);" onclick="resetParallelCircuit()">CLEAR ALL</button>
+      </div>
     </div>
   </div>
 
@@ -422,30 +446,33 @@
 
 
 <script>
-// ═══════════════════════════════════════════
-// NAVIGATION
-// ═══════════════════════════════════════════
+// ═══════ NAVIGATION ═══════
 function openTerminal(id){
   document.getElementById('games-menu').style.display='none';
+  document.querySelectorAll('.terminal-container').forEach(t=>t.style.display='none');
   document.getElementById(id).style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 function closeTerminal(id){
   document.getElementById(id).style.display='none';
-  document.getElementById('games-menu').style.display='flex';
+  document.getElementById('games-menu').style.display='grid';
 }
 
-
-// ═══════════════════════════════════════════
-// GAME 1: MATH SPRINT — EASY MODE (Multiple Choice)
-// ═══════════════════════════════════════════
+// ═══════ GAME 1: MATH SPRINT ═══════
 let score=0, selectedTime=30, timeLeft=30, mathTimer, currentAnswer, streak=0, maxStreak=0;
-let choiceBlocked=false;
+let choiceBlocked=false, difficulty='easy', sessionHigh=0;
 
 function openMathSprintSetup(){
   openTerminal('game-terminal');
   document.getElementById('setup-area').style.display='block';
   document.getElementById('game-area').style.display='none';
   document.getElementById('result-area').style.display='none';
+  document.getElementById('hi-line').innerText = sessionHigh>0 ? ('★ Session high score: '+sessionHigh) : '';
+}
+function selectDiff(d,btn){
+  difficulty=d;
+  document.querySelectorAll('#diff-seg .seg-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
 }
 function selectTime(t,btn){
   selectedTime=t;
@@ -457,7 +484,7 @@ function clearTimeButtons(){ document.querySelectorAll('.btn-time').forEach(b=>b
 
 function prepareGame(){
   const cv=parseInt(document.getElementById('custom-time').value);
-  if(!isNaN(cv)&&cv>0) selectedTime=cv;
+  if(!isNaN(cv)&&cv>0) selectedTime=Math.min(cv,300);
   document.getElementById('setup-area').style.display='none';
   document.getElementById('result-area').style.display='none';
   document.getElementById('game-area').style.display='block';
@@ -468,19 +495,18 @@ function prepareGame(){
   document.getElementById('feedback-msg').innerText='';
   document.getElementById('start-btn').style.display='block';
 }
-
 function updateMathUI(){
   document.getElementById('score').innerText=score;
   document.getElementById('time').innerText=timeLeft;
   document.getElementById('streak-count').innerText=streak;
   document.getElementById('streak-fill').style.width=Math.min(streak*10,100)+'%';
 }
-
 function startGameLoop(){
   score=0; streak=0; maxStreak=0; timeLeft=selectedTime;
   updateMathUI();
   document.getElementById('start-btn').style.display='none';
   generateQuestion();
+  clearInterval(mathTimer);
   mathTimer=setInterval(()=>{
     timeLeft--; document.getElementById('time').innerText=timeLeft;
     if(timeLeft<=0){
@@ -489,87 +515,101 @@ function startGameLoop(){
       document.getElementById('game-area').style.display='none';
       document.getElementById('result-area').style.display='block';
       document.getElementById('final-score').innerText=score;
-      document.getElementById('final-streak').innerText='Best Streak: 🔥 '+maxStreak;
+      document.getElementById('final-streak').innerText='Best Combo: 🔥 '+maxStreak;
+      if(score>sessionHigh){ sessionHigh=score; document.getElementById('final-hi').innerText='🏆 NEW SESSION HIGH SCORE!'; }
+      else document.getElementById('final-hi').innerText='Session high: '+sessionHigh;
     }
   },1000);
 }
-
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
 function generateQuestion(){
   choiceBlocked=false;
-  // Easy: small single-digit / small double-digit ops
-  const ops=['+','-','×'];
-  const op=ops[Math.floor(Math.random()*ops.length)];
-  let n1,n2;
-  if(op==='+'){n1=Math.floor(Math.random()*20)+1;n2=Math.floor(Math.random()*20)+1;currentAnswer=n1+n2;}
-  else if(op==='-'){n1=Math.floor(Math.random()*20)+10;n2=Math.floor(Math.random()*10)+1;currentAnswer=n1-n2;}
-  else{n1=Math.floor(Math.random()*9)+2;n2=Math.floor(Math.random()*9)+2;currentAnswer=n1*n2;}
+  let n1,n2,op;
+  if(difficulty==='easy'){
+    op=['+','−','×'][randInt(0,2)];
+    if(op==='+'){n1=randInt(1,20);n2=randInt(1,20);currentAnswer=n1+n2;}
+    else if(op==='−'){n1=randInt(10,30);n2=randInt(1,n1);currentAnswer=n1-n2;}
+    else{n1=randInt(2,9);n2=randInt(2,9);currentAnswer=n1*n2;}
+  } else if(difficulty==='medium'){
+    op=['+','−','×','÷'][randInt(0,3)];
+    if(op==='+'){n1=randInt(10,50);n2=randInt(10,50);currentAnswer=n1+n2;}
+    else if(op==='−'){n1=randInt(20,80);n2=randInt(1,n1);currentAnswer=n1-n2;}
+    else if(op==='×'){n1=randInt(2,12);n2=randInt(2,12);currentAnswer=n1*n2;}
+    else{currentAnswer=randInt(2,12);n2=randInt(2,9);n1=currentAnswer*n2;}
+  } else { // hard
+    op=['+','−','×','÷'][randInt(0,3)];
+    if(op==='+'){n1=randInt(40,150);n2=randInt(40,150);currentAnswer=n1+n2;}
+    else if(op==='−'){n1=randInt(60,200);n2=randInt(20,n1);currentAnswer=n1-n2;}
+    else if(op==='×'){n1=randInt(6,19);n2=randInt(6,19);currentAnswer=n1*n2;}
+    else{currentAnswer=randInt(3,15);n2=randInt(3,12);n1=currentAnswer*n2;}
+  }
   document.getElementById('equation').innerText=`${n1} ${op} ${n2} = ?`;
   document.getElementById('feedback-msg').innerText='';
 
-  // Build 4 choices with the correct answer
+  const spread = difficulty==='hard'?12:difficulty==='medium'?8:5;
   let choices=new Set([currentAnswer]);
-  while(choices.size<4){
-    let noise=Math.floor(Math.random()*10)-5;
-    let fake=currentAnswer+noise;
-    if(noise!==0&&fake>=0) choices.add(fake);
+  let guard=0;
+  while(choices.size<4 && guard<50){
+    guard++;
+    let fake=currentAnswer+randInt(-spread,spread);
+    if(fake>=0 && fake!==currentAnswer) choices.add(fake);
   }
+  while(choices.size<4) choices.add(currentAnswer+choices.size); // safety
   let arr=[...choices].sort(()=>Math.random()-0.5);
   const grid=document.getElementById('choice-grid');
   grid.innerHTML='';
   arr.forEach(val=>{
     let btn=document.createElement('button');
-    btn.className='choice-btn';
-    btn.innerText=val;
+    btn.className='choice-btn'; btn.innerText=val;
     btn.onclick=()=>checkAnswer(val,btn);
     grid.appendChild(btn);
   });
 }
-
 function checkAnswer(val,btn){
   if(choiceBlocked) return;
   choiceBlocked=true;
+  const fb=document.getElementById('feedback-msg');
   if(val===currentAnswer){
     btn.classList.add('correct');
-    streak++;
-    if(streak>maxStreak) maxStreak=streak;
-    let bonus=streak>=5?20:streak>=3?15:10;
-    score+=bonus;
-    document.getElementById('feedback-msg').innerText=streak>=3?`🔥 STREAK x${streak}! +${bonus}pts`:`✅ CORRECT! +${bonus}pts`;
-    document.getElementById('feedback-msg').style.color='var(--c-accent2)';
+    streak++; if(streak>maxStreak) maxStreak=streak;
+    const diffBonus = difficulty==='hard'?15:difficulty==='medium'?10:5;
+    const comboBonus = streak>=5?15:streak>=3?10:5;
+    const gained = diffBonus + comboBonus;
+    score+=gained;
+    fb.innerText = streak>=3 ? `🔥 COMBO x${streak}! +${gained}pts` : `✅ CORRECT! +${gained}pts`;
+    fb.style.color='var(--c-accent2)';
     updateMathUI();
-    setTimeout(generateQuestion,600);
+    setTimeout(generateQuestion,550);
   } else {
     btn.classList.add('wrong');
     streak=0;
-    document.getElementById('feedback-msg').innerText='❌ Wrong! Try again next one...';
-    document.getElementById('feedback-msg').style.color='var(--c-red)';
-    // Show correct
-    document.querySelectorAll('.choice-btn').forEach(b=>{
-      if(parseInt(b.innerText)===currentAnswer) b.classList.add('correct');
-    });
+    fb.innerText='❌ Wrong! Combo reset.';
+    fb.style.color='var(--c-red)';
+    document.querySelectorAll('.choice-btn').forEach(b=>{ if(parseInt(b.innerText)===currentAnswer) b.classList.add('correct'); });
     updateMathUI();
-    setTimeout(generateQuestion,900);
+    setTimeout(generateQuestion,850);
   }
 }
 
-
-// ═══════════════════════════════════════════
-// GAME 2: AIR WRITING ZONE
-// ═══════════════════════════════════════════
+// ═══════ GAME 2: AIR WRITING ═══════
 const videoElement=document.getElementById('input_video');
 const canvasElement=document.getElementById('output_canvas');
 const drawingCanvas=document.getElementById('drawing_canvas');
 const canvasCtx=canvasElement.getContext('2d');
 const drawingCtx=drawingCanvas.getContext('2d');
 const statusText=document.getElementById('gesture-status');
-let cameraInstance=null,isDrawing=false,lastX=0,lastY=0,penColor='#00ff9f';
+let cameraInstance=null,isDrawing=false,lastX=0,lastY=0,penColor='#00ff9f',penSize=6;
 
-function setPenColor(color,btn){
-  penColor=color;
-  document.querySelectorAll('.color-btn').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-}
+function setPenColor(color,btn){ penColor=color; document.querySelectorAll('.color-btn').forEach(b=>b.classList.remove('active')); if(btn) btn.classList.add('active'); }
 function clearDrawCanvas(){ drawingCtx.clearRect(0,0,drawingCanvas.width,drawingCanvas.height); }
+function newAirChallenge(){
+  const prompts=['1','2','3','4','5','7','A','C','S','O','π','+'];
+  const p=prompts[Math.floor(Math.random()*prompts.length)];
+  document.getElementById('air-challenge').innerText='🎯 Trace this in the air:  "'+p+'"   (then tap NEW CHALLENGE)';
+  clearDrawCanvas();
+}
+function clearAirChallenge(){ document.getElementById('air-challenge').innerText=''; }
+
 function onResults(results){
   canvasCtx.save();canvasCtx.clearRect(0,0,canvasElement.width,canvasElement.height);
   canvasCtx.drawImage(results.image,0,0,canvasElement.width,canvasElement.height);
@@ -585,7 +625,7 @@ function onResults(results){
       if(!isDrawing){isDrawing=true;lastX=px;lastY=py;}
       else{
         drawingCtx.beginPath();drawingCtx.moveTo(lastX,lastY);drawingCtx.lineTo(px,py);
-        drawingCtx.strokeStyle=penColor;drawingCtx.lineWidth=5;drawingCtx.lineCap='round';drawingCtx.lineJoin='round';drawingCtx.stroke();
+        drawingCtx.strokeStyle=penColor;drawingCtx.lineWidth=penSize;drawingCtx.lineCap='round';drawingCtx.lineJoin='round';drawingCtx.stroke();
         lastX=px;lastY=py;
       }
       canvasCtx.beginPath();canvasCtx.arc(px,py,8,0,2*Math.PI);canvasCtx.fillStyle=penColor;canvasCtx.fill();
@@ -596,132 +636,166 @@ function onResults(results){
   } else {statusText.innerText='NO HANDS DETECTED.';statusText.style.color='var(--c-muted)';isDrawing=false;}
   canvasCtx.restore();
 }
-const hands=new Hands({locateFile:(file)=>`https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
-hands.setOptions({maxNumHands:1,modelComplexity:1,minDetectionConfidence:0.6,minTrackingConfidence:0.6});
-hands.onResults(onResults);
+let hands=null;
+try{
+  hands=new Hands({locateFile:(file)=>`https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
+  hands.setOptions({maxNumHands:1,modelComplexity:1,minDetectionConfidence:0.6,minTrackingConfidence:0.6});
+  hands.onResults(onResults);
+}catch(e){ console.warn('MediaPipe init failed',e); }
+
 function initGestureCamera(){
-  statusText.innerText='INITIALIZING AI VISION...';clearDrawCanvas();
-  if(!cameraInstance){cameraInstance=new Camera(videoElement,{onFrame:async()=>{await hands.send({image:videoElement});},width:640,height:480});}
-  cameraInstance.start();
+  clearDrawCanvas();
+  if(!hands || typeof Camera==='undefined'){
+    statusText.innerText='⚠️ AI VISION LIBRARY FAILED TO LOAD — CHECK INTERNET';
+    statusText.style.color='var(--c-red)'; return;
+  }
+  statusText.innerText='INITIALIZING AI VISION...';
+  if(!cameraInstance){
+    cameraInstance=new Camera(videoElement,{onFrame:async()=>{ try{ await hands.send({image:videoElement}); }catch(e){} },width:640,height:480});
+  }
+  cameraInstance.start().catch(()=>{
+    statusText.innerText='⚠️ CAMERA ACCESS DENIED — ALLOW CAMERA & RETRY';
+    statusText.style.color='var(--c-red)';
+  });
 }
 function closeGestureZone(){
   closeTerminal('gesture-terminal');
   if(cameraInstance){cameraInstance.stop();const t=videoElement.srcObject?.getTracks();if(t)t.forEach(tr=>tr.stop());}
-  statusText.innerText='WAITING FOR CAMERA...';
+  statusText.innerText='WAITING FOR CAMERA...';statusText.style.color='var(--c-accent)';
+  clearAirChallenge();
 }
 
-
-// ═══════════════════════════════════════════
-// GAME 3: LOGIC BLOCKS (New Layout, 5 Levels)
-// ═══════════════════════════════════════════
+// ═══════ GAME 3: LOGIC BLOCKS ═══════
 const GRID=5;
 const LEVELS=[
-  // Level 1: straight right
-  {player:{x:0,y:2},target:{x:4,y:2},walls:[],hint:'Go RIGHT 4 times!'},
-  // Level 2: L-shape
-  {player:{x:0,y:0},target:{x:4,y:4},walls:[{x:2,y:2}],hint:'Right 4, Down 4 — avoid the wall!'},
-  // Level 3: wall maze
-  {player:{x:0,y:0},target:{x:4,y:4},walls:[{x:2,y:0},{x:2,y:1},{x:2,y:3},{x:2,y:4}],hint:'Go around the wall gap!'},
-  // Level 4
-  {player:{x:0,y:4},target:{x:4,y:0},walls:[{x:1,y:3},{x:2,y:2},{x:3,y:1}],hint:'Navigate the diagonal!'},
-  // Level 5
-  {player:{x:0,y:0},target:{x:4,y:2},walls:[{x:1,y:0},{x:1,y:1},{x:3,y:2},{x:3,y:3},{x:2,y:4}],hint:'Complex maze — think carefully!'},
+  {player:{x:0,y:2},target:{x:4,y:2},walls:[],hint:'Go RIGHT 4 times — try the LOOP block!',par:2},
+  {player:{x:0,y:0},target:{x:4,y:4},walls:[{x:2,y:2}],hint:'Right then Down — mind the wall!',par:8},
+  {player:{x:0,y:0},target:{x:4,y:4},walls:[{x:2,y:0},{x:2,y:1},{x:2,y:3},{x:2,y:4}],hint:'Find the gap in the wall!',par:8},
+  {player:{x:0,y:4},target:{x:4,y:0},walls:[{x:1,y:3},{x:2,y:2},{x:3,y:1}],hint:'Navigate the diagonal!',par:8},
+  {player:{x:0,y:0},target:{x:4,y:2},walls:[{x:1,y:0},{x:1,y:1},{x:3,y:2},{x:3,y:3},{x:2,y:4}],hint:'Complex maze — think carefully!',par:10},
+  {player:{x:2,y:0},target:{x:2,y:4},walls:[{x:0,y:2},{x:1,y:2},{x:3,y:2},{x:4,y:2}],hint:'Squeeze through the middle!',par:4},
 ];
-let logicPlayer,logicTarget,logicWalls,logicCode=[],isLogicRunning=false,currentLevel=0;
+let logicPlayer,logicTarget,logicWalls,logicCode=[],isLogicRunning=false,currentLevel=0,trail=[];
 
 function drawLogicGrid(){
-  const grid=document.getElementById('logic-grid');
-  grid.innerHTML='';
+  const grid=document.getElementById('logic-grid'); grid.innerHTML='';
   for(let y=0;y<GRID;y++){
     for(let x=0;x<GRID;x++){
-      let div=document.createElement('div');
-      div.className='logic-cell';
+      let div=document.createElement('div'); div.className='logic-cell';
       if(x===logicPlayer.x&&y===logicPlayer.y) div.classList.add('cell-player');
       else if(x===logicTarget.x&&y===logicTarget.y) div.classList.add('cell-target');
       else if(logicWalls.some(w=>w.x===x&&w.y===y)) div.classList.add('cell-wall');
+      else if(trail.some(t=>t.x===x&&t.y===y)) div.classList.add('cell-trail');
       grid.appendChild(div);
     }
   }
 }
 function addCode(cmd){
   if(isLogicRunning) return;
-  if(logicCode.length>=16){alert('Memory limit reached! (max 16 commands)');return;}
-  logicCode.push(cmd);
+  if(logicCode.length>=20){alert('Memory limit reached! (max 20 blocks)');return;}
+  logicCode.push({cmd});
   renderCodeArea();
 }
+function addLoop(){
+  if(isLogicRunning) return;
+  if(logicCode.length===0){ flashLogicMsg('Add a move first, then LOOP repeats it!','var(--c-red)'); return; }
+  const last=logicCode[logicCode.length-1];
+  const baseCmd = last.loopOf || last.cmd;
+  const reps = (last.loopOf? (last.reps+1):2);
+  if(last.loopOf){ last.reps=reps; }
+  else { logicCode[logicCode.length-1]={cmd:baseCmd,loopOf:baseCmd,reps:2}; }
+  renderCodeArea();
+}
+function flashLogicMsg(t,c){ const m=document.getElementById('logic-msg'); m.innerText=t; m.style.color=c; }
 function renderCodeArea(){
-  const area=document.getElementById('logic-code-area');
-  area.innerHTML='';
-  logicCode.forEach((cmd,idx)=>{
-    let sym=cmd==='UP'?'⬆️':cmd==='DOWN'?'⬇️':cmd==='LEFT'?'⬅️':'➡️';
+  const area=document.getElementById('logic-code-area'); area.innerHTML='';
+  logicCode.forEach((step,idx)=>{
+    let sym=step.cmd==='UP'?'⬆️':step.cmd==='DOWN'?'⬇️':step.cmd==='LEFT'?'⬅️':'➡️';
     let chip=document.createElement('div');
-    chip.className='code-chip';
-    chip.innerHTML=`${sym} ${cmd}`;
-    chip.title='Click to delete';
-    chip.onclick=()=>{if(!isLogicRunning){logicCode.splice(idx,1);renderCodeArea();}};
+    chip.className='code-chip'+(step.loopOf?' loop-chip':'');
+    chip.innerHTML = step.loopOf ? `🔁 ${sym}×${step.reps}` : `${sym}`;
+    chip.title='Tap to delete';
+    chip.dataset.idx=idx;
+    chip.onclick=()=>{ if(!isLogicRunning){ logicCode.splice(idx,1); renderCodeArea(); } };
     area.appendChild(chip);
   });
+  const totalMoves=logicCode.reduce((a,s)=>a+(s.loopOf?s.reps:1),0);
+  document.getElementById('logic-count').innerText=`(${logicCode.length} blocks · ${totalMoves} moves)`;
+}
+function expandCode(){
+  const flat=[];
+  logicCode.forEach((s,idx)=>{
+    const n = s.loopOf?s.reps:1;
+    for(let k=0;k<n;k++) flat.push({cmd:s.cmd, idx});
+  });
+  return flat;
 }
 function loadLevel(lvl){
   const L=LEVELS[lvl];
-  logicPlayer={...L.player};logicTarget={...L.target};logicWalls=[...L.walls.map(w=>({...w}))];
-  logicCode=[];isLogicRunning=false;
+  logicPlayer={...L.player};logicTarget={...L.target};logicWalls=L.walls.map(w=>({...w}));
+  logicCode=[];isLogicRunning=false;trail=[];
   renderCodeArea();drawLogicGrid();
   document.getElementById('logic-level-info').innerText=`LEVEL ${lvl+1} / ${LEVELS.length} — ${L.hint}`;
-  let msg=document.getElementById('logic-msg');
-  msg.innerText='';msg.style.color='var(--c-white)';
+  document.getElementById('logic-stars').innerText='';
+  flashLogicMsg('','var(--c-white)');
   document.getElementById('btn-logic-run').disabled=false;
+  document.getElementById('btn-prev-lvl').disabled=(lvl===0);
+  document.getElementById('btn-next-lvl').disabled=(lvl===LEVELS.length-1);
 }
-function initLogicGame(){loadLevel(0);currentLevel=0;}
+function initLogicGame(){currentLevel=0;loadLevel(0);}
 function resetLogicGame(){loadLevel(currentLevel);}
+function changeLevel(dir){
+  let n=currentLevel+dir;
+  if(n<0||n>=LEVELS.length) return;
+  currentLevel=n; loadLevel(n);
+}
 function executeLogic(){
-  if(logicCode.length===0||isLogicRunning) return;
-  isLogicRunning=true;
+  const flat=expandCode();
+  if(flat.length===0||isLogicRunning) return;
+  isLogicRunning=true; trail=[];
   document.getElementById('btn-logic-run').disabled=true;
-  document.getElementById('logic-msg').innerText='EXECUTING...';
-  document.getElementById('logic-msg').style.color='var(--c-gold)';
+  flashLogicMsg('EXECUTING...','var(--c-gold)');
   let i=0;
   let t=setInterval(()=>{
-    if(i>=logicCode.length){
+    if(i>=flat.length){
       clearInterval(t);
-      if(logicPlayer.x===logicTarget.x&&logicPlayer.y===logicTarget.y){
-        document.getElementById('logic-msg').innerText='✅ SUCCESS! Target Reached.';
-        document.getElementById('logic-msg').style.color='var(--c-accent2)';
-        currentLevel++;
-        if(currentLevel<LEVELS.length){
-          setTimeout(()=>loadLevel(currentLevel),1200);
-        } else {
-          setTimeout(()=>{
-            document.getElementById('logic-msg').innerText='🏆 ALL LEVELS COMPLETE! You are a coding master!';
-            document.getElementById('logic-msg').style.color='var(--c-gold)';
-            currentLevel=0;
-          },600);
-        }
-      } else {
-        document.getElementById('logic-msg').innerText='❌ FAILED. Out of commands.';
-        document.getElementById('logic-msg').style.color='var(--c-red)';
-      }
-      isLogicRunning=false;return;
+      finishRun(flat.length);
+      return;
     }
-    let cmd=logicCode[i];
+    let cmd=flat[i].cmd;
     let nx=logicPlayer.x,ny=logicPlayer.y;
-    if(cmd==='UP') ny--;if(cmd==='DOWN') ny++;if(cmd==='LEFT') nx--;if(cmd==='RIGHT') nx++;
+    if(cmd==='UP') ny--; if(cmd==='DOWN') ny++; if(cmd==='LEFT') nx--; if(cmd==='RIGHT') nx++;
     if(nx>=0&&nx<GRID&&ny>=0&&ny<GRID&&!logicWalls.some(w=>w.x===nx&&w.y===ny)){
+      trail.push({x:logicPlayer.x,y:logicPlayer.y});
       logicPlayer.x=nx;logicPlayer.y=ny;
     } else {
       clearInterval(t);
-      document.getElementById('logic-msg').innerText='💥 CRASH DETECTED. Code Terminated.';
-      document.getElementById('logic-msg').style.color='var(--c-red)';
-      isLogicRunning=false;
+      flashLogicMsg('💥 CRASH! The robot hit a wall or edge.','var(--c-red)');
+      isLogicRunning=false; document.getElementById('btn-logic-run').disabled=false;
+      drawLogicGrid(); return;
     }
-    drawLogicGrid();i++;
-  },450);
+    drawLogicGrid(); i++;
+  },380);
+}
+function finishRun(movesUsed){
+  if(logicPlayer.x===logicTarget.x&&logicPlayer.y===logicTarget.y){
+    const par=LEVELS[currentLevel].par;
+    const blocks=logicCode.length;
+    let stars = blocks<=Math.ceil(par/2)?3 : blocks<=par?2 : 1;
+    document.getElementById('logic-stars').innerText='⭐'.repeat(stars)+'☆'.repeat(3-stars);
+    flashLogicMsg(`✅ SUCCESS! ${blocks} blocks used.`,'var(--c-accent2)');
+    if(currentLevel<LEVELS.length-1){
+      setTimeout(()=>{ currentLevel++; loadLevel(currentLevel); },1500);
+    } else {
+      setTimeout(()=>{ flashLogicMsg('🏆 ALL LEVELS COMPLETE! Coding master!','var(--c-gold)'); },700);
+    }
+  } else {
+    flashLogicMsg('❌ Not at the flag yet. Adjust your code!','var(--c-red)');
+  }
+  isLogicRunning=false; document.getElementById('btn-logic-run').disabled=false;
 }
 
-
-// ═══════════════════════════════════════════
-// GAME 4: CIRCUIT WIRING — SERIES + PARALLEL
-// ═══════════════════════════════════════════
+// ═══════ GAME 4: CIRCUIT WIRING ═══════
 function switchCircuitTab(type){
   document.querySelectorAll('.circuit-tab').forEach((t,i)=>t.classList.toggle('active',i===(type==='series'?0:1)));
   document.getElementById('panel-series').classList.toggle('active',type==='series');
@@ -731,6 +805,7 @@ function initCircuitGame(){ resetSeriesCircuit(); resetParallelCircuit(); }
 
 // ── SERIES ──
 let sSelected=null, sConnections=[];
+const SERIES_REQUIRED=[['s-bat-pos','s-led1-pos'],['s-led1-neg','s-led2-pos'],['s-led2-neg','s-bat-neg']];
 function resetSeriesCircuit(){
   sSelected=null;sConnections=[];
   document.getElementById('circuit-svg-series').innerHTML='';
@@ -740,52 +815,54 @@ function resetSeriesCircuit(){
   document.getElementById('circuit-msg-series').style.color='var(--c-white)';
   document.getElementById('series-progress').innerText='';
 }
-// Series needs: bat-pos→led1-pos, led1-neg→led2-pos, led2-neg→bat-neg (correct direction loop)
-const SERIES_REQUIRED=[
-  ['s-bat-pos','s-led1-pos'],
-  ['s-led1-neg','s-led2-pos'],
-  ['s-led2-neg','s-bat-neg']
-];
-function handleSNode(nodeId,type,circuit){
+function undoSeriesWire(){
+  if(sConnections.length===0) return;
+  sConnections.pop();
+  redrawSeries();
+}
+function redrawSeries(){
+  const svg=document.getElementById('circuit-svg-series'); svg.innerHTML='';
+  document.querySelectorAll('#circuit-board-series .comp-led').forEach(l=>l.classList.remove('on'));
+  sConnections.forEach(c=>{
+    drawWireToSVG('circuit-svg-series',document.getElementById(c.n1),document.getElementById(c.n2),isSeriesCorrectPair(c.n1,c.n2));
+  });
+  checkSeriesCompletion();
+}
+function handleSNode(nodeId){
   const nodeElem=document.getElementById(nodeId);
-  if(!sSelected){
-    sSelected={id:nodeId,type,elem:nodeElem};
-    nodeElem.classList.add('selected');
-  } else {
+  if(!sSelected){ sSelected={id:nodeId,elem:nodeElem}; nodeElem.classList.add('selected'); }
+  else {
     if(sSelected.id===nodeId){nodeElem.classList.remove('selected');sSelected=null;return;}
+    if(sConnections.some(c=>(c.n1===sSelected.id&&c.n2===nodeId)||(c.n1===nodeId&&c.n2===sSelected.id))){
+      document.querySelectorAll('#circuit-board-series .node').forEach(n=>n.classList.remove('selected')); sSelected=null; return;
+    }
     drawWireToSVG('circuit-svg-series',sSelected.elem,nodeElem,isSeriesCorrectPair(sSelected.id,nodeId));
     sConnections.push({n1:sSelected.id,n2:nodeId});
     document.querySelectorAll('#circuit-board-series .node').forEach(n=>n.classList.remove('selected'));
-    sSelected=null;
-    checkSeriesCompletion();
+    sSelected=null; checkSeriesCompletion();
   }
 }
-function isSeriesCorrectPair(a,b){
-  return SERIES_REQUIRED.some(pair=>(pair[0]===a&&pair[1]===b)||(pair[0]===b&&pair[1]===a));
-}
+function isSeriesCorrectPair(a,b){ return SERIES_REQUIRED.some(p=>(p[0]===a&&p[1]===b)||(p[0]===b&&p[1]===a)); }
 function checkSeriesCompletion(){
   let completed=0;
-  let hasShort=sConnections.some(c=>(c.n1.includes('-pos')&&c.n2.includes('-neg')&&c.n1.split('-')[0]===c.n2.split('-')[0]));
-  SERIES_REQUIRED.forEach(pair=>{
-    if(sConnections.some(c=>(c.n1===pair[0]&&c.n2===pair[1])||(c.n1===pair[1]&&c.n2===pair[0]))) completed++;
-  });
+  let hasShort=sConnections.some(c=>c.n1.includes('-pos')&&c.n2.includes('-neg')&&c.n1.split('-')[0]+c.n1.split('-')[1]===c.n2.split('-')[0]+c.n2.split('-')[1]);
+  SERIES_REQUIRED.forEach(p=>{ if(sConnections.some(c=>(c.n1===p[0]&&c.n2===p[1])||(c.n1===p[1]&&c.n2===p[0]))) completed++; });
   document.getElementById('series-progress').innerText=`Connections: ${completed} / ${SERIES_REQUIRED.length}`;
-  if(hasShort){
-    document.getElementById('circuit-msg-series').innerText='⚠️ SHORT CIRCUIT! Check polarity!';
-    document.getElementById('circuit-msg-series').style.color='var(--c-red)';
-  } else if(completed===SERIES_REQUIRED.length){
-    document.getElementById('circuit-msg-series').innerText='✅ SERIES CIRCUIT COMPLETE! Both LEDs ON!';
-    document.getElementById('circuit-msg-series').style.color='var(--c-accent2)';
+  const msg=document.getElementById('circuit-msg-series');
+  if(hasShort){ msg.innerText='⚠️ SHORT CIRCUIT! Check polarity!'; msg.style.color='var(--c-red)'; }
+  else if(completed===SERIES_REQUIRED.length){
+    msg.innerText='✅ SERIES COMPLETE! Both LEDs ON!'; msg.style.color='var(--c-accent2)';
     document.getElementById('s-comp-led1').classList.add('on');
     document.getElementById('s-comp-led2').classList.add('on');
   } else {
-    document.getElementById('circuit-msg-series').innerText=`Wiring in progress... (${completed}/${SERIES_REQUIRED.length} connections done)`;
-    document.getElementById('circuit-msg-series').style.color='var(--c-gold)';
+    document.querySelectorAll('#circuit-board-series .comp-led').forEach(l=>l.classList.remove('on'));
+    msg.innerText=`Wiring in progress... (${completed}/${SERIES_REQUIRED.length})`; msg.style.color='var(--c-gold)';
   }
 }
 
 // ── PARALLEL ──
 let pSelected=null, pConnections=[];
+const PARALLEL_REQUIRED=[['p-bat-pos','p-led1-pos'],['p-bat-pos','p-led2-pos'],['p-bat-neg','p-led1-neg'],['p-bat-neg','p-led2-neg']];
 function resetParallelCircuit(){
   pSelected=null;pConnections=[];
   document.getElementById('circuit-svg-parallel').innerHTML='';
@@ -795,61 +872,46 @@ function resetParallelCircuit(){
   document.getElementById('circuit-msg-parallel').style.color='var(--c-white)';
   document.getElementById('parallel-progress').innerText='';
 }
-// Parallel needs: bat-pos→led1-pos, bat-pos→led2-pos, bat-neg→led1-neg, bat-neg→led2-neg
-const PARALLEL_REQUIRED=[
-  ['p-bat-pos','p-led1-pos'],
-  ['p-bat-pos','p-led2-pos'],
-  ['p-bat-neg','p-led1-neg'],
-  ['p-bat-neg','p-led2-neg']
-];
-function handlePNode(nodeId,type){
+function undoParallelWire(){
+  if(pConnections.length===0) return;
+  pConnections.pop(); redrawParallel();
+}
+function redrawParallel(){
+  const svg=document.getElementById('circuit-svg-parallel'); svg.innerHTML='';
+  pConnections.forEach(c=>{ drawWireToSVG('circuit-svg-parallel',document.getElementById(c.n1),document.getElementById(c.n2),isParallelCorrectPair(c.n1,c.n2)); });
+  checkParallelCompletion();
+}
+function handlePNode(nodeId){
   const nodeElem=document.getElementById(nodeId);
-  if(!pSelected){
-    pSelected={id:nodeId,type,elem:nodeElem};
-    nodeElem.classList.add('selected');
-  } else {
+  if(!pSelected){ pSelected={id:nodeId,elem:nodeElem}; nodeElem.classList.add('selected'); }
+  else {
     if(pSelected.id===nodeId){nodeElem.classList.remove('selected');pSelected=null;return;}
+    if(pConnections.some(c=>(c.n1===pSelected.id&&c.n2===nodeId)||(c.n1===nodeId&&c.n2===pSelected.id))){
+      document.querySelectorAll('#circuit-board-parallel .node').forEach(n=>n.classList.remove('selected')); pSelected=null; return;
+    }
     drawWireToSVG('circuit-svg-parallel',pSelected.elem,nodeElem,isParallelCorrectPair(pSelected.id,nodeId));
     pConnections.push({n1:pSelected.id,n2:nodeId});
     document.querySelectorAll('#circuit-board-parallel .node').forEach(n=>n.classList.remove('selected'));
-    pSelected=null;
-    checkParallelCompletion();
+    pSelected=null; checkParallelCompletion();
   }
 }
-function isParallelCorrectPair(a,b){
-  return PARALLEL_REQUIRED.some(pair=>(pair[0]===a&&pair[1]===b)||(pair[0]===b&&pair[1]===a));
-}
+function isParallelCorrectPair(a,b){ return PARALLEL_REQUIRED.some(p=>(p[0]===a&&p[1]===b)||(p[0]===b&&p[1]===a)); }
 function checkParallelCompletion(){
   let completed=0;
-  let hasShort=pConnections.some(c=>{
-    let a=c.n1,b=c.n2;
-    return (a.includes('-pos')&&b.includes('-neg')&&a.split('-')[0]===b.split('-')[0]);
-  });
-  PARALLEL_REQUIRED.forEach(pair=>{
-    if(pConnections.some(c=>(c.n1===pair[0]&&c.n2===pair[1])||(c.n1===pair[1]&&c.n2===pair[0]))) completed++;
-  });
-  // LED1 on if bat-pos→led1-pos AND bat-neg→led1-neg done
-  let led1on=pConnections.some(c=>(c.n1==='p-bat-pos'&&c.n2==='p-led1-pos')||(c.n2==='p-bat-pos'&&c.n1==='p-led1-pos'))
-            &&pConnections.some(c=>(c.n1==='p-bat-neg'&&c.n2==='p-led1-neg')||(c.n2==='p-bat-neg'&&c.n1==='p-led1-neg'));
-  let led2on=pConnections.some(c=>(c.n1==='p-bat-pos'&&c.n2==='p-led2-pos')||(c.n2==='p-bat-pos'&&c.n1==='p-led2-pos'))
-            &&pConnections.some(c=>(c.n1==='p-bat-neg'&&c.n2==='p-led2-neg')||(c.n2==='p-bat-neg'&&c.n1==='p-led2-neg'));
+  let hasShort=pConnections.some(c=>c.n1.includes('-pos')&&c.n2.includes('-neg')&&c.n1.split('-')[0]+c.n1.split('-')[1]===c.n2.split('-')[0]+c.n2.split('-')[1]);
+  PARALLEL_REQUIRED.forEach(p=>{ if(pConnections.some(c=>(c.n1===p[0]&&c.n2===p[1])||(c.n1===p[1]&&c.n2===p[0]))) completed++; });
+  let led1on=pConnections.some(c=>pairIs(c,'p-bat-pos','p-led1-pos'))&&pConnections.some(c=>pairIs(c,'p-bat-neg','p-led1-neg'));
+  let led2on=pConnections.some(c=>pairIs(c,'p-bat-pos','p-led2-pos'))&&pConnections.some(c=>pairIs(c,'p-bat-neg','p-led2-neg'));
   document.getElementById('p-comp-led1').classList.toggle('on',led1on&&!hasShort);
   document.getElementById('p-comp-led2').classList.toggle('on',led2on&&!hasShort);
   document.getElementById('parallel-progress').innerText=`Connections: ${completed} / ${PARALLEL_REQUIRED.length}`;
-  if(hasShort){
-    document.getElementById('circuit-msg-parallel').innerText='⚠️ SHORT CIRCUIT! Check polarity!';
-    document.getElementById('circuit-msg-parallel').style.color='var(--c-red)';
-  } else if(completed===PARALLEL_REQUIRED.length){
-    document.getElementById('circuit-msg-parallel').innerText='✅ PARALLEL CIRCUIT COMPLETE! Both LEDs independent!';
-    document.getElementById('circuit-msg-parallel').style.color='var(--c-accent2)';
-  } else if(led1on||led2on){
-    document.getElementById('circuit-msg-parallel').innerText=`Branch wired! Keep going... (${completed}/${PARALLEL_REQUIRED.length})`;
-    document.getElementById('circuit-msg-parallel').style.color='var(--c-gold)';
-  } else {
-    document.getElementById('circuit-msg-parallel').innerText=`Wiring in progress... (${completed}/${PARALLEL_REQUIRED.length})`;
-    document.getElementById('circuit-msg-parallel').style.color='var(--c-muted)';
-  }
+  const msg=document.getElementById('circuit-msg-parallel');
+  if(hasShort){ msg.innerText='⚠️ SHORT CIRCUIT! Check polarity!'; msg.style.color='var(--c-red)'; }
+  else if(completed===PARALLEL_REQUIRED.length){ msg.innerText='✅ PARALLEL COMPLETE! Both LEDs independent!'; msg.style.color='var(--c-accent2)'; }
+  else if(led1on||led2on){ msg.innerText=`Branch wired! Keep going... (${completed}/${PARALLEL_REQUIRED.length})`; msg.style.color='var(--c-gold)'; }
+  else { msg.innerText=`Wiring in progress... (${completed}/${PARALLEL_REQUIRED.length})`; msg.style.color='var(--c-muted)'; }
 }
+function pairIs(c,a,b){ return (c.n1===a&&c.n2===b)||(c.n1===b&&c.n2===a); }
 
 // shared wire drawer
 function drawWireToSVG(svgId,elem1,elem2,isCorrect){
